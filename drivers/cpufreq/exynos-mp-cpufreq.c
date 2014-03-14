@@ -1483,10 +1483,10 @@ void enable_nonboot_cluster_cpus(void)
 // static void disable_nonboot_cluster_cpus(void)
 void disable_nonboot_cluster_cpus(void)
 {
-	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS); // org
-	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST0_CPUS); // added
-//	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS + 1); // big cpu 3 cores down when screen is off
-//	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST0_CPUS + 1); // little cpu - 3 cores down when screen is off
+//	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS); // org
+//	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST0_CPUS); // added
+	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS + 1); // big cpu 3 cores down when screen is off
+	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST0_CPUS + 2); // little cpu - 3 cores down when screen is off
 }
 
 static ssize_t store_cpufreq_max_limit(struct kobject *kobj, struct attribute *attr,
