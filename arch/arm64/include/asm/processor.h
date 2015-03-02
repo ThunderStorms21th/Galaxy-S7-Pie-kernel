@@ -131,7 +131,12 @@ extern void release_thread(struct task_struct *);
 
 unsigned long get_wchan(struct task_struct *p);
 
-#define cpu_relax()			barrier()
+static inline void cpu_relax(void)
+{
+	asm volatile("yield" ::: "memory");
+}
+
+#define cpu_read_relax()		wfe()
 #define cpu_relax_lowlatency()                cpu_relax()
 
 #define cpu_relaxed_read(p)		ldax32(p)
