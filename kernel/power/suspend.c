@@ -500,7 +500,7 @@ static int enter_state(suspend_state_t state)
 	if (state == PM_SUSPEND_FREEZE) {
 #ifdef CONFIG_PM_DEBUG
 		if (pm_test_level != TEST_NONE && pm_test_level <= TEST_CPUS) {
-			pr_warning("PM: Unsupported test mode for freeze state,"
+			pr_warning("PM: Unsupported test mode for suspend to idle,"
 				   "please choose none/freezer/devices/platform.\n");
 			return -EAGAIN;
 		}
@@ -514,7 +514,13 @@ static int enter_state(suspend_state_t state)
 	if (state == PM_SUSPEND_FREEZE)
 		freeze_begin();
 
-	pr_debug("PM: Preparing system for %s sleep\n", pm_states[state]);
+	trace_suspend_resume(TPS("sync_filesystems"), 0, true);
+	printk(KERN_INFO "PM: Syncing filesystems ... ");
+	sys_sync();
+	printk("done.\n");
+	trace_suspend_resume(TPS("sync_filesystems"), 0, false);
+
+	pr_debug("PM: Preparing system for sleep (%s)\n", pm_states[state]);
 	error = suspend_prepare(state);
 	if (error)
 		goto Unlock;
@@ -523,7 +529,7 @@ static int enter_state(suspend_state_t state)
 		goto Finish;
 
 	trace_suspend_resume(TPS("suspend_enter"), state, false);
-	pr_debug("PM: Entering %s sleep\n", pm_states[state]);
+	pr_debug("PM: Suspending system (%s)\n", pm_states[state]);
 	pm_restrict_gfp_mask();
 	error = suspend_devices_and_enter(state);
 	pm_restore_gfp_mask();
