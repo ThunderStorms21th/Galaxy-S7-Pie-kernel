@@ -31,7 +31,6 @@
 #include <linux/compiler.h>
 #include <linux/wakeup_reason.h>
 #include <linux/moduleparam.h>
-
 #include "power.h"
 
 const char *pm_labels[] = { "mem", "standby", "freeze", NULL };

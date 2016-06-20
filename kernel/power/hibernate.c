@@ -29,7 +29,6 @@
 #include <linux/ctype.h>
 #include <linux/genhd.h>
 #include <trace/events/power.h>
-
 #include "power.h"
 
 

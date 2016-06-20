@@ -20,7 +20,7 @@ extern void __init hibernate_reserved_size_init(void);
 extern void __init hibernate_image_size_init(void);
 
 #ifdef CONFIG_ARCH_HIBERNATION_HEADER
-/* Maximum size of architecture specific data in a hibernation header */
+/* Maximum size of architecture specific data in a hibernation header  */
 #define MAX_ARCH_HEADER_SIZE	(sizeof(struct new_utsname) + 4)
 
 extern int arch_hibernation_header_save(void *addr, unsigned int max_size);

@@ -105,7 +105,7 @@ static ssize_t pm_test_show(struct kobject *kobj, struct kobj_attribute *attr,
 		}
 
 	if (s != buf)
-		/* convert the last space to a newline */
+		/* convert the last space to a newline  */
 		*(s-1) = '\n';
 
 	return (s - buf);
