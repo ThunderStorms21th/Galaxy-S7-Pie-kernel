@@ -38,6 +38,26 @@ void cpu_idle_poll_ctrl(bool enable)
 	}
 }
 
+#ifdef CONFIG_SCHED_IDLE_FORCEPOLL
+static DEFINE_PER_CPU(int, idle_force_poll);
+
+void per_cpu_idle_poll_ctrl(int cpu, bool enable)
+{
+	if (enable) {
+		per_cpu(idle_force_poll, cpu)++;
+	} else {
+		per_cpu(idle_force_poll, cpu)--;
+		WARN_ON_ONCE(per_cpu(idle_force_poll, cpu) < 0);
+	}
+
+	/*
+	 * Make sure poll mode is entered on the relevant CPU after the flag is
+	 * set
+	 */
+	mb();
+}
+#endif
+
 #ifdef CONFIG_GENERIC_IDLE_POLL_SETUP
 static int __init cpu_idle_poll_setup(char *__unused)
 {
@@ -59,7 +79,14 @@ static inline int cpu_idle_poll(void)
 	rcu_idle_enter();
 	trace_cpu_idle_rcuidle(0, smp_processor_id());
 	local_irq_enable();
-	while (!tif_need_resched())
+
+	stop_critical_timings();
+	while (!tif_need_resched() &&
+		(cpu_idle_force_poll || tick_check_broadcast_expired()
+#ifdef CONFIG_SCHED_IDLE_FORCEPOLL
+		|| __get_cpu_var(idle_force_poll)
+#endif
+		))
 		cpu_relax();
 	trace_cpu_idle_rcuidle(PWR_EVENT_EXIT, smp_processor_id());
 	rcu_idle_exit();
@@ -252,7 +279,11 @@ static void cpu_idle_loop(void)
 			 * know that the IPI is going to arrive right
 			 * away
 			 */
-			if (cpu_idle_force_poll || tick_check_broadcast_expired())
+			if (cpu_idle_force_poll ||
+#ifdef CONFIG_SCHED_IDLE_FORCEPOLL
+			    __get_cpu_var(idle_force_poll) ||
+#endif
+			    tick_check_broadcast_expired())
 				cpu_idle_poll();
 			else
 				cpuidle_idle_call();
@@ -304,5 +335,8 @@ void cpu_startup_entry(enum cpuhp_state state)
 	boot_init_stack_canary();
 #endif
 	arch_cpu_idle_prepare();
+#ifdef CONFIG_SCHED_IDLE_FORCEPOLL
+	per_cpu(idle_force_poll, smp_processor_id()) = 0;
+#endif
 	cpu_idle_loop();
 }
