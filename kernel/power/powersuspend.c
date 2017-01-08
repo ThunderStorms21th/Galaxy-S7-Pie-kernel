@@ -305,7 +305,7 @@ static struct attribute_group power_suspend_attr_group =
 static struct kobject *power_suspend_kobj;
 
 // ------------------ sysfs interface -----------------------
-static int __init power_suspend_init(void)
+static int power_suspend_init(void)
 {
 	int sysfs_result;
 
@@ -339,8 +339,8 @@ static int __init power_suspend_init(void)
 
 static void __exit power_suspend_exit(void)
 {
-	flush_work_sync(&power_suspend_work)
-	flush_work_sync(&power_resume_work)
+	flush_work(&power_suspend_work);
+	flush_work(&power_resume_work);
 
 	if (power_suspend_kobj != NULL)
 		kobject_put(power_suspend_kobj);
