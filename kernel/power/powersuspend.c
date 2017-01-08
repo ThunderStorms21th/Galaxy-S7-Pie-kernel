@@ -308,6 +308,9 @@ static int __init power_suspend_init(void)
 //	mode = POWER_SUSPEND_PANEL;	// Yank555.lu : Default to display panel mode
 	mode = POWER_SUSPEND_HYBRID;	// Yank555.lu : Default to display panel / autosleep hybrid mode
 
+	INIT_WORK(&power_suspend_work, power_suspend);
+	INIT_WORK(&power_resume_work, power_resume);
+
 	return 0;
 }
 
@@ -317,7 +320,7 @@ static void __exit power_suspend_exit(void)
 		kobject_put(power_suspend_kobj);
 }
 
-module_init(power_suspend_init);
+subsys_initcall(power_suspend_init);
 module_exit(power_suspend_exit);
 
 MODULE_AUTHOR("Paul Reioux <reioux@gmail.com> / Jean-Pierre Rasquin <yank555.lu@gmail.com>");

@@ -120,7 +120,6 @@ void state_resume(void)
 
 static int __init state_notifier_init(void)
 {
-
 	INIT_DELAYED_WORK(&suspend_work, _suspend_work);
 	INIT_WORK(&resume_work, _resume_work);
 
