@@ -35,9 +35,6 @@
  *           the two work structs.  Also actually INITialized the work on init, and
  *           flushed it on exit.
  *
- *  v1.9.2 - Included State Notifier hooks to run explicitly once power state changes
- *	     are completed to prevent blocking issues.
- *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
  * may be copied, distributed, and modified under those terms.
@@ -53,13 +50,10 @@
 #include <linux/module.h>
 #include <linux/mutex.h>
 #include <linux/workqueue.h>
-#ifdef CONFIG_STATE_NOTIFIER
-#include <linux/state_notifier.h>
-#endif
 
 #define MAJOR_VERSION	1
 #define MINOR_VERSION	9
-#define SUB_MINOR_VERSION 2
+#define SUB_MINOR_VERSION 1
 
 /*
  * debug = 1 will print all
@@ -80,8 +74,8 @@ static DEFINE_SPINLOCK(state_lock);
 static LIST_HEAD(power_suspend_handlers);
 struct work_struct power_suspend_work;
 struct work_struct power_resume_work;
-static void power_suspend(struct work_struct *work);
-static void power_resume(struct work_struct *work);
+void power_suspend(struct work_struct *work);
+void power_resume(struct work_struct *work);
 
 static int state; // Yank555.lu : Current powersave state (screen on / off)
 static int mode;  // Yank555.lu : Current powersave mode  (kernel / userspace / panel / hybrid)
@@ -131,9 +125,6 @@ static void power_suspend(struct work_struct *work)
 		}
 	}
 	pr_info("[POWERSUSPEND] suspend completed.\n");
-#ifdef CONFIG_STATE_NOTIFIER
-	state_suspend();
-#endif
 abort_suspend:
 	mutex_unlock(&power_suspend_lock);
 }
@@ -161,9 +152,6 @@ static void power_resume(struct work_struct *work)
 		}
 	}
 	pr_info("[POWERSUSPEND] resume completed.\n");
-	#ifdef CONFIG_STATE_NOTIFIER
-		state_resume();
-	#endif
 abort_resume:
 	mutex_unlock(&power_suspend_lock);
 }
