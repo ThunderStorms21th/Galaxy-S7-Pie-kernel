@@ -25,8 +25,6 @@ module_param_named(suspend_defer_time, suspend_defer_time, uint, 0664);
 bool state_suspended;
 module_param_named(state_suspended, state_suspended, bool, 0444);
 static bool suspend_in_progress;
-static unsigned int first_boot;
-module_param_named(first_boot, first_boot, uint, 0444);
 
 static BLOCKING_NOTIFIER_HEAD(state_notifier_list);
 
@@ -64,6 +62,7 @@ EXPORT_SYMBOL_GPL(state_notifier_call_chain);
 
 static void _suspend_work(struct work_struct *work)
 {
+	printk("[STATE_NOTIFIER] SUSPENDING\n");
 	state_suspended = true;
 	state_notifier_call_chain(STATE_NOTIFIER_SUSPEND, NULL);
 	suspend_in_progress = false;
@@ -71,6 +70,7 @@ static void _suspend_work(struct work_struct *work)
 
 static void _resume_work(struct work_struct *work)
 {
+	printk("[STATE_NOTIFIER] RESUMING\n");
 	state_suspended = false;
 	state_notifier_call_chain(STATE_NOTIFIER_ACTIVE, NULL);
 }
@@ -92,15 +92,7 @@ void state_suspend(void)
  */
 void state_resume(void)
 {
-	int first_boot;
-
 	if (!enabled)
-		return;
-	}
-
-	if (first_boot == 0); {
-		first_boot = 1;
-		printk("STATE_NOTIFIER - Skipping First Boot");
 		return;
 	}
 
@@ -109,14 +101,15 @@ void state_resume(void)
 
 		if (state_suspended)
 			queue_work(susp_wq, &resume_work);
+		else
+			printk("[STATE_NOTIFIER] Skipping Resume\n");
 }
 
 static int state_notifier_init(void)
 {
-
-	susp_wq = alloc_workqueue("state_susp_wq", 0, 0);
+	susp_wq = alloc_workqueue("state_susp_wq", WQ_UNBOUND | WQ_MEM_RECLAIM, 1);
 	if (!susp_wq)
-		pr_err("State Notifier failed to allocate suspend workqueue\n");
+		pr_err("[State_Notifier] failed to allocate suspend workqueue\n");
 
 	first_boot = 0;
 	INIT_DELAYED_WORK(&suspend_work, _suspend_work);
