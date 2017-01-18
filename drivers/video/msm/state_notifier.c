@@ -92,9 +92,13 @@ void state_suspend(void)
  */
 void state_resume(void)
 {
-	if (!enabled)
-		return;
-	}
+//	if (resume_in_progress)
+//		return;
+
+	if (suspend_in_progress)
+		printk("[STATE NOTIFIER] - Suspend Cancelled by Resume\n");
+	else
+		printk("[STATE NOTIFIER] - Resume Called\n");
 
 		cancel_delayed_work_sync(&suspend_work);
 		suspend_in_progress = false;
@@ -109,7 +113,7 @@ static int state_notifier_init(void)
 {
 	susp_wq = alloc_workqueue("state_susp_wq", WQ_UNBOUND | WQ_MEM_RECLAIM, 1);
 	if (!susp_wq)
-		pr_err("[State_Notifier] failed to allocate suspend workqueue\n");
+		pr_err("[State_Notifier] failed to allocate workqueue\n");
 
 	first_boot = 0;
 	INIT_DELAYED_WORK(&suspend_work, _suspend_work);
