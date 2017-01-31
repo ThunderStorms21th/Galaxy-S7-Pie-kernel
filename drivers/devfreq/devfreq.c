@@ -101,7 +101,7 @@ static int devfreq_get_freq_level(struct devfreq *devfreq, unsigned long freq)
  * @devfreq:	the devfreq instance
  * @freq:	the update target frequency
  */
-static int devfreq_update_status(struct devfreq *devfreq, unsigned long freq)
+int devfreq_update_status(struct devfreq *devfreq, unsigned long freq)
 {
 	int lev, prev_lev = 0, ret = 0;
 	unsigned long cur_time;
@@ -143,6 +143,7 @@ out:
 	devfreq->last_stat_updated = cur_time;
 	return ret;
 }
+EXPORT_SYMBOL(devfreq_update_status);
 
 /**
  * find_devfreq_governor() - find devfreq governor from name
