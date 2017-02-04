@@ -25,6 +25,7 @@
 #include "gpu_control.h"
 #ifdef CONFIG_CPU_THERMAL_IPA
 #include "gpu_ipa.h"
+#include <linux/ipa.h>
 #endif /* CONFIG_CPU_THERMAL_IPA */
 #include "gpu_custom_interface.h"
 
@@ -220,6 +221,74 @@ static ssize_t show_asv_table(struct device *dev, struct device_attribute *attr,
 	}
 
 	return ret;
+}
+
+static ssize_t show_volt_table(struct device *dev, struct device_attribute *attr, char *buf)
+{
+	struct exynos_context *platform = (struct exynos_context *)pkbdev->platform_context;
+	ssize_t count = 0, pr_len;
+	int i, max, min;
+
+	if (!platform)
+		return -ENODEV;
+
+	max = gpu_dvfs_get_stock_level(platform->gpu_max_clock_limit);
+	min = gpu_dvfs_get_stock_level(platform->gpu_min_clock_limit);
+	pr_len = (size_t)((PAGE_SIZE - 2) / (min-max));
+
+	for (i = max; i <= min; i++) {
+		count += snprintf(&buf[count], pr_len, "%d %d\n",
+				platform->table[i].clock,
+				platform->table[i].voltage);
+	}
+
+	return count;
+}
+
+static ssize_t set_volt_table(struct device *dev, struct device_attribute *attr, const char *buf, size_t count)
+{
+	struct exynos_context *platform = (struct exynos_context *)pkbdev->platform_context;
+	int max = gpu_dvfs_get_stock_level(platform->gpu_max_clock_limit);
+	int min = gpu_dvfs_get_stock_level(platform->gpu_min_clock_limit);
+	int i, tokens, rest, target;
+	int t[min - max];
+	unsigned long flags;
+
+	if ((tokens = read_into((int*)&t, min-max, buf, count)) < 0)
+		return -EINVAL;
+
+	target = -1;
+	if (tokens == 2) {
+		for (i = max; i <= min; i++) {
+			if (t[0] == platform->table[i].clock) {
+				target = i;
+				break;
+			}
+		}
+	}
+
+	spin_lock_irqsave(&platform->gpu_dvfs_spinlock, flags);
+
+	if (tokens == 2 && target > -1) {
+		if ((rest = t[1] % GPU_VOLT_STEP) != 0)
+			t[1] += GPU_VOLT_STEP - rest;
+
+		sanitize_min_max(t[1], GPU_MIN_VOLT, GPU_MAX_VOLT);
+		platform->table[target].voltage = t[1];
+	} else {
+		for (i = 0; i < tokens; i++) {
+			if ((rest = t[i] % GPU_VOLT_STEP) != 0)
+				t[i] += GPU_VOLT_STEP - rest;
+
+			sanitize_min_max(t[i], GPU_MIN_VOLT, GPU_MAX_VOLT);
+			platform->table[i + max].voltage = t[i];
+		}
+	}
+
+	ipa_update();
+	spin_unlock_irqrestore(&platform->gpu_dvfs_spinlock, flags);
+
+	return count;
 }
 
 static int gpu_get_dvfs_table(struct exynos_context *platform, char *buf, size_t buf_size)

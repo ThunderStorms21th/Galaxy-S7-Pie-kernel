@@ -2764,6 +2764,156 @@ static struct {
 } hmp_dwcompensation;
 #endif
 
+/* Global switch between power-aware migrations and classical GTS. */
+static unsigned int hmp_power_migration = 1;
+
+/* Performance threshold for guaranteeing an up migration. */
+static unsigned int hmp_up_perf_threshold = 597;
+
+/* Capacity floor for checking cluster perf and efficiency. */
+static unsigned int hmp_up_power_threshold = 341;
+
+/*
+ * Maximum total capacity difference in load scale percentage to enact scheduler power migration.
+ * 
+ */
+#define UP_PERF_HYS_DEF		SCHED_LOAD_SCALE * 0.04
+#define DOWN_PERF_HYS_DEF	SCHED_LOAD_SCALE * 0.09
+static unsigned int hmp_up_perf_hysteresis = UP_PERF_HYS_DEF;
+static unsigned int hmp_down_perf_hysteresis = DOWN_PERF_HYS_DEF;
+
+#define NUM_CLUSTERS	2
+
+/*
+ * Initializer values for bootup, will be re-calculated on when 
+ * efficiency table is loaded.
+ */
+
+static struct cpu_cluster_efficiency cpu_efficiency_table_defaults[] = { 
+	{ .arch_efficiency = 100, .n_p_states = 0, .p_states = NULL },
+	{ .arch_efficiency = 208, .n_p_states = 0, .p_states = NULL }
+};
+
+static struct cpu_cluster_efficiency *cpu_efficiency_table = cpu_efficiency_table_defaults;
+
+static struct cpu_p_state slow = { .capacity = 1, .efficiency = 10 };
+static struct cpu_p_state fast = { .capacity = 10, .efficiency = 1 };
+
+static unsigned int slow_step_ratio = 85;
+static unsigned int fast_step_ratio = 73;
+
+static unsigned int slow_cap_max = 50000;
+static unsigned int slow_cap_min = 10000;
+static unsigned int slow_cap_range = 40000;
+static unsigned int slow_cap_step = 10000;
+
+static unsigned int fast_cap_max = 100000;
+static unsigned int fast_cap_min = 60000;
+static unsigned int fast_cap_range = 30000;
+static unsigned int fast_cap_step = 10000;
+
+static unsigned int cap_max = 100000;
+static unsigned int cap_min = 10000;
+static unsigned int cap_range = 90000;
+
+void sched_update_cpu_efficiency_table(struct cpu_cluster_efficiency *ceff, 
+				       unsigned int cluster)
+{
+	int i, min, max, range, step;
+#ifdef DEBUG
+	int p;
+#endif
+	
+	cpu_efficiency_table[cluster] = *ceff;
+	
+	min = ceff->p_states[0].capacity;
+	max = ceff->p_states[0].capacity;
+	
+	for (i = 0; i < ceff->n_p_states; i++) {
+		if (ceff->p_states[i].capacity > max)
+			max = ceff->p_states[i].capacity;
+		
+		if (ceff->p_states[i].capacity < min)
+			min = ceff->p_states[i].capacity;
+	}
+	
+	range = max - min;
+	step = range / ceff->n_p_states;
+	
+	if (cluster) {
+		cap_max = max;
+		fast_cap_max = max;
+		fast_cap_min = min;
+		fast_cap_range = range;
+		fast_cap_step = step;
+		fast_step_ratio = SCHED_LOAD_SCALE / ceff->n_p_states;
+	} else {
+		cap_min = min;
+		slow_cap_max = max;
+		slow_cap_min = min;
+		slow_cap_range = range;
+		slow_cap_step = step;
+		slow_step_ratio = SCHED_LOAD_SCALE / ceff->n_p_states;
+	}
+	
+	cap_range = fast_cap_max - slow_cap_min;
+	
+#ifdef DEBUG
+	pr_debug("+++ CPU efficiency table dump +++\n");
+	for (i = 0; i < NUM_CLUSTERS; i++) {
+	pr_debug("+++ CPU cluster %d +++\n", i);
+		for (p = 0; p < cpu_efficiency_table[i].n_p_states; p++) {
+			pr_debug("Freq: %4d, power: %4d, capacity: %6d, efficiency: %4d\n", 
+				 cpu_efficiency_table[i].p_states[p].freq / 1000,
+				 cpu_efficiency_table[i].p_states[p].power,
+				 cpu_efficiency_table[i].p_states[p].capacity,
+				 cpu_efficiency_table[i].p_states[p].efficiency); 
+		}
+	}
+	pr_debug("+++ Control values dump +++\n");
+	pr_debug("slow step ratio: \t%d\n"
+		 "fast step ratio: \t%d\n"
+		 "slow cap max: \t%d\n"
+		 "slow cap min: \t%d\n"
+		 "slow cap range: \t%d\n"
+		 "slow cap step: \t%d\n"
+		 "fast cap max: \t%d\n"
+		 "fast cap min: \t%d\n"
+		 "fast cap range: \t%d\n"
+		 "fast cap step: \t%d\n"
+		 "cap max: \t%d\n"
+		 "cap min: \t%d\n"
+		 "cap range: \t%d\n",
+		 slow_step_ratio, fast_step_ratio,
+		 slow_cap_max, slow_cap_min, slow_cap_range, slow_cap_step,
+		 fast_cap_max, fast_cap_min, fast_cap_range, fast_cap_step,
+		 cap_max, cap_min, cap_range);
+#endif
+}
+
+static inline unsigned int is_efficient_up(unsigned int load_ratio)
+{
+	if (fast.efficiency > slow.efficiency)
+		if (((slow.capacity * (SCHED_LOAD_SCALE + hmp_up_perf_hysteresis)) >> SCHED_LOAD_SHIFT) < fast.capacity)
+			return 1;
+	
+	return 0;
+}
+
+static inline unsigned int is_efficient_down(unsigned int load_ratio)
+{
+	int cap_ratio;
+	
+	cap_ratio = (load_ratio << SCHED_LOAD_SHIFT) / fast_step_ratio;
+	cap_ratio = (cap_ratio * fast_cap_step) >> SCHED_LOAD_SHIFT;
+	cap_ratio = (cap_ratio * fast_cap_max) / fast_cap_range;
+	
+	if (slow.efficiency > fast.efficiency)
+		if (slow.capacity > ((cap_ratio * (SCHED_LOAD_SCALE + hmp_down_perf_hysteresis)) >> SCHED_LOAD_SHIFT))
+			return 1;
+	
+	return 0;
+}
 
 /*
  * Needed to determine heaviest tasks etc.
