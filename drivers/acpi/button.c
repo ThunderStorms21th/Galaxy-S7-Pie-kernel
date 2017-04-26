@@ -117,6 +117,113 @@ static struct acpi_device *lid_device;
 static struct proc_dir_entry *acpi_button_dir;
 static struct proc_dir_entry *acpi_lid_dir;
 
+static int acpi_lid_evaluate_state(struct acpi_device *device)
+{
+	unsigned long long lid_state;
+	acpi_status status;
+
+	status = acpi_evaluate_integer(device->handle, "_LID", NULL, &lid_state);
+	if (ACPI_FAILURE(status))
+		return -ENODEV;
+
+	return lid_state ? 1 : 0;
+}
+
+static int acpi_lid_notify_state(struct acpi_device *device, int state)
+{
+	struct acpi_button *button = acpi_driver_data(device);
+	int ret;
+	ktime_t next_report;
+	bool do_update;
+
+	/*
+	 * In lid_init_state=ignore mode, if user opens/closes lid
+	 * frequently with "open" missing, and "last_time" is also updated
+	 * frequently, "close" cannot be delivered to the userspace.
+	 * So "last_time" is only updated after a timeout or an actual
+	 * switch.
+	 */
+	if (lid_init_state != ACPI_BUTTON_LID_INIT_IGNORE ||
+	    button->last_state != !!state)
+		do_update = true;
+	else
+		do_update = false;
+
+	next_report = ktime_add(button->last_time,
+				ms_to_ktime(lid_report_interval));
+	if (button->last_state == !!state &&
+	    ktime_after(ktime_get(), next_report)) {
+		/* Complain the buggy firmware */
+		pr_warn_once("The lid device is not compliant to SW_LID.\n");
+
+		/*
+		 * Send the unreliable complement switch event:
+		 *
+		 * On most platforms, the lid device is reliable. However
+		 * there are exceptions:
+		 * 1. Platforms returning initial lid state as "close" by
+		 *    default after booting/resuming:
+		 *     https://bugzilla.kernel.org/show_bug.cgi?id=89211
+		 *     https://bugzilla.kernel.org/show_bug.cgi?id=106151
+		 * 2. Platforms never reporting "open" events:
+		 *     https://bugzilla.kernel.org/show_bug.cgi?id=106941
+		 * On these buggy platforms, the usage model of the ACPI
+		 * lid device actually is:
+		 * 1. The initial returning value of _LID may not be
+		 *    reliable.
+		 * 2. The open event may not be reliable.
+		 * 3. The close event is reliable.
+		 *
+		 * But SW_LID is typed as input switch event, the input
+		 * layer checks if the event is redundant. Hence if the
+		 * state is not switched, the userspace cannot see this
+		 * platform triggered reliable event. By inserting a
+		 * complement switch event, it then is guaranteed that the
+		 * platform triggered reliable one can always be seen by
+		 * the userspace.
+		 */
+		if (lid_init_state == ACPI_BUTTON_LID_INIT_IGNORE) {
+			do_update = true;
+			/*
+			 * Do generate complement switch event for "close"
+			 * as "close" is reliable and wrong "open" won't
+			 * trigger unexpected behaviors.
+			 * Do not generate complement switch event for
+			 * "open" as "open" is not reliable and wrong
+			 * "close" will trigger unexpected behaviors.
+			 */
+			if (!state) {
+				input_report_switch(button->input,
+						    SW_LID, state);
+				input_sync(button->input);
+			}
+		}
+	}
+	/* Send the platform triggered reliable event */
+	if (do_update) {
+		input_report_switch(button->input, SW_LID, !state);
+		input_sync(button->input);
+		button->last_state = !!state;
+		button->last_time = ktime_get();
+	}
+
+	if (state)
+		pm_wakeup_hard_event(&device->dev);
+
+	ret = blocking_notifier_call_chain(&acpi_lid_notifier, state, device);
+	if (ret == NOTIFY_DONE)
+		ret = blocking_notifier_call_chain(&acpi_lid_notifier, state,
+						   device);
+	if (ret == NOTIFY_DONE || ret == NOTIFY_OK) {
+		/*
+		 * It is also regarded as success if the notifier_chain
+		 * returns NOTIFY_OK or NOTIFY_DONE.
+		 */
+		ret = 0;
+	}
+	return ret;
+}
+
 static int acpi_button_state_seq_show(struct seq_file *seq, void *offset)
 {
 	struct acpi_device *device = seq->private;
@@ -298,7 +405,7 @@ static void acpi_button_notify(struct acpi_device *device, u32 event)
 		} else {
 			int keycode;
 
-			pm_wakeup_event(&device->dev, 0);
+			pm_wakeup_hard_event(&device->dev);
 			if (button->suspended)
 				break;
 
@@ -428,6 +535,7 @@ static int acpi_button_add(struct acpi_device *device)
 		lid_device = device;
 	}
 
+	device_init_wakeup(&device->dev, true);
 	printk(KERN_INFO PREFIX "%s [%s]\n", name, acpi_device_bid(device));
 	return 0;
 
