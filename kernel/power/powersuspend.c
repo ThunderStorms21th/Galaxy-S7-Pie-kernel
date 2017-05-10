@@ -135,8 +135,11 @@ static void power_suspend(struct work_struct *work)
 		abort = 1;
 	spin_unlock_irqrestore(&state_lock, irqflags);
 
-	if (abort)
-		goto abort_suspend;
+	if (abort) {
+		mutex_unlock(&power_suspend_lock);
+		__pm_stay_awake(ws);
+		return;
+	}
 
 	pr_info("[POWERSUSPEND] Suspending...\n");
 	list_for_each_entry(pos, &power_suspend_handlers, link) {
@@ -150,10 +153,7 @@ static void power_suspend(struct work_struct *work)
 		pr_info("[POWERSUSPEND] Syncing\n");
 		sys_sync();
 	}
-
-abort_suspend:
-	mutex_unlock(&power_suspend_lock);
-	__pm_stay_awake(ws);
+	mutex_unlock(&power_suspend_lock
 }
 
 static void power_resume(struct work_struct *work)
@@ -171,8 +171,11 @@ static void power_resume(struct work_struct *work)
 		abort = 1;
 	spin_unlock_irqrestore(&state_lock, irqflags);
 
-	if (abort)
-		goto abort_resume;
+	if (abort) {
+		__pm_relax(ws);
+		mutex_unlock(&power_suspend_lock);
+		return;
+	}
 
 	pr_info("[POWERSUSPEND] Resuming...\n");
 	list_for_each_entry_reverse(pos, &power_suspend_handlers, link) {
@@ -180,10 +183,8 @@ static void power_resume(struct work_struct *work)
 			pos->resume(pos);
 		}
 	}
-	pr_info("[POWERSUSPEND] Resume Completed.\n");
-abort_resume:
 	mutex_unlock(&power_suspend_lock);
-	__pm_relax(ws);
+	pr_info("[POWERSUSPEND] Resume Completed.\n");
 }
 
 bool power_suspended = false;
@@ -313,7 +314,6 @@ static int power_suspend_init(void)
 
 	INIT_WORK(&power_suspend_work, power_suspend);
 	INIT_WORK(&power_resume_work, power_resume);
-	__pm_stay_awake(ws);
 
 	sync_on_powersuspend = 0; //Robcore: Preserve original functionality by default.
 	__pm_stay_awake(ws);
@@ -324,6 +324,7 @@ static int power_suspend_init(void)
 /* This should never have to be used except on shutdown */
 static void power_suspend_exit(void)
 {
+	__pm_relax(ws);
 	flush_work(&power_suspend_work);
 	flush_work(&power_resume_work);
 	wakeup_source_trash(ws);
