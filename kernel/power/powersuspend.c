@@ -159,7 +159,6 @@ static void power_suspend(struct work_struct *work)
 			pos->suspend(pos);
 		}
 	}
-	pr_info("[POWERSUSPEND] Suspend Completed.\n");
 
 	mutex_unlock(&power_suspend_lock);
 
@@ -167,6 +166,8 @@ static void power_suspend(struct work_struct *work)
 		pr_info("[POWERSUSPEND] Syncing\n");
 		sys_sync();
 	}
+
+	pr_info("[POWERSUSPEND] Suspend Completed.\n");
 }
 
 static void power_resume(struct work_struct *work)
