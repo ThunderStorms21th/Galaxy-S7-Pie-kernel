@@ -150,7 +150,13 @@ void acpi_ec_remove_query_handler(struct acpi_ec *ec, u8 query_bit);
 /*--------------------------------------------------------------------------
                                   Suspend/Resume
   -------------------------------------------------------------------------- */
+#ifdef CONFIG_ACPI_SYSTEM_POWER_STATES_SUPPORT
+extern bool acpi_s2idle_wakeup(void);
 extern int acpi_sleep_init(void);
+#else
+static inline bool acpi_s2idle_wakeup(void) { return false; }
+static inline int acpi_sleep_init(void) { return -ENXIO; }
+#endif
 
 #ifdef CONFIG_ACPI_SLEEP
 int acpi_sleep_proc_init(void);
