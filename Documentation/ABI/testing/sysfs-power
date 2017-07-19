@@ -261,3 +261,30 @@ Description:
 		Writing a "1" enables this printing while writing a "0"
 		disables it.  The default value is "0".  Reading from this file
 		will display the current value.
+<<<<<<< HEAD
+=======
+
+What:		/sys/power/pm_wakeup_irq
+Date:		April 2015
+Contact:	Alexandra Yates <alexandra.yates@linux.intel.org>
+Description:
+		The /sys/power/pm_wakeup_irq file reports to user space the IRQ
+		number of the first wakeup interrupt (that is, the first
+		interrupt from an IRQ line armed for system wakeup) seen by the
+		kernel during the most recent system suspend/resume cycle.
+
+		This output is useful for system wakeup diagnostics of spurious
+		wakeup interrupts.
+
+What:		/sys/power/pm_debug_messages
+Date:		July 2017
+Contact:	Rafael J. Wysocki <rjw@rjwysocki.net>
+Description:
+		The /sys/power/pm_debug_messages file controls the printing
+		of debug messages from the system suspend/hiberbation
+		infrastructure to the kernel log.
+
+		Writing a "1" to this file enables the debug messages and
+		writing a "0" (default) to it disables them.  Reads from
+		this file return the current value.
+>>>>>>> 8d8b2441db96... PM / sleep: Do not print debug messages by default

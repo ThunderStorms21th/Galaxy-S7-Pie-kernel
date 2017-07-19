@@ -640,6 +640,32 @@ static void power_down(void)
 		cpu_relax();
 }
 
+static int load_image_and_restore(void)
+{
+	int error;
+	unsigned int flags;
+
+	pm_pr_dbg("Loading hibernation image.\n");
+
+	lock_device_hotplug();
+	error = create_basic_memory_bitmaps();
+	if (error)
+		goto Unlock;
+
+	error = swsusp_read(&flags);
+	swsusp_close(FMODE_READ);
+	if (!error)
+		hibernation_restore(flags & SF_PLATFORM_MODE);
+
+	pr_err("Failed to load hibernation image, recovering.\n");
+	swsusp_free();
+	free_basic_memory_bitmaps();
+ Unlock:
+	unlock_device_hotplug();
+
+	return error;
+}
+
 /**
  * hibernate - Carry out system hibernation, including saving the image.
  */
@@ -648,7 +674,7 @@ int hibernate(void)
 	int error, nr_calls = 0;
 
 	if (!hibernation_available()) {
-		pr_debug("PM: Hibernation not available.\n");
+		pm_pr_dbg("Hibernation not available.\n");
 		return -EPERM;
 	}
 
@@ -694,7 +720,7 @@ int hibernate(void)
 		else
 		        flags |= SF_CRC32_MODE;
 
-		pr_debug("PM: writing image.\n");
+		pm_pr_dbg("Writing image.\n");
 		error = swsusp_write(flags);
 		swsusp_free();
 		if (!error)
@@ -702,13 +728,19 @@ int hibernate(void)
 		in_suspend = 0;
 		pm_restore_gfp_mask();
 	} else {
-		pr_debug("PM: Image restored successfully.\n");
+		pm_pr_dbg("Image restored successfully.\n");
 	}
 
  Free_bitmaps:
 	free_basic_memory_bitmaps();
  Thaw:
 	unlock_device_hotplug();
+	if (snapshot_test) {
+		pm_pr_dbg("Checking hibernation image\n");
+		error = swsusp_check();
+		if (!error)
+			error = load_image_and_restore();
+	}
 	thaw_processes();
 
 	/* Don't bother checking whether freezer_test_done is true */
@@ -769,7 +801,7 @@ static int software_resume(void)
 		goto Unlock;
 	}
 
-	pr_debug("PM: Checking hibernation image partition %s\n", resume_file);
+	pm_pr_dbg("Checking hibernation image partition %s\n", resume_file);
 
 	if (resume_delay) {
 		printk(KERN_INFO "Waiting %dsec before reading resume device...\n",
@@ -811,10 +843,10 @@ static int software_resume(void)
 	}
 
  Check_image:
-	pr_debug("PM: Hibernation image partition %d:%d present\n",
+	pm_pr_dbg("Hibernation image partition %d:%d present\n",
 		MAJOR(swsusp_resume_device), MINOR(swsusp_resume_device));
 
-	pr_debug("PM: Looking for hibernation image.\n");
+	pm_pr_dbg("Looking for hibernation image.\n");
 	error = swsusp_check();
 	if (error)
 		goto Unlock;
@@ -833,7 +865,7 @@ static int software_resume(void)
 		goto Close_Finish;
 	}
 
-	pr_debug("PM: Preparing processes for restore.\n");
+	pm_pr_dbg("Preparing processes for restore.\n");
 	error = freeze_processes();
 	if (error)
 		goto Close_Finish;
@@ -863,7 +895,7 @@ static int software_resume(void)
 	/* For success case, the suspend path will release the lock */
  Unlock:
 	mutex_unlock(&pm_mutex);
-	pr_debug("PM: Hibernation image not present or could not be loaded.\n");
+	pm_pr_dbg("Hibernation image not present or could not be loaded.\n");
 	return error;
  Close_Finish:
 	swsusp_close(FMODE_READ);
@@ -984,8 +1016,8 @@ static ssize_t disk_store(struct kobject *kobj, struct kobj_attribute *attr,
 		error = -EINVAL;
 
 	if (!error)
-		pr_debug("PM: Hibernation mode set to '%s'\n",
-			 hibernation_modes[mode]);
+		pm_pr_dbg("Hibernation mode set to '%s'\n",
+			       hibernation_modes[mode]);
 	unlock_system_sleep();
 	return error ? error : n;
 }
