@@ -626,6 +626,91 @@ static const struct platform_suspend_ops acpi_suspend_ops_old = {
 
 static bool s2idle_wakeup;
 
+/*
+ * On platforms supporting the Low Power S0 Idle interface there is an ACPI
+ * device object with the PNP0D80 compatible device ID (System Power Management
+ * Controller) and a specific _DSM method under it.  That method, if present,
+ * can be used to indicate to the platform that the OS is transitioning into a
+ * low-power state in which certain types of activity are not desirable or that
+ * it is leaving such a state, which allows the platform to adjust its operation
+ * mode accordingly.
+ */
+static const struct acpi_device_id lps0_device_ids[] = {
+	{"PNP0D80", },
+	{"", },
+};
+
+#define ACPI_LPS0_DSM_UUID	"c4eb40a0-6cd2-11e2-bcfd-0800200c9a66"
+
+#define ACPI_LPS0_SCREEN_OFF	3
+#define ACPI_LPS0_SCREEN_ON	4
+#define ACPI_LPS0_ENTRY		5
+#define ACPI_LPS0_EXIT		6
+
+#define ACPI_S2IDLE_FUNC_MASK	((1 << ACPI_LPS0_ENTRY) | (1 << ACPI_LPS0_EXIT))
+
+static acpi_handle lps0_device_handle;
+static guid_t lps0_dsm_guid;
+static char lps0_dsm_func_mask;
+
+static void acpi_sleep_run_lps0_dsm(unsigned int func)
+{
+	union acpi_object *out_obj;
+
+	if (!(lps0_dsm_func_mask & (1 << func)))
+		return;
+
+	out_obj = acpi_evaluate_dsm(lps0_device_handle, &lps0_dsm_guid, 1, func, NULL);
+	ACPI_FREE(out_obj);
+
+	acpi_handle_debug(lps0_device_handle, "_DSM function %u evaluation %s\n",
+			  func, out_obj ? "successful" : "failed");
+}
+
+static int lps0_device_attach(struct acpi_device *adev,
+			      const struct acpi_device_id *not_used)
+{
+	union acpi_object *out_obj;
+
+	if (lps0_device_handle)
+		return 0;
+
+	if (!(acpi_gbl_FADT.flags & ACPI_FADT_LOW_POWER_S0))
+		return 0;
+
+	guid_parse(ACPI_LPS0_DSM_UUID, &lps0_dsm_guid);
+	/* Check if the _DSM is present and as expected. */
+	out_obj = acpi_evaluate_dsm(adev->handle, &lps0_dsm_guid, 1, 0, NULL);
+	if (out_obj && out_obj->type == ACPI_TYPE_BUFFER) {
+		char bitmask = *(char *)out_obj->buffer.pointer;
+
+		if ((bitmask & ACPI_S2IDLE_FUNC_MASK) == ACPI_S2IDLE_FUNC_MASK) {
+			lps0_dsm_func_mask = bitmask;
+			lps0_device_handle = adev->handle;
+			/*
+			 * Use suspend-to-idle by default if the default
+			 * suspend mode was not set from the command line.
+			 */
+			if (mem_sleep_default > PM_SUSPEND_MEM)
+				mem_sleep_current = PM_SUSPEND_FREEZE;
+		}
+
+		acpi_handle_debug(adev->handle, "_DSM function mask: 0x%x\n",
+				  bitmask);
+	} else {
+		acpi_handle_debug(adev->handle,
+				  "_DSM function 0 evaluation failed\n");
+	}
+	ACPI_FREE(out_obj);
+	return 0;
+}
+
+static struct acpi_scan_handler lps0_handler = {
+	.ids = lps0_device_ids,
+	.attach = lps0_device_attach,
+};
+
+>>>>>>> e870c6c87cf9... ACPI / PM: Prefer suspend-to-idle over S3 on some systems
 static int acpi_freeze_begin(void)
 {
 	acpi_scan_lock_acquire();

@@ -197,7 +197,8 @@ struct platform_freeze_ops {
 };
 
 #ifdef CONFIG_SUSPEND
-// extern suspend_state_t mem_sleep_default;
+extern suspend_state_t mem_sleep_current;
+extern suspend_state_t mem_sleep_default;
 
 /**
  * suspend_set_ops - set platform dependent suspend operations
