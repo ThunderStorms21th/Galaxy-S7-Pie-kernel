@@ -71,6 +71,35 @@ static int set_target(struct cpufreq_policy *policy, unsigned int index)
 		tol = volt * priv->voltage_tolerance / 100;
 		volt_old = regulator_get_voltage(cpu_reg);
 	}
+	unsigned long freq = policy->freq_table[index].frequency;
+	int ret;
+
+	ret = dev_pm_opp_set_rate(priv->cpu_dev, freq * 1000);
+
+	if (!ret) {
+		arch_set_freq_scale(policy->related_cpus, freq,
+				    policy->cpuinfo.max_freq);
+	}
+
+	return ret;
+}
+
+/*
+ * An earlier version of opp-v1 bindings used to name the regulator
+ * "cpu0-supply", we still need to handle that for backwards compatibility.
+ */
+static const char *find_supply_name(struct device *dev)
+{
+	struct device_node *np;
+	struct property *pp;
+	int cpu = dev->id;
+	const char *name = NULL;
+
+	np = of_node_get(dev->of_node);
+
+	/* This must be valid for sure */
+	if (WARN_ON(!np))
+		return NULL;
 
 	dev_dbg(cpu_dev, "%u MHz, %ld mV --> %u MHz, %ld mV\n",
 		old_freq / 1000, volt_old ? volt_old / 1000 : -1,
