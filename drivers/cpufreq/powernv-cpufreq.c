@@ -120,6 +120,13 @@ static int init_powernv_pstates(void)
 		pr_debug("PState id %d freq %d MHz\n", id, freq);
 		powernv_freqs[i].frequency = freq * 1000; /* kHz */
 		powernv_freqs[i].driver_data = id;
+
+		if (id == pstate_max)
+			powernv_pstate_info.max = i;
+		if (id == pstate_nominal)
+			powernv_pstate_info.nominal = i;
+		if (id == pstate_min)
+			powernv_pstate_info.min = i;
 	}
 	/* End of list marker entry */
 	powernv_freqs[i].frequency = CPUFREQ_TABLE_END;
