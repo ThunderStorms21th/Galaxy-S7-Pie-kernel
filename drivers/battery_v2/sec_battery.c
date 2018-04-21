@@ -196,11 +196,22 @@ static enum power_supply_property sec_battery_props[] = {
 
 static enum power_supply_property sec_power_props[] = {
 	POWER_SUPPLY_PROP_ONLINE,
+	POWER_SUPPLY_PROP_VOLTAGE_MAX,
+	POWER_SUPPLY_PROP_CURRENT_MAX,
+};
+
+static enum power_supply_property sec_wireless_props[] = {
+	POWER_SUPPLY_PROP_ONLINE,
+	POWER_SUPPLY_PROP_PRESENT,
+	POWER_SUPPLY_PROP_VOLTAGE_MAX,
+	POWER_SUPPLY_PROP_CURRENT_MAX,
 };
 
 static enum power_supply_property sec_ac_props[] = {
 	POWER_SUPPLY_PROP_ONLINE,
 	POWER_SUPPLY_PROP_TEMP,
+	POWER_SUPPLY_PROP_VOLTAGE_MAX,
+	POWER_SUPPLY_PROP_CURRENT_MAX,
 };
 
 static enum power_supply_property sec_ps_props[] = {
@@ -4304,6 +4315,43 @@ ssize_t sec_bat_show_attrs(struct device *dev,
 	case WC_ENABLE:
 		i += scnprintf(buf + i, PAGE_SIZE - i, "%d\n",
 			battery->wc_enable);
+	default:
+		return -EINVAL;
+	}
+	return 0;
+}
+
+static int sec_usb_get_property(struct power_supply *psy,
+				enum power_supply_property psp,
+				union power_supply_propval *val)
+{
+	struct sec_battery_info *battery = power_supply_get_drvdata(psy);
+
+	switch (psp) {
+	case POWER_SUPPLY_PROP_ONLINE:
+		break;
+	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+		/* V -> uV */
+		val->intval = battery->input_voltage * 1000000;
+		return 0;
+	case POWER_SUPPLY_PROP_CURRENT_MAX:
+		/* mA -> uA */
+		val->intval = battery->pdata->charging_current[battery->cable_type].input_current_limit * 1000;
+		return 0;
+	default:
+		return -EINVAL;
+	}
+
+	if ((battery->health == POWER_SUPPLY_HEALTH_OVERVOLTAGE) ||
+		(battery->health == POWER_SUPPLY_HEALTH_UNDERVOLTAGE)) {
+		val->intval = 0;
+		return 0;
+	}
+	/* Set enable=1 only if the USB charger is connected */
+	switch (battery->wire_status) {
+	case SEC_BATTERY_CABLE_USB:
+	case SEC_BATTERY_CABLE_USB_CDP:
+		val->intval = 1;
 		break;
 	case WC_CONTROL:
 		i += scnprintf(buf + i, PAGE_SIZE - i, "%d\n",
@@ -4438,6 +4486,23 @@ ssize_t sec_bat_show_attrs(struct device *dev,
 				while (k > 0 && ocv_data[k-1] > ocv) {
 					ocv_data[k] = ocv_data[k-1];
 					k--;
+	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+		/* V -> uV */
+		val->intval = battery->input_voltage * 1000000;
+		return 0;
+	case POWER_SUPPLY_PROP_CURRENT_MAX:
+		/* mA -> uA */
+		val->intval = battery->pdata->charging_current[battery->cable_type].input_current_limit * 1000;
+		return 0;
+	case POWER_SUPPLY_PROP_MAX ... POWER_SUPPLY_EXT_PROP_MAX:
+		switch (ext_psp) {
+			case POWER_SUPPLY_EXT_PROP_WATER_DETECT:
+				if (battery->misc_event & (BATT_MISC_EVENT_UNDEFINED_RANGE_TYPE |
+					BATT_MISC_EVENT_HICCUP_TYPE)) {
+					val->intval = 1;
+					pr_info("%s: Water Detect\n", __func__);
+				} else {
+					val->intval = 0;
 				}
 				ocv_data[k] = ocv;
 			}
@@ -4511,6 +4576,40 @@ ssize_t sec_bat_show_attrs(struct device *dev,
 				SEC_BAT_ADC_CHANNEL_WPC_TEMP, &value);
 			i += scnprintf(buf + i, PAGE_SIZE - i, "%d\n",
 				value.intval);
+	case POWER_SUPPLY_PROP_VOLTAGE_MAX:
+		/* V -> uV */
+		val->intval = battery->input_voltage * 1000000;
+		return 0;
+	case POWER_SUPPLY_PROP_CURRENT_MAX:
+		/* mA -> uA */
+		val->intval = battery->pdata->charging_current[battery->cable_type].input_current_limit * 1000;
+		return 0;
+	default:
+		return -EINVAL;
+	}
+
+	return 0;
+}
+
+void sec_wireless_set_tx_enable(struct sec_battery_info *battery, bool wc_tx_enable)
+{
+	union power_supply_propval value = {0, };
+
+	pr_info("@Tx_Mode %s: TX Power enable ? (%d)\n", __func__, wc_tx_enable);
+
+	battery->wc_tx_enable = wc_tx_enable;
+	battery->tx_minduty = battery->pdata->tx_minduty_default;
+	battery->tx_switch_mode = TX_SWITCH_MODE_OFF;
+	battery->tx_switch_start_soc = 0;
+	battery->tx_switch_mode_change = false;
+
+	if (wc_tx_enable) {
+		/* set tx event */
+		sec_bat_set_tx_event(battery, BATT_TX_EVENT_WIRELESS_TX_STATUS,
+			(BATT_TX_EVENT_WIRELESS_TX_STATUS | BATT_TX_EVENT_WIRELESS_TX_RETRY));
+
+		if (is_hv_wire_type(battery->wire_status)) {
+			muic_afc_set_voltage(SEC_INPUT_VOLTAGE_5V);
 		} else {
 			i += scnprintf(buf + i, PAGE_SIZE - i, "%d\n",
 				0);
