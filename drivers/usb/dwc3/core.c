@@ -983,6 +983,9 @@ static int dwc3_probe(struct platform_device *pdev)
 	}
 
 	pm_runtime_allow(dev);
+err5:
+	dwc3_event_buffers_cleanup(dwc);
+	dwc3_ulpi_exit(dwc);
 
 	return 0;
 
