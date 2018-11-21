@@ -146,6 +146,13 @@ static inline bool machine__is_host(struct machine *machine)
 
 struct thread *machine__findnew_thread(struct machine *machine, pid_t pid,
 				       pid_t tid);
+bool machine__is(struct machine *machine, const char *arch);
+int machine__nr_cpus_avail(struct machine *machine);
+
+struct thread *__machine__findnew_thread(struct machine *machine, pid_t pid, pid_t tid);
+struct thread *machine__findnew_thread(struct machine *machine, pid_t pid, pid_t tid);
+
+struct dso *machine__findnew_dso(struct machine *machine, const char *filename);
 
 size_t machine__fprintf(struct machine *machine, FILE *fp);
 
