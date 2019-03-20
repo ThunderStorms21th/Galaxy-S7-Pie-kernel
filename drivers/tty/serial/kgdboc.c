@@ -162,8 +162,10 @@ static int configure_kgdboc(void)
 	struct console *cons;
 
 	err = kgdboc_option_setup(config);
-	if (err || !strlen(config) || isspace(config[0]))
+	if (!strlen(config) || isspace(config[0])) {
+		err = 0;
 		goto noconfig;
+	}
 
 	err = -ENODEV;
 	kgdboc_io_ops.is_console = 0;
