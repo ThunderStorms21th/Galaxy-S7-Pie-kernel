@@ -584,7 +584,7 @@ static int ast_crtc_mode_set(struct drm_crtc *crtc,
 
 	ast_set_std_reg(crtc, adjusted_mode, &vbios_mode);
 	ast_set_crtc_reg(crtc, adjusted_mode, &vbios_mode);
-	ast_set_offset_reg(crtc);
+//	ast_set_offset_reg(crtc);
 	ast_set_dclk_reg(dev, adjusted_mode, &vbios_mode);
 	ast_set_ext_reg(crtc, adjusted_mode, &vbios_mode);
 	ast_set_sync_reg(dev, adjusted_mode, &vbios_mode);
