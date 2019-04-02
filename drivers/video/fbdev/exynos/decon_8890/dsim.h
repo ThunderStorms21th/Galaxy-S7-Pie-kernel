@@ -190,6 +190,14 @@ struct panel_private {
 	unsigned int gray_spot;
 #endif
 
+/* added Smart On */
+#ifdef CONFIG_PANEL_SMART_DIMMING
+	unsigned int smart_on;
+	void *smart_dim_data;
+	void *smart_dim_info;
+#endif
+/* end */
+
 #ifdef CONFIG_LCD_HMT
 	unsigned int hmt_on;
 	unsigned int hmt_prev_status;
