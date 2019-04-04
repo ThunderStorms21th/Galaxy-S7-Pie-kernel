@@ -7,11 +7,11 @@
 RESETPROP="/sbin/magisk resetprop -v -n"
 
 # Mount
-#mount -o remount,rw -t auto /
-#mount -t rootfs -o remount,rw rootfs
-#mount -o remount,rw -t auto /system
-#mount -o remount,rw /data
-#mount -o remount,rw /cache
+mount -o remount,rw -t auto /
+mount -t rootfs -o remount,rw rootfs
+mount -o remount,rw -t auto /system
+mount -o remount,rw /data
+mount -o remount,rw /cache
 
 # Set KNOX to 0x0 on running /system
 $RESETPROP ro.boot.warranty_bit "0"
@@ -28,8 +28,8 @@ $RESETPROP ro.boot.flash.locked "1"
 $RESETPROP ro.boot.ddrinfo "00000001"
 
 # SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
-#echo "0" > /sys/fs/selinux/enforce
-#chmod 640 /sys/fs/selinux/enforce
+echo "0" > /sys/fs/selinux/enforce
+chmod 640 /sys/fs/selinux/enforce
 
 # Google play services wakelock fix
 sleep 1
@@ -73,7 +73,7 @@ done;
 #fi
 
 # PWMFix (0 = Disabled, 1 = Enabled)
-# echo "0" > /sys/class/lcd/panel/smart_on
+echo "0" > /sys/class/lcd/panel/smart_on
 
 # Kernel Panic off
 # echo "0" > /proc/sys/kernel/panic
@@ -158,9 +158,9 @@ echo "4096,16384,404480" > /proc/sys/net/ipv4/tcp_wmem
 echo "4096,87380,404480" > /proc/sys/net/ipv4/tcp_rmem
 
 # Unmount
-#mount -o remount,ro -t auto /
-#mount -t rootfs -o remount,ro rootfs
-#mount -o remount,ro -t auto /system
-#mount -o remount,rw /data
-#mount -o remount,rw /cache
+mount -o remount,ro -t auto /
+mount -t rootfs -o remount,ro rootfs
+mount -o remount,ro -t auto /system
+mount -o remount,rw /data
+mount -o remount,rw /cache
 

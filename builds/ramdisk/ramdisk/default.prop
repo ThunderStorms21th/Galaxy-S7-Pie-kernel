@@ -45,7 +45,6 @@ ro.setupwizard.mode=OPTIONAL
 ro.com.google.gmsversion=9_201902
 ro.vndk.version=28
 ro.vndk.lite=true
-persist.sys.usb.config=mtp
 ro.zygote=zygote64_32
 ro.vendor.epdg.support=true
 ro.logd.size.stats=64K

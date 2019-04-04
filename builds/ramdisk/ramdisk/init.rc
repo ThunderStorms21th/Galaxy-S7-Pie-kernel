@@ -510,11 +510,6 @@ on post-fs-data
     chmod 0771 /keyrefuge
     restorecon /keyrefuge
 	
-# [ SEC_SELINUX_PORTING_COMMON
-    # sec_efs_file
-    mkdir /efs/sec_efs 0775 radio system
-# ] SEC_SELINUX_PORTING_COMMON
-
     # mobicore
     export MC_AUTH_TOKEN_PATH /efs
     mkdir /efs/TEE  0770 radio system
@@ -676,11 +671,6 @@ on post-fs-data
     chown system root /data/misc/conn/.wificable.info
     chmod 0666 /data/misc/conn/.wificable.info
 
-# [ SEC_SELINUX_PORTING_COMMON
-    # arcounter
-    mkdir /data/misc/arcounter 0700 system system
-# ] SEC_SELINUX_PORTING_COMMON
-
     mkdir /data/vendor 0771 root root
     mkdir /data/vendor_ce 0771 root root
     mkdir /data/vendor_de 0771 root root
@@ -826,16 +816,6 @@ on post-fs-data
     # Check any timezone data in /data is newer than the copy in /system, delete if not.
     exec - system system -- /system/bin/tzdatacheck /system/usr/share/zoneinfo /data/misc/zoneinfo
 
-# [ SEC_SELINUX_PORTING_COMMON
-    restorecon --recursive --force /efs
-    restorecon --recursive --force /cpefs
-    restorecon --recursive --force /mnt/vendor/efs
-    restorecon --recursive --force /mnt/vendor/cpefs
-    restorecon --recursive --force /sec_efs
-    restorecon_recursive /carrier
-    restorecon /sys/kernel/debug/tracing/trace_marker
-# ] SEC_SELINUX_PORTING_COMMON
-
     # smart switch mobile
     mkdir /efs/ssm 0770 system system
 	
@@ -899,9 +879,6 @@ on zygote-start && property:ro.crypto.state=encrypted && property:ro.crypto.type
     start zygote_secondary
 
 on boot
-    # KNOX KAP
-    chown system system /dev/knox_kap
-    chmod 0644 /dev/knox_kap
 
     # basic network init
     ifup lo
@@ -1947,39 +1924,7 @@ service defrag_service /system/bin/idledefrag
 
 on property:vold.should_defrag=1
     start defrag_service
-
-# knox_changer service
-# UCM ODE mode
-service ucs_enable /sbin/knox_changer -u
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-service ucs_disable /sbin/knox_changer -v
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-service ucs_reset /sbin/knox_changer -w
-    class main
-    seclabel u:r:kapd:s0
-    disabled
-    oneshot
-
-on property:security.knox_ucs_mode=true
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_enable
-
-on property:security.knox_ucs_mode=false
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_disable
-
-on property:security.knox_ucs_mode=reset
-    chmod 0655 /efs/sec_efs/odeConfig
-    start ucs_reset
-    
+  
 service SIDESYNC_service /system/bin/ss_conn_daemon
     class main
     socket ss_conn_daemon stream 0666 system system
