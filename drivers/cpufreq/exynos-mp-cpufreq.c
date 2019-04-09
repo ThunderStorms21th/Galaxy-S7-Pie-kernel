@@ -84,6 +84,10 @@ struct lpj_info {
 static struct lpj_info global_lpj_ref;
 #endif
 
+/* toogle for 4 cores max freq by Moro */
+struct device_node *moro_np;
+static int cluster1_all_cores = 0;
+
 /* For switcher */
 static unsigned int freq_min[CL_END] __read_mostly;	/* Minimum (Big/Little) clock frequency */
 static unsigned int freq_max[CL_END] __read_mostly;	/* Maximum (Big/Little) clock frequency */
@@ -1776,6 +1780,42 @@ static ssize_t store_cluster0_max_freq(struct kobject *kobj, struct attribute *a
 	return store_core_freq(buf, count, CL_ZERO, true);
 }
 
+/*Toggle 4 cores max freq by Moro */
+static ssize_t show_cluster1_all_cores_max_freq(struct kobject *kobj,
+				struct attribute *attr, char *buf)
+{
+	return sprintf(buf, "%d\n", cluster1_all_cores);
+}
+
+static ssize_t store_cluster1_all_cores_max_freq(struct kobject *kobj, struct attribute *attr,
+					const char *buf, size_t count)
+{
+	struct exynos_dvfs_info *ptr = exynos_info[1];
+	unsigned int ret = -EINVAL;
+	int val;
+
+	ret = sscanf(buf, "%d", &val);
+
+	if (ret != 1)
+		return -EINVAL;
+
+	cluster1_all_cores = val;
+
+	if (cluster1_all_cores) {
+		ret = of_property_read_u32_array(moro_np, "cl1_full_max_support_idx_table",
+				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
+	} else {
+		ret = of_property_read_u32_array(moro_np, "cl1_max_support_idx_table",
+				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
+	}
+
+	if (ret < 0)
+		return -ENODEV;
+
+	return count;
+}
+/* end */
+
 /* added voltage */
 static ssize_t show_cluster0_volt_table(struct kobject *kobj,
 				struct attribute *attr, char *buf)
@@ -1793,6 +1833,7 @@ static ssize_t store_cluster0_volt_table(struct kobject *kobj, struct attribute 
 define_one_global_ro(cluster1_freq_table);
 define_one_global_rw(cluster1_min_freq);
 define_one_global_rw(cluster1_max_freq);
+define_one_global_rw(cluster1_all_cores_max_freq); /* added Toggle 4 cores */
 define_one_global_rw(cluster1_volt_table); /* added voltage */
 define_one_global_ro(cluster0_freq_table);
 define_one_global_rw(cluster0_min_freq);
@@ -1804,6 +1845,7 @@ static struct attribute *mp_attributes[] = {
 	&cluster1_min_freq.attr,
 	&cluster1_max_freq.attr,
 	&cluster1_volt_table.attr, /* added voltage */
+	&cluster1_all_cores_max_freq.attr, /* added Toggle 4 cores */
 	&cluster0_freq_table.attr,
 	&cluster0_min_freq.attr,
 	&cluster0_max_freq.attr,
@@ -2574,6 +2616,9 @@ static int exynos_mp_cpufreq_parse_dt(struct device_node *np, cluster_type cl)
 		return -ENODEV;
 	}
 
+	moro_np = np;
+/* toggles 4 cores max freq */
+
 	if (of_property_read_u32(np,(cl ? "cl1_idx_num" : "cl0_idx_num"),
 				&ptr->max_idx_num))
 		return -ENODEV;
@@ -2622,8 +2667,17 @@ static int exynos_mp_cpufreq_parse_dt(struct device_node *np, cluster_type cl)
 #if defined(CONFIG_EXYNOS_BIG_FREQ_BOOST)
 		ptr->max_support_idx_table = kzalloc(sizeof(unsigned int)
 				* (NR_CLUST1_CPUS + 1), GFP_KERNEL);
-		ret = of_property_read_u32_array(np, "cl1_max_support_idx_table",
-				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
+//		ret = of_property_read_u32_array(np, "cl1_max_support_idx_table",
+//				(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
+// added toggles 4 cores max freq by Moro
+		if (cluster1_all_cores) {
+			ret = of_property_read_u32_array(np, "cl1_full_max_support_idx_table",
+					(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
+		} else {
+			ret = of_property_read_u32_array(np, "cl1_max_support_idx_table",
+					(unsigned int *)ptr->max_support_idx_table, NR_CLUST1_CPUS + 1);
+		}
+ /* end */
 		if (ret < 0)
 			return -ENODEV;
 

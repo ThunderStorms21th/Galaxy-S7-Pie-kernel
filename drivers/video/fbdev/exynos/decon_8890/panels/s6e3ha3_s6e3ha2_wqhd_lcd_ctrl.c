@@ -1588,7 +1588,6 @@ error:
 
 }
 
-/* added SMart On */
 #ifdef CONFIG_PANEL_SMART_DIMMING
 static signed char smart_aid[] = {0xB1, 0x00, 0x0A};
 static signed char smart_rtbl[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -1769,7 +1768,8 @@ static int smart_init_dimming(struct dsim_device *dsim, u8 * mtp, u8 * hbm)
 error:
 	return ret;
 }
-#endif /* end */
+#endif
+
 
 #ifdef CONFIG_LCD_HMT
 static unsigned int hmt_br_tbl[EXTEND_BRIGHTNESS + 1] = {
@@ -3037,6 +3037,14 @@ static int s6e3ha3_wqhd_probe(struct dsim_device *dsim)
 		dsim_err("%s : failed to generate gamma tablen\n", __func__);
 	}
 #endif
+
+#ifdef CONFIG_PANEL_SMART_DIMMING
+	ret = smart_init_dimming(dsim, mtp, hbm);
+	if (ret) {
+		dsim_err("%s : failed to generate gamma table\n", __func__);
+	}
+#endif
+
 #ifdef CONFIG_LCD_HMT
 	panel->hmt_support = SUPPORT_HMT;
 
@@ -3045,15 +3053,6 @@ static int s6e3ha3_wqhd_probe(struct dsim_device *dsim)
 		dsim_err("%s : failed to generate gamma tablen\n", __func__);
 	}
 #endif
-
-/* added Smart On */
-#ifdef CONFIG_PANEL_SMART_DIMMING
-	ret = smart_init_dimming(dsim, mtp, hbm);
-	if (ret) {
-		dsim_err("%s : failed to generate gamma table\n", __func__);
-	}
-#endif /* end */
-
 #ifdef CONFIG_EXYNOS_DECON_MDNIE_LITE
 	panel->mdnie_support = 1;
 #endif
@@ -4000,13 +3999,12 @@ static int s6e3hf4_wqhd_probe(struct dsim_device *dsim)
 	}
 #endif
 
-/* added SMart On */
 #ifdef CONFIG_PANEL_SMART_DIMMING
 	ret = smart_init_dimming(dsim, mtp, hbm);
 	if (ret) {
 		dsim_err("%s : failed to generate gamma table\n", __func__);
 	}
-#endif /* end */
+#endif
 
 #ifdef CONFIG_LCD_HMT
 	panel->hmt_support = SUPPORT_HMT;

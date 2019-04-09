@@ -46,10 +46,16 @@ module_param(enable_bluedroid_timer_wl, bool, 0644);
 
 /* added Boeffla wakelocks */
 #ifdef CONFIG_BOEFFLA_WL_BLOCKER
-char list_wl[255];
-char list_wl_search[257];
+//char list_wl[255];
+//char list_wl_search[257];
+#include "boeffla_wl_blocker.h"
+
+char list_wl_search[LENGTH_LIST_WL_SEARCH] = {0};
+
 bool wl_blocker_active = false;
 bool wl_blocker_debug = false;
+
+static void wakeup_source_deactivate(struct wakeup_source *ws);
 #endif
 
 /*

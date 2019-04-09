@@ -284,7 +284,6 @@ static ssize_t grayspot_store(struct device *dev,
 static DEVICE_ATTR(grayspot, 0664, grayspot_show, grayspot_store);
 #endif
 
-/* added Smart On */
 #ifdef CONFIG_PANEL_SMART_DIMMING
 static ssize_t smart_on_show(struct device *dev,
 	struct device_attribute *attr, char *buf)
@@ -320,7 +319,7 @@ static ssize_t smart_on_store(struct device *dev,
 }
 
 static DEVICE_ATTR(smart_on, 0664, smart_on_show, smart_on_store);
-#endif /* end */
+#endif
 
 #ifdef CONFIG_LCD_HMT
 
@@ -2018,12 +2017,11 @@ void lcd_init_sysfs(struct dsim_device *dsim)
 		dev_err(&dsim->lcd->dev, "failed to add sysfs entries, %d\n", __LINE__);
 #endif
 
-/* added Smart On */
 #ifdef CONFIG_PANEL_SMART_DIMMING
 	ret = device_create_file(&dsim->lcd->dev, &dev_attr_smart_on);
 	if (ret < 0)
 		dev_err(&dsim->lcd->dev, "failed to add sysfs entries, %d\n", __LINE__);
-#endif /* end */
+#endif
 
 #ifdef CONFIG_LCD_HMT
 #ifdef CONFIG_PANEL_AID_DIMMING
