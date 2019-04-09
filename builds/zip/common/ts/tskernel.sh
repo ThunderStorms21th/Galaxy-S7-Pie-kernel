@@ -21,8 +21,6 @@ BUILDPROP=/system/build.prop
 
 	## System Patches
 
-	# Remove unwatned McRegistry entry
-	rm -f /system/app/mcRegistry/ffffffffd00000000000000000000004.tlbin
 	# Clean Apex data
 	rm -rf /data/data/com.sec.android.app.apex
 	# Remove init.d Placeholder
@@ -32,14 +30,15 @@ BUILDPROP=/system/build.prop
 	rm -f /su/su.d/wakelock*
 	rm -f /system/su.d/wakelock*
 	rm -f /system/etc/init.d/wakelock*
+	mkdir -p /system/t 2>/dev/null;
 
 	## PERMISSIONS
 	ui_print " "
 	ui_print "@Setting Permissions"
-	set_perm 0 2000 0644 /system/vendor/lib/libsecure_storage.so u:object_r:system_file:s0
-	set_perm 0 2000 0644 /system/vendor/lib64/libsecure_storage.so u:object_r:system_file:s0
-	set_perm 0 2000 0644 /system/vendor/lib/egl/libGLES_mali.so u:object_r:system_file:s0
-	set_perm 0 2000 0644 /system/vendor/lib64/egl/libGLES_mali.so u:object_r:system_file:s0
+	set_perm 0 2000 0644 /system/lib/libsecure_storage.so u:object_r:system_file:s0
+	set_perm 0 2000 0644 /system/lib/libsecure_storage_jni.so u:object_r:system_file:s0
+	set_perm 0 2000 0644 /system/lib64/libsecure_storage.so u:object_r:system_file:s0
+	set_perm 0 2000 0644 /system/lib64/libsecure_storage_jni.so u:object_r:system_file:s0
 	set_perm 0 0 0644 /system/priv-app/PersonalPageService/* u:object_r:system_file:s0
 
 

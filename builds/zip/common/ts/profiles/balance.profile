@@ -8,9 +8,9 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 97
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 98
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "50000 546000:40000 754000:40000 962000:40000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "55000 546000:40000 754000:40000 962000:40000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 40000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
@@ -43,7 +43,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 98
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "80000 624000:30000 1040000:40000 1248000:40000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "85000 624000:40000 1040000:40000 1248000:40000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 40000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
@@ -70,17 +70,17 @@
 
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
-   write /sys/kernel/hmp/up_threshold 760
+   write /sys/kernel/hmp/up_threshold 800
    chmod 0664 /sys/kernel/hmp/down_threshold
-   write /sys/kernel/hmp/down_threshold 240
+   write /sys/kernel/hmp/down_threshold 260
    chmod 0664 /sys/kernel/hmp/down_compensation_high_freq
    write /sys/kernel/hmp/down_compensation_high_freq 962000
    chmod 0664 /sys/kernel/hmp/down_compensation_mid_freq
    write /sys/kernel/hmp/down_compensation_mid_freq 858000
    chmod 0664 /sys/kernel/hmp/down_compensation_low_freq
    write /sys/kernel/hmp/down_compensation_low_freq 754000
-   write /proc/sys/kernel/random/write_wakeup_threshold 512
-   write /proc/sys/kernel/random/read_wakeup_threshold 128
+   write /proc/sys/kernel/random/write_wakeup_threshold 256
+   write /proc/sys/kernel/random/read_wakeup_threshold 64
    write /proc/sys/vm/dirty_expire_centisecs 500
    write /proc/sys/vm/dirty_writeback_centisecs 1000
 
@@ -96,7 +96,7 @@
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 419
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 90
+   write /sys/devices/14ac0000.mali/highspeed_load 95
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
 
@@ -131,7 +131,7 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SSWAP
-   write /proc/sys/vm/swappiness 50
+   write /proc/sys/vm/swappiness 40
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,102400"

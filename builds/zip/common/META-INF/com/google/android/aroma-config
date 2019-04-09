@@ -78,7 +78,7 @@ form(
 	  "chk12",    "<b><~menu.12></b>",      "<~menu.12desc>",		"check",
 	  "chk6",     "<b><~menu.6></b>",       "<~menu.6desc>",		"check",
 	  "chk8",     "<b><~menu.8></b>",       "<~menu.8desc>",		"check",
-#	  "chk10",    "<b><~menu.10></b>",      "<~menu.10desc>",		"check",
+	  "chk10",    "<b><~menu.10></b>",      "<~menu.10desc>",		"check",
 	  "chk7",     "<b><~menu.7></b>",       "<~menu.7desc>",		"check"
 );
 

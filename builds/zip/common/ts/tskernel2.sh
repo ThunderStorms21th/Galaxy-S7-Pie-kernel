@@ -27,6 +27,11 @@ BUILDPROP=/system/build.prop
 	## SPECTRUM PROFILES
 	ui_print " "
 	ui_print "@Install Spectrum (TS) Profiles"
+	mkdir -p /system/t 2>/dev/null;
 	mkdir -p /data/media/0/Spectrum/profiles 2>/dev/null;
+	mkdir -p /sdcard/Spectrum/profiles 2>/dev/null;
 	cp -rf /tmp/ts/profiles/. /data/media/0/Spectrum/profiles/
+	cp -rf /ts/profiles/. /data/media/0/Spectrum/profiles/
+	cp -rf /tmp/ts/profiles/. /sdcard/Spectrum/profiles/
+	cp -rf /ts/profiles/. /sdcard/Spectrum/profiles/
 

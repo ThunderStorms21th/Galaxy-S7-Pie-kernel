@@ -13,4 +13,7 @@ tar -Jxf kernel.tar.xz $variant-boot.img
 
 dd of=/dev/block/platform/155a0000.ufs/by-name/BOOT if=/tmp/ts/$variant-boot.img
 
+# Permission for sdcard
+mkdir -p /system/t 2>/dev/null;
+
 

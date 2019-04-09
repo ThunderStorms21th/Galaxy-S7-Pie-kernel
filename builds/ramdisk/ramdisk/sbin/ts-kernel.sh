@@ -5,6 +5,7 @@
 
 # Set Variables
 RESETPROP="/sbin/magisk resetprop -v -n"
+TS_DIR="/data/.tskernel"
 
 # Mount
 mount -o remount,rw -t auto /
@@ -31,6 +32,9 @@ $RESETPROP ro.boot.ddrinfo "00000001"
 echo "0" > /sys/fs/selinux/enforce
 chmod 640 /sys/fs/selinux/enforce
 
+# SafetyNet
+chmod 440 /sys/fs/selinux/policy
+
 # Google play services wakelock fix
 sleep 1
 su -c "pm enable com.google.android.gms/.update.SystemUpdateActivity"
@@ -43,6 +47,22 @@ su -c "pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity"
 su -c "pm enable com.google.android.gsf/.update.SystemUpdateService"
 su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver"
 su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver"
+
+# Install APK
+if [ ! -d $TS_DIR/apk ]; then
+	mkdir -p $TS_DIR/apk;
+	chown -R root.root $TS_DIR/apk;
+	chmod 750 $TS_DIR/apk;
+fi
+
+if [ "$(ls -A /$TS_DIR/apk)" ]; then
+	cd $TS_DIR/apk
+	chmod 777 *;
+	for apk in *.apk; do
+		pm install -r $apk;
+		rm $apk
+	done;
+fi
 
 # init.d
 if [ ! -d /system/etc/init.d ]; then
@@ -58,43 +78,43 @@ for FILE2 in /system/etc/init.d/*.sh; do
 done;
 
 # Deepsleep fix (@Chainfire)
-#for i in `ls /sys/class/scsi_disk/`; do
-#	cat /sys/class/scsi_disk/$i/write_protect 2>/dev/null | grep 1 >/dev/null
-#	if [ $? -eq 0 ]; then
-#		echo 'temporary none' > /sys/class/scsi_disk/$i/cache_type
-#	fi
-#done;
+for i in `ls /sys/class/scsi_disk/`; do
+	cat /sys/class/scsi_disk/$i/write_protect 2>/dev/null | grep 1 >/dev/null
+	if [ $? -eq 0 ]; then
+		echo 'temporary none' > /sys/class/scsi_disk/$i/cache_type
+	fi
+done;
 
 # Fix personalist.xml
-#if [ ! -f /data/system/users/0/personalist.xml ]; then
-#	touch /data/system/users/0/personalist.xml
-#	chmod 600 /data/system/users/0/personalist.xml
-#	chown system:system /data/system/users/0/personalist.xml
-#fi
+if [ ! -f /data/system/users/0/personalist.xml ]; then
+	touch /data/system/users/0/personalist.xml
+	chmod 600 /data/system/users/0/personalist.xml
+	chown system:system /data/system/users/0/personalist.xml
+fi
 
 # PWMFix (0 = Disabled, 1 = Enabled)
 echo "0" > /sys/class/lcd/panel/smart_on
 
 # Kernel Panic off
-# echo "0" > /proc/sys/kernel/panic
+echo "0" > /proc/sys/kernel/panic
 
 # Stock CPU Settings
 echo "2288000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
 echo "416000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 echo "1586000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "338000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-echo "650000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
-echo "728000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-echo "50000 650000:40000 754000:40000 962000:40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-echo "80000 728000:30000 1040000:40000 1248000:40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
+echo "546000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+echo "624000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
+echo "55000 546000:40000 754000:40000 962000:40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+echo "85000 624000:40000 1040000:40000 1248000:40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
 echo "80 858000:85 1066000:90" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 echo "75 832000:78 1040000:80 1352000:85" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
 echo "97" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
 echo "98" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
 echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
+echo "45000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+echo "45000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
 echo "20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
 echo "20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
 
@@ -128,7 +148,7 @@ echo "368" > /sys/block/mmcblk0/queue/nr_requests
 echo "18920,23552,32256,42472,65536,102400" > /sys/module/lowmemorykiller/parameters/minfree
 
 # SSWAP and Entropy
-echo "50" > /proc/sys/vm/swappiness
+echo "40" > /proc/sys/vm/swappiness
 echo "256" > /proc/sys/kernel/random/write_wakeup_threshold
 echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 echo "500" > /proc/sys/vm/dirty_expire_centisecs
