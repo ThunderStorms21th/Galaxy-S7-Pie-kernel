@@ -3439,6 +3439,8 @@ lpfc_sli_handle_slow_ring_event_s4(struct lpfc_hba *phba,
 	struct hbq_dmabuf *dmabuf;
 	struct lpfc_cq_event *cq_event;
 	unsigned long iflag;
+/* added scsi: lpfc: Correct soft lockup when running mds diagnostics */ 
+	int count = 0; /* end */
 
 	spin_lock_irqsave(&phba->hbalock, iflag);
 	phba->hba_flag &= ~HBA_SP_QUEUE_EVT;
@@ -3460,16 +3462,24 @@ lpfc_sli_handle_slow_ring_event_s4(struct lpfc_hba *phba,
 			if (irspiocbq)
 				lpfc_sli_sp_handle_rspiocb(phba, pring,
 							   irspiocbq);
+/* added scsi: lpfc: Correct soft lockup when running mds diagnostics */ 
+			count++; /* end */
 			break;
 		case CQE_CODE_RECEIVE:
 		case CQE_CODE_RECEIVE_V1:
 			dmabuf = container_of(cq_event, struct hbq_dmabuf,
 					      cq_event);
 			lpfc_sli4_handle_received_buffer(phba, dmabuf);
+/* added scsi: lpfc: Correct soft lockup when running mds diagnostics */ 
+			count++; /* end */
 			break;
 		default:
 			break;
 		}
+/* added scsi: lpfc: Correct soft lockup when running mds diagnostics */ 
+		/* Limit the number of events to 64 to avoid soft lockups */
+		if (count == 64)
+			break; /* end */
 	}
 }
 

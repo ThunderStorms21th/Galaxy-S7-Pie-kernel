@@ -817,6 +817,9 @@ static struct domain_device *sas_ex_discover_end_dev(
 		if (!rphy)
 			goto out_free;
 
+/* added scsi: libsas: Fix rphy phy_identifier for PHYs with end devices attached */
+		rphy->identify.phy_identifier = phy_id;
+/* end */
 		child->rphy = rphy;
 		get_device(&rphy->dev);
 
@@ -843,6 +846,9 @@ static struct domain_device *sas_ex_discover_end_dev(
 
 		child->rphy = rphy;
 		get_device(&rphy->dev);
+/* added scsi: libsas: Fix rphy phy_identifier for PHYs with end devices attached */
+		rphy->identify.phy_identifier = phy_id;
+/* end */
 		sas_fill_in_rphy(child, rphy);
 
 		list_add_tail(&child->disco_list_node, &parent->port->disco_list);
