@@ -427,7 +427,8 @@
 		cl0_max_support_idx = <4>;
 		cl0_min_support_idx = <16>;
 		cl0_boot_max_qos = <1586000>;
-		cl0_boot_min_qos = <1586000>;
+//		cl0_boot_min_qos = <1586000>;
+		cl0_boot_min_qos = <962000>;
 		cl0_en_ema = <1>;
 		cl0_min_qos_freq = <858000>;
 
@@ -436,7 +437,8 @@
 		cl1_max_support_idx = <7>;
 		cl1_min_support_idx = <25>;
 		cl1_boot_max_qos = <2288000>;
-		cl1_boot_min_qos = <2288000>;
+//		cl1_boot_min_qos = <2288000>;
+		cl1_boot_min_qos = <1040000>;
 		cl1_en_ema = <1>;
 		cl1_en_smpl = <1>;
 		cl1_jig_boot_max_qos = <1456000>;
@@ -444,11 +446,18 @@
 		cl1_min_qos_freq = <728000>;
 		cl1_boost_freq = <2288000>;
 
-		cl1_max_support_idx_table = < 4	   /* Number of online core is 0 */
+		cl1_max_support_idx_table = < 7	   /* Number of online core is 0 */
 					      4    /* Number of online core is 1 */
 					      4    /* Number of online core is 2 */
-					      4    /* Number of online core is 3 */
-					      4 >; /* Number of online core is 4 */
+					      7    /* Number of online core is 3 */
+					      7 >; /* Number of online core is 4 */
+
+		cl1_full_max_support_idx_table = < 4	/* Number of online core is 0 */
+					           4    /* Number of online core is 1 */
+					           4    /* Number of online core is 2 */
+					           4    /* Number of online core is 3 */
+					           4 >; /* Number of online core is 4 */
+
 
 		/* Boost freq*/
 		cl0_boost_freq = <754000>;
