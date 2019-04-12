@@ -100,27 +100,27 @@ echo "0" > /proc/sys/kernel/panic
 
 # Stock CPU Settings
 echo "2288000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
-echo "416000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+echo "312000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 echo "1586000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
-echo "338000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-echo "546000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+echo "234000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
+echo "650000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
 echo "624000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-echo "55000 546000:40000 754000:40000 962000:40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-echo "85000 624000:40000 1040000:40000 1248000:40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
+echo "60000 650000:30000 754000:30000 962000:20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+echo "80000 624000:30000 1040000:30000 1248000:30000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
 echo "80 858000:85 1066000:90" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
-echo "75 832000:78 1040000:80 1352000:85" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
+echo "80 832000:85 1040000:88 1352000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
 echo "97" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-echo "98" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
+echo "97" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
 echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-echo "45000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-echo "45000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
+echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
 echo "20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
 echo "20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
 
 # HMP settings
-echo "760" > /sys/kernel/hmp/up_threshold
-echo "240" > /sys/kernel/hmp/down_threshold
+echo "780" > /sys/kernel/hmp/up_threshold
+echo "250" > /sys/kernel/hmp/down_threshold
 echo "962000" > /sys/kernel/hmp/down_compensation_high_freq
 echo "858000" > /sys/kernel/hmp/down_compensation_mid_freq
 echo "754000" > /sys/kernel/hmp/down_compensation_low_freq
@@ -139,8 +139,8 @@ echo 'cfq' > /sys/block/mmcblk0/queue/scheduler
 echo "1024" > /sys/block/mmcblk0/queue/read_ahead_kb
 echo "0" > /sys/block/sda/queue/iostats
 echo "0" > /sys/block/mmcblk0/queue/iostats
-echo "0" > /sys/block/sda/queue/rq_affinity
-echo "0" > /sys/block/mmcblk0/queue/rq_affinity
+echo "1" > /sys/block/sda/queue/rq_affinity
+echo "1" > /sys/block/mmcblk0/queue/rq_affinity
 echo "368" > /sys/block/sda/queue/nr_requests
 echo "368" > /sys/block/mmcblk0/queue/nr_requests
 
@@ -148,8 +148,8 @@ echo "368" > /sys/block/mmcblk0/queue/nr_requests
 echo "18920,23552,32256,42472,65536,102400" > /sys/module/lowmemorykiller/parameters/minfree
 
 # SSWAP and Entropy
-echo "40" > /proc/sys/vm/swappiness
-echo "256" > /proc/sys/kernel/random/write_wakeup_threshold
+echo "60" > /proc/sys/vm/swappiness
+echo "192" > /proc/sys/kernel/random/write_wakeup_threshold
 echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 echo "500" > /proc/sys/vm/dirty_expire_centisecs
 echo "1000" > /proc/sys/vm/dirty_writeback_centisecs
