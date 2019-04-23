@@ -336,7 +336,6 @@ static void yurex_disconnect(struct usb_interface *interface)
 
 	/* prevent more I/O from starting */
 	usb_poison_urb(dev->urb);
-	usb_poison_urb(dev->cntl_urb);
 	mutex_lock(&dev->io_mutex);
 	dev->disconnected = 1;
 	mutex_unlock(&dev->io_mutex);
