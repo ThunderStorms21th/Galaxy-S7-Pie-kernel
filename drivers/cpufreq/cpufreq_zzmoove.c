@@ -78,7 +78,8 @@
 #define ZZMOOVE_VERSION "1.0 beta8"
 
 // ZZ: support for 2,4,6 or 8 cores (this will enable/disable hotplug threshold tuneables and limit hotplug max limit tuneable)
-#define MAX_CORES					(4)
+// #define MAX_CORES					(4)
+#define MAX_CORES					(8)
 
 // ZZ: enable/disable hotplug support
 #define ENABLE_HOTPLUGGING
@@ -143,7 +144,8 @@ static char custom_profile[20] = "custom";			// ZZ: name to show in sysfs if any
 
 // ZZ: hotplug-switch, -block, -idle, -limit and scaling-block, -fastdown, -responiveness, -proportional tuneable defaults
 #ifdef ENABLE_HOTPLUGGING
-#define DEF_DISABLE_HOTPLUG				(1)	// ZZ: default hotplug switch was 0
+// #define DEF_DISABLE_HOTPLUG				(1)	// ZZ: default hotplug switch was 0
+#define DEF_DISABLE_HOTPLUG				(0)	// ZZ: default hotplug switch was 0
 #define DEF_HOTPLUG_BLOCK_UP_CYCLES			(0)	// ZZ: default hotplug up block cycles
 #define DEF_HOTPLUG_BLOCK_DOWN_CYCLES			(0)	// ZZ: default hotplug down block cycles
 #define DEF_BLOCK_UP_MULTIPLIER_HOTPLUG1		(0)	// ff: default hotplug up block multiplier for core 2

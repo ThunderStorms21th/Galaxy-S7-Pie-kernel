@@ -19,8 +19,8 @@
 #include <linux/slab.h>
 #include <trace/events/power.h>
 
-#include "sched.h"
-#include "tune.h"
+#include "linux/sched.h"
+#include "linux/tune.h"
 
 unsigned long boosted_cpu_util(int cpu);
 
