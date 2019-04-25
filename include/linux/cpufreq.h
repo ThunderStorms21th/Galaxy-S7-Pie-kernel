@@ -501,11 +501,20 @@ extern unsigned int cpufreq_interactive_get_hispeed_freq(int cpu);
 extern unsigned int cpufreq_cafactive_get_hispeed_freq(int cpu);
 extern void cafactive_boost_ondemand(int cpu, s64 miliseconds, bool static_switch);
 #endif
+//#ifdef CONFIG_CPU_FREQ_GOV_DYNAMIC_INTERACTIVE
+//extern unsigned int cpufreq_dynamic_interactive_get_hispeed_freq(int cpu);
+//#endif
+//#ifdef CONFIG_CPU_FREQ_GOV_THUNDERSTORMS_INTERACTIVE
+//extern unsigned int cpufreq_thunderstorms_interactive_get_hispeed_freq(int cpu);
+//#endif
 #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_performance)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ALUCARD)
 extern struct cpufreq_governor cpufreq_gov_alucard;
 #define CPUFREQ_DEFAULT_GOVERNOR        (&cpufreq_gov_alucard)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_BALANCE)
+extern struct cpufreq_governor cpufreq_gov_balance;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_balance)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_BARRY_ALLEN)
 extern struct cpufreq_governor cpufreq_gov_barry_allen;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_barry_allen)
@@ -542,6 +551,9 @@ extern struct cpufreq_governor cpufreq_gov_electrodemand;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ELECTRON)
 extern struct cpufreq_governor cpufreq_gov_electron;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_electron)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_HOTPLUG)
+extern struct cpufreq_governor cpufreq_gov_hotplug;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_hotplug)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_HYPER)
 extern struct cpufreq_governor cpufreq_gov_HYPER;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_HYPER)
@@ -560,9 +572,24 @@ extern struct cpufreq_governor cpufreq_gov_intellimm;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE)
 extern struct cpufreq_governor cpufreq_gov_interactive;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_interactive)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVEB)
+extern struct cpufreq_governor cpufreq_gov_interactiveb;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_interactiveb)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_DYNAMIC_INTERACTIVE)
+extern struct cpufreq_governor cpufreq_gov_dynamic_interactive;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_dynamic_interactive)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_THUNDERSTORMS_INTERACTIVE)
+extern struct cpufreq_governor cpufreq_gov_thunderstorms_interactive;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_thunderstorms_interactive)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_IRONACTIVE)
 extern struct cpufreq_governor cpufreq_gov_ironactive;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_ironactive)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_LAZY)
+extern struct cpufreq_governor cpufreq_gov_lazy;
+#define CPUFREQ_DEFAULT_GOVERNOR  (&cpufreq_gov_lazy)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_LIONFISH)
+extern struct cpufreq_governor cpufreq_gov_lionfish;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_lionfish)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_LIONHEART)
 extern struct cpufreq_governor cpufreq_gov_lionheart;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_lionheart)
@@ -581,15 +608,36 @@ extern struct cpufreq_governor cpufreq_gov_ondemand_x;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_PEGASUSQ)
 extern struct cpufreq_governor cpufreq_gov_pegasusq;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_pegasusq)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_POISON)
+extern struct cpufreq_governor cpufreq_gov_poison;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_poison)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_POWERSAVE)
 extern struct cpufreq_governor cpufreq_gov_powersave;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_powersave)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_RENICE)
+extern struct cpufreq_governor cpufreq_gov_renice;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_renice)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SCHED) /* ADDED */
 extern struct cpufreq_governor cpufreq_gov_sched;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_sched)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SCHEDUTIL) /* ADDED */
 extern struct cpufreq_governor cpufreq_gov_schedutil;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_schedutil)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SAVAGEDZEN) /* ADDED */
+extern struct cpufreq_governor cpufreq_gov_savagedzen;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_savagedzen)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SCARY) /* ADDED */
+extern struct cpufreq_governor cpufreq_gov_scary;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_scary)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SLP) /* ADDED */
+extern struct cpufreq_governor cpufreq_gov_slp;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_slp)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SLIM) /* ADDED */
+extern struct cpufreq_governor cpufreq_gov_slim;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_slim)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SLEEPY) /* ADDED */
+extern struct cpufreq_governor cpufreq_gov_sleepy;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_sleepy)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SMARTASS2)
 extern struct cpufreq_governor cpufreq_gov_smartass2;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_smartass2)
@@ -599,6 +647,9 @@ extern struct cpufreq_governor cpufreq_gov_smartmax;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SMARTMAX_EPS)
 extern struct cpufreq_governor cpufreq_gov_smartmax_eps;
 #define CPUFREQ_DEFAULT_GOVERNOR        (&cpufreq_gov_smartmax_eps)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_THUNDERX)
+extern struct cpufreq_governor cpufreq_gov_thunderx;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_thunderx)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_USERSPACE)
 extern struct cpufreq_governor cpufreq_gov_userspace;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_userspace)
@@ -612,7 +663,6 @@ extern struct cpufreq_governor cpufreq_gov_yankactive;
 extern struct cpufreq_governor cpufreq_gov_zzmoove;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_zzmoove)
 #endif
-
 
 /*********************************************************************
  *                     FREQUENCY TABLE HELPERS                       *
