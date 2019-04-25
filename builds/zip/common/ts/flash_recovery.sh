@@ -6,10 +6,11 @@
 # 
 
 variant=$1
+bb=/sbin/busybox
 
 cd /tmp/ts
 
-tar -Jxf recovery.tar.xz $variant-recovery.img
+$bb tar -Jxf recovery.tar.xz $variant-recovery.img
 
 dd of=/dev/block/platform/155a0000.ufs/by-name/RECOVERY if=/tmp/ts/$variant-recovery.img
 

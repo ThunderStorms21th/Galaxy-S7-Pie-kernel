@@ -30,7 +30,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/param_index
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/param_index 0
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration 80000
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration 40000
 
    # Big CPU
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
@@ -63,10 +63,11 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 0
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 80000
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 40000
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
+   write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 1
 
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
@@ -86,7 +87,7 @@
 
    # GPU
    chmod 0664 /sys/devices/14ac0000.mali/max_clock
-   write /sys/devices/14ac0000.mali/max_clock 650
+   write /sys/devices/14ac0000.mali/max_clock 806
    chmod 0664 /sys/devices/14ac0000.mali/min_clock
    write /sys/devices/14ac0000.mali/min_clock 260
    chmod 0664 /sys/devices/14ac0000.mali/power_policy
