@@ -121,21 +121,21 @@ echo "1586000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "130000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo "650000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
 echo "624000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-echo "60000 650000:30000 754000:25000 962000:20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-echo "80000 624000:30000 1040000:25000 1248000:20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
+echo "60000 650000:30000 754000:30000 962000:20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+echo "80000 624000:30000 1040000:30000 1248000:20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
 echo "80 858000:85 1066000:90" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 echo "80 832000:85 1040000:88 1352000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
 echo "97" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
 echo "97" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-echo "35000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-echo "35000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
+echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
+echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
 echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
 echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
 echo "20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
 echo "20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
 
 # HMP settings
-echo "800" > /sys/kernel/hmp/up_threshold
+echo "780" > /sys/kernel/hmp/up_threshold
 echo "260" > /sys/kernel/hmp/down_threshold
 echo "962000" > /sys/kernel/hmp/down_compensation_high_freq
 echo "858000" > /sys/kernel/hmp/down_compensation_mid_freq
@@ -164,7 +164,7 @@ echo "368" > /sys/block/mmcblk0/queue/nr_requests
 echo "18920,23552,32256,42472,65536,102400" > /sys/module/lowmemorykiller/parameters/minfree
 
 # SSWAP and Entropy
-echo "80" > /proc/sys/vm/swappiness
+echo "70" > /proc/sys/vm/swappiness
 echo "128" > /proc/sys/kernel/random/write_wakeup_threshold
 echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 echo "500" > /proc/sys/vm/dirty_expire_centisecs

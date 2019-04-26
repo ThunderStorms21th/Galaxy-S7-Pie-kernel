@@ -22,7 +22,7 @@ on boot
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 97
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "60000 650000:30000 754000:25000 962000:20000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "60000 650000:30000 754000:30000 962000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 40000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
@@ -32,7 +32,7 @@ on boot
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "80 858000:85 1066000:90"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 35000
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/mode
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/mode 0
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
@@ -55,7 +55,7 @@ on boot
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 97
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "80000 624000:30000 1040000:25000 1248000:20000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "80000 624000:30000 1040000:30000 1248000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 40000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
@@ -65,7 +65,7 @@ on boot
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "80 832000:85 1040000:88 1352000:90"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 35000
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/mode
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/mode 0
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
@@ -80,7 +80,7 @@ on boot
     #HMP settings
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
-   write /sys/kernel/hmp/up_threshold 800
+   write /sys/kernel/hmp/up_threshold 780
    chmod 0664 /sys/kernel/hmp/down_threshold
    write /sys/kernel/hmp/down_threshold 260
    chmod 0664 /sys/kernel/hmp/down_compensation_high_freq
@@ -98,7 +98,7 @@ on boot
     # GPU set at max/min freq
    # GPU
    chmod 0664 /sys/devices/14ac0000.mali/max_clock
-   write /sys/devices/14ac0000.mali/max_clock 702
+   write /sys/devices/14ac0000.mali/max_clock 650
    chmod 0664 /sys/devices/14ac0000.mali/min_clock
    write /sys/devices/14ac0000.mali/min_clock 112
    chmod 0664 /sys/devices/14ac0000.mali/power_policy
@@ -150,7 +150,7 @@ on boot
     write /sys/class/lcd/panel/smart_on 0
 
     # SSWAP
-    write /proc/sys/vm/swappiness 80
+    write /proc/sys/vm/swappiness 70
 
     # LMK
     write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,102400"
