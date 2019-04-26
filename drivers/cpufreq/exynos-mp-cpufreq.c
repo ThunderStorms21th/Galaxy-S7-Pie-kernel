@@ -1464,15 +1464,16 @@ static ssize_t show_cpufreq_max_limit(struct kobject *kobj,
 
 	return nsize;
 }
-
-static void enable_nonboot_cluster_cpus(void)
+// static void enable_nonboot_cluster_cpus(void)
+void enable_nonboot_cluster_cpus(void)
 {
 	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CPUS);
 }
-
-static void disable_nonboot_cluster_cpus(void)
+// static void disable_nonboot_cluster_cpus(void)
+void disable_nonboot_cluster_cpus(void)
 {
-	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS);
+//	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS);
+	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS + 1);
 }
 
 static ssize_t store_cpufreq_max_limit(struct kobject *kobj, struct attribute *attr,
