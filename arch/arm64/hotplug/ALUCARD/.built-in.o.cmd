@@ -1,0 +1,1 @@
+cmd_arch/arm64/hotplug/ALUCARD/built-in.o :=  /home/nala/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-ld -EL    -r -o arch/arm64/hotplug/ALUCARD/built-in.o arch/arm64/hotplug/ALUCARD/alucard_hotplug.o 

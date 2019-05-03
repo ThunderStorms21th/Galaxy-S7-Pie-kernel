@@ -80,8 +80,8 @@ static struct mutex gov_lock;
 #define DEFAULT_TARGET_LOAD 90
 static unsigned int default_target_loads[] = {DEFAULT_TARGET_LOAD};
 
-/* added */
-#define DOWN_LOW_LOAD_THRESHOLD 6 
+/* added 6% so no jump to high freq - was 6 */
+#define DOWN_LOW_LOAD_THRESHOLD 10
 
 #define DEFAULT_TIMER_RATE (20 * USEC_PER_MSEC)
 #define DEFAULT_ABOVE_HISPEED_DELAY DEFAULT_TIMER_RATE

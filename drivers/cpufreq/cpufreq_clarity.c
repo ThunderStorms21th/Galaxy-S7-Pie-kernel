@@ -576,7 +576,7 @@ static void cpufreq_clarity_timer(unsigned long data)
 					       tunables->hispeed_freq);
 		} else if (pol_load < tunables->go_lowspeed_load)
 				new_freq = ppol->policy->min;
-			
+
 	}
 
 	if (now - ppol->max_freq_hyst_start_time <

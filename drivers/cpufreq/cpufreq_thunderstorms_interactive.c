@@ -101,7 +101,7 @@ static enum tune_values {
 #define DEFAULT_LOW_POWER_THRESHOLD 55
 #define MAX_MIN_SAMPLE_TIME (40 * USEC_PER_MSEC)
 
-/* Hi speed to bump to from lo speed when load burst (default max) */
+/* Hi speed to bump to from low speed when load burst (default max) */
 static u64 hispeed_freq;
 
 /* Go to hi speed when CPU load at or above this value. */

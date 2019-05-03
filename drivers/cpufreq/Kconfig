@@ -934,6 +934,12 @@ config CPU_FREQ_GOV_CULTIVATION
 	help
 	  'cultivation' - another tuned interactive with extra options
 
+config CPU_FREQ_GOV_CYAN
+	tristate "'cyan' cpufreq governor"
+	depends on CPU_FREQ
+	help
+		CYAN
+
 config CPU_FREQ_GOV_DANCEDANCE
            tristate "'dancedance' cpufreq governor"
            depends on CPU_FREQ
@@ -1209,12 +1215,11 @@ config CPU_FREQ_GOV_LIONFISH
 
 	  If in doubt, say N.
 
-config CPU_FREQ_DEFAULT_GOV_LAZY
-	bool "lazy"
-	select CPU_FREQ_GOV_LAZY
-	select CPU_FREQ_GOV_PERFORMANCE
+config CPU_FREQ_GOV_LAZY
+	tristate "'lazy' cpufreq governor"
+	depends on CPU_FREQ
 	help
-	  Use the CPUFreq governor 'lazy' as default.
+	  Use the CPUFreq governor 'lazy'.
 
 config CPU_FREQ_GOV_LIONHEART
 	tristate "'lionheart' cpufreq governor"
@@ -1576,7 +1581,6 @@ config CPU_INPUT_BOOST
 	help
 	  Boosts the CPU on touchscreen and touchpad input. Boost frequencies and
 	  durations are calculated automatically.
-
 
 config CPU_FREQ_GOV_SCHED
 	bool "'sched' cpufreq governor"

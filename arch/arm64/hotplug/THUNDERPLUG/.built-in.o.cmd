@@ -1,0 +1,1 @@
+cmd_arch/arm64/hotplug/THUNDERPLUG/built-in.o :=  /home/nala/kernel/toolchain/aarch64-linux-android-4.9-o-mr1-iot-preview-8/bin/aarch64-linux-android-ld -EL    -r -o arch/arm64/hotplug/THUNDERPLUG/built-in.o arch/arm64/hotplug/THUNDERPLUG/thunderplug.o 
