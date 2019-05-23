@@ -306,7 +306,6 @@ static ssize_t zfcp_sysfs_port_remove_store(struct device *dev,
 
 	if (zfcp_sysfs_port_in_use(port)) {
 		retval = -EBUSY;
-		mutex_unlock(&zfcp_sysfs_port_units_mutex);
 		put_device(&port->dev); /* undo zfcp_get_port_by_wwpn() */
 		goto out;
 	}
