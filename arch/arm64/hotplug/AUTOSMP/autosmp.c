@@ -71,8 +71,8 @@ static struct asmp_param_struct {
 	.max_cpus_lc = 4, /* Max cpu Little cluster ! */
 	.min_cpus_bc = 1, /* Minimum Big cluster online */
 	.min_cpus_lc = 1, /* Minimum Little cluster online */
-	.cpufreq_up_bc = 97,
-	.cpufreq_up_lc = 92,
+	.cpufreq_up_bc = 90,
+	.cpufreq_up_lc = 80,
 	.cpufreq_down_bc = 45,
 	.cpufreq_down_lc = 40,
 	.cycle_up = 1,
@@ -210,7 +210,7 @@ static void __ref asmp_work_fn(struct work_struct *work) {
 	put_online_cpus();
 
 	/********************************************************************
-	 *                     Little Cluster cpu(4..7)                     *
+	 *                     Little Cluster cpu(0..3)                     *
 	 ********************************************************************/
 	if (cpu_load_lc < slow_load_lc)
 		slow_load_lc = cpu_load_lc;
@@ -237,7 +237,7 @@ static void __ref asmp_work_fn(struct work_struct *work) {
 	}
 
 	/********************************************************************
-	 *                      Big Cluster cpu(0..3)                       *
+	 *                      Big Cluster cpu(4..7)                       *
 	 ********************************************************************/
 	if (cpu_load_bc < slow_load_bc)
 		slow_load_bc = cpu_load_bc;

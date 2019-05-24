@@ -612,7 +612,6 @@ int gpu_dvfs_get_level_clock(int clock)
 	return -1;
 }
 
-/* added GPU voltage control */
 int gpu_dvfs_get_stock_level(int clock)
 {
 	struct kbase_device *kbdev = pkbdev;
@@ -630,7 +629,7 @@ int gpu_dvfs_get_stock_level(int clock)
 	}
 
 	return -1;
-} /* end */
+}
 
 int gpu_dvfs_get_voltage(int clock)
 {

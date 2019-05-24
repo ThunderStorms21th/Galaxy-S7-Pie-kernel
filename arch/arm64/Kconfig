@@ -1166,4 +1166,6 @@ source "arch/arm64/hotplug/AIO_PLUG/Kconfig"
 
 source "arch/arm64/hotplug/HIMA_PLUG/Kconfig"
 
+source "arch/arm64/hotplug/LAZYPLUG/Kconfig"
+
 

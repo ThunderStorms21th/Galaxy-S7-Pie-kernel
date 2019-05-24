@@ -79,8 +79,8 @@ void __iomem *g3d1_outstanding_regs;
 /*  clk,vol,abb,min,max,down stay, pm_qos mem, pm_qos int, pm_qos cpu_kfc_min, pm_qos cpu_egl_max */
 static gpu_dvfs_info gpu_dvfs_table_default[] = {
 	{806, 850000, 0, 98, 100, 1, 0, 1794000, 413000, 1586000, CPU_MAX},
-/*	{754, 850000, 0, 98,  99, 2, 0, 1794000, 413000, 1586000, CPU_MAX},
-	{728, 850000, 0, 98,  99, 2, 0, 1794000, 413000, 1586000, CPU_MAX}, */
+/*	{754, 850000, 0, 96,  99, 2, 0, 1794000, 413000, 1586000, CPU_MAX},
+	{728, 850000, 0, 96,  99, 2, 0, 1794000, 413000, 1586000, CPU_MAX}, */
 	{702, 850000, 0, 96,  99, 3, 0, 1794000, 413000, 1586000, CPU_MAX},
 	{650, 800000, 0, 94,  97, 5, 0, 1794000, 413000, 1586000, 1560000},
 	{600, 800000, 0, 78,  95, 9, 0, 1539000, 413000, 1378000, CPU_MAX},
@@ -159,8 +159,8 @@ static gpu_attribute gpu_config_attributes[GPU_CONFIG_LIST_END] = {
 	{GPU_PMQOS_INT_DISABLE, 1},
 	{GPU_PMQOS_MIF_MAX_CLOCK, 1539000},
 	{GPU_PMQOS_MIF_MAX_CLOCK_BASE, 650},
-	{GPU_CL_DVFS_START_BASE, 419},
-/*	{GPU_CL_DVFS_START_BASE, 702}, */
+	{GPU_CL_DVFS_START_BASE, 600},
+//	{GPU_CL_DVFS_START_BASE, 702},
 	{GPU_DEBUG_LEVEL, DVFS_WARNING},
 	{GPU_TRACE_LEVEL, TRACE_ALL},
 #ifdef CONFIG_MALI_DVFS_USER

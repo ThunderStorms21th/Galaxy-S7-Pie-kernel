@@ -1,0 +1,13 @@
+#!/system/bin/sh
+
+# Check if games list exist. If not, bail out
+game_list_path=/data/games_list;
+games="";
+
+if [ -e ${game_list_path} ]; then
+	game_list=$(cat ${game_list_path});
+	for game in $game_list; do
+		games="${games}${game};";
+	done
+	echo ${games} > /sys/kernel/gaming_control/game_packages;
+fi;

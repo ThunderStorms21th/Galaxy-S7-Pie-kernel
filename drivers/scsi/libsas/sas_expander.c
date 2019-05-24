@@ -282,6 +282,7 @@ static void sas_set_ex_phy(struct domain_device *dev, int phy_id, void *rsp)
 	phy->phy->minimum_linkrate = dr->pmin_linkrate;
 	phy->phy->maximum_linkrate = dr->pmax_linkrate;
 	phy->phy->negotiated_linkrate = phy->linkrate;
+	phy->phy->enabled = (phy->linkrate != SAS_PHY_DISABLED);
 
  skip:
 	if (new_phy)
@@ -675,7 +676,7 @@ int sas_smp_get_phy_events(struct sas_phy *phy)
 	res = smp_execute_task(dev, req, RPEL_REQ_SIZE,
 			            resp, RPEL_RESP_SIZE);
 
-	if (!res)
+	if (res)
 		goto out;
 
 	phy->invalid_dword_count = scsi_to_u32(&resp[12]);
@@ -684,6 +685,7 @@ int sas_smp_get_phy_events(struct sas_phy *phy)
 	phy->phy_reset_problem_count = scsi_to_u32(&resp[24]);
 
  out:
+	kfree(req);
 	kfree(resp);
 	return res;
 
@@ -817,9 +819,6 @@ static struct domain_device *sas_ex_discover_end_dev(
 		if (!rphy)
 			goto out_free;
 
-/* added scsi: libsas: Fix rphy phy_identifier for PHYs with end devices attached */
-		rphy->identify.phy_identifier = phy_id;
-/* end */
 		child->rphy = rphy;
 		get_device(&rphy->dev);
 
@@ -846,9 +845,6 @@ static struct domain_device *sas_ex_discover_end_dev(
 
 		child->rphy = rphy;
 		get_device(&rphy->dev);
-/* added scsi: libsas: Fix rphy phy_identifier for PHYs with end devices attached */
-		rphy->identify.phy_identifier = phy_id;
-/* end */
 		sas_fill_in_rphy(child, rphy);
 
 		list_add_tail(&child->disco_list_node, &parent->port->disco_list);

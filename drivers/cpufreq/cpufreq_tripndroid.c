@@ -80,16 +80,16 @@ static struct mutex set_speed_lock;
 static u64 hispeed_freq; 
 
 /* governor settings */
-#define DEFAULT_GO_HISPEED_LOAD 80
+#define DEFAULT_GO_HISPEED_LOAD 95
 static unsigned long go_hispeed_load;
 
-#define DEFAULT_DOWN_SAMPLE_TIME 20 * USEC_PER_MSEC
+#define DEFAULT_DOWN_SAMPLE_TIME 230 * USEC_PER_MSEC
 static unsigned long down_sample_time;
 
-#define DEFAULT_UP_SAMPLE_TIME 10 * USEC_PER_MSEC
+#define DEFAULT_UP_SAMPLE_TIME 20 * USEC_PER_MSEC
 static unsigned long up_sample_time;
 
-#define DEFAULT_TIMER_RATE 20 * USEC_PER_MSEC
+#define DEFAULT_TIMER_RATE 40 * USEC_PER_MSEC
 static unsigned long timer_rate;
 
 static int cpufreq_governor_tripndroid(struct cpufreq_policy *policy, unsigned int event);

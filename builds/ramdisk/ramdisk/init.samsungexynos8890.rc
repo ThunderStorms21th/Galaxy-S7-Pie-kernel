@@ -548,11 +548,13 @@ on boot
     chmod 664 /dev/cpuset/system-background/cpus
     write /dev/cpuset/top-app/cpus 0-7
     write /dev/cpuset/top-app/mems 0
-    write /dev/cpuset/foreground/cpus 0-2,4-7
+#    write /dev/cpuset/foreground/cpus 0-2,4-7
+    write /dev/cpuset/foreground/cpus 0-3,5-7
     write /dev/cpuset/foreground/mems 0
     write /dev/cpuset/background/cpus 0-1
     write /dev/cpuset/background/mems 0
-    write /dev/cpuset/system-background/cpus 0-2
+#    write /dev/cpuset/system-background/cpus 0-2
+    write /dev/cpuset/system-background/cpus 0-1
     write /dev/cpuset/system-background/mems 0
 
 # Switch Device
@@ -1063,17 +1065,17 @@ service fwup /sbin/ffu -a
     oneshot
 
 # Secure Storage startup
-service secure_storage /system/bin/secure_storage_daemon
-    class core
-    user system
-    group system
-    disabled
+# service secure_storage /system/bin/secure_storage_daemon
+#    class core
+#    user system
+#    group system
+#    disabled
 
-on property:ro.securestorage.support=true
-    mkdir /dev/.secure_storage
-    chmod 0711 /dev/.secure_storage
-    chown system system /dev/.secure_storage
-    start secure_storage
+# on property:ro.securestorage.support=true
+#    mkdir /dev/.secure_storage
+#    chmod 0711 /dev/.secure_storage
+#    chown system system /dev/.secure_storage
+#    start secure_storage
 
 # SSWAP
 service swapon /sbin/sswap -s -f 2048

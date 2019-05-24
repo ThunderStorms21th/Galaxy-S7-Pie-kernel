@@ -7,7 +7,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1378000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 98
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 95
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "60000 650000:30000 754000:30000 962000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
@@ -15,7 +15,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 650000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 30000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "80 858000:85 1066000:90"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
@@ -40,15 +40,15 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1872000
    chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 98
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 95
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "85000 624000:30000 1040000:30000 1248000:20000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "85000 624000:30000 1040000:25000 1248000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 40000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 624000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 30000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "80 832000:85 1040000:88 1352000:90"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
@@ -70,7 +70,7 @@
 
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
-   write /sys/kernel/hmp/up_threshold 800
+   write /sys/kernel/hmp/up_threshold 780
    chmod 0664 /sys/kernel/hmp/down_threshold
    write /sys/kernel/hmp/down_threshold 260
    chmod 0664 /sys/kernel/hmp/down_compensation_high_freq
@@ -104,7 +104,7 @@
    write /sys/block/sda/queue/scheduler bfq
    write /sys/block/sda/queue/read_ahead_kb 512
    write /sys/block/mmcblk0/queue/scheduler bfq
-   write /sys/block/mmcblk0/queue/read_ahead_kb 768
+   write /sys/block/mmcblk0/queue/read_ahead_kb 512
    write /sys/block/sda/queue/iostats 0
    write /sys/block/mmcblk0/queue/iostats 0
    write /sys/block/sda/queue/rq_affinity 1
@@ -126,11 +126,14 @@
    write /sys/kernel/dyn_fsync/Dyn_fsync_active 1
    write /sys/kernel/sched/gentle_fair_sleepers 0
    write /sys/kernel/sched/arch_power 0
-   write /sys/kernel/power_suspend/power_suspend_mode 0
+   write /sys/kernel/power_suspend/power_suspend_mode 3
+   #write /sys/kernel/power_suspend/power_suspend_mode 1
+   #write /sys/kernel/power_suspend/power_suspend_state 1
+
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   write /proc/sys/vm/swappiness 50
+   write /proc/sys/vm/swappiness 60
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"

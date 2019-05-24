@@ -154,6 +154,9 @@ int cpufreq_sysfs_create_file(const struct attribute *attr);
 void cpufreq_sysfs_remove_file(const struct attribute *attr);
 int cpufreq_sysfs_create_group(const struct attribute_group *attr_grp);
 void cpufreq_sysfs_remove_group(const struct attribute_group *attr_grp);
+// added Adaptative
+extern int __cpufreq_driver_getavg(struct cpufreq_policy *policy,
+				   unsigned int cpu); // end
 
 #ifdef CONFIG_CPU_FREQ
 unsigned int cpufreq_get(unsigned int cpu);
@@ -271,6 +274,9 @@ struct cpufreq_driver {
 
 	/* optional */
 	int	(*bios_limit)	(int cpu, unsigned int *limit);
+
+	unsigned int (*getavg)	(struct cpufreq_policy *policy,
+				 unsigned int cpu); // added ADAPTATIVE
 
 	int	(*exit)		(struct cpufreq_policy *policy);
 	void	(*stop_cpu)	(struct cpufreq_policy *policy);
@@ -501,6 +507,9 @@ extern unsigned int cpufreq_interactive_get_hispeed_freq(int cpu);
 extern unsigned int cpufreq_cafactive_get_hispeed_freq(int cpu);
 extern void cafactive_boost_ondemand(int cpu, s64 miliseconds, bool static_switch);
 #endif
+#ifdef CONFIG_CPU_FREQ_GOV_THUNDERSTORMS
+extern unsigned int cpufreq_thunderstorms_get_hispeed_freq(int cpu);
+#endif
 //#ifdef CONFIG_CPU_FREQ_GOV_DYNAMIC_INTERACTIVE
 //extern unsigned int cpufreq_dynamic_interactive_get_hispeed_freq(int cpu);
 //#endif
@@ -509,6 +518,12 @@ extern void cafactive_boost_ondemand(int cpu, s64 miliseconds, bool static_switc
 //#endif
 #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_PERFORMANCE
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_performance)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ADAPTIVE)
+extern struct cpufreq_governor cpufreq_gov_adaptive;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_adaptive)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ADAPTIVEX)
+extern struct cpufreq_governor cpufreq_gov_adaptivex;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_adaptivex)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ALUCARD)
 extern struct cpufreq_governor cpufreq_gov_alucard;
 #define CPUFREQ_DEFAULT_GOVERNOR        (&cpufreq_gov_alucard)
@@ -593,6 +608,9 @@ extern struct cpufreq_governor cpufreq_gov_lionfish;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_LIONHEART)
 extern struct cpufreq_governor cpufreq_gov_lionheart;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_lionheart)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_NEXUS)
+extern struct cpufreq_governor cpufreq_gov_nexus;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_nexus)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_NIGHTMARE)
 extern struct cpufreq_governor cpufreq_gov_nightmare;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_nightmare)
@@ -614,6 +632,9 @@ extern struct cpufreq_governor cpufreq_gov_poison;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_POWERSAVE)
 extern struct cpufreq_governor cpufreq_gov_powersave;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_powersave)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_PRESERVATIVE)
+extern struct cpufreq_governor cpufreq_gov_preservative;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_preservative)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_RENICE)
 extern struct cpufreq_governor cpufreq_gov_renice;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_renice)
@@ -647,6 +668,9 @@ extern struct cpufreq_governor cpufreq_gov_smartmax;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_SMARTMAX_EPS)
 extern struct cpufreq_governor cpufreq_gov_smartmax_eps;
 #define CPUFREQ_DEFAULT_GOVERNOR        (&cpufreq_gov_smartmax_eps)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_THUNDERSTORMS)
+extern struct cpufreq_governor cpufreq_gov_thunderstorms;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_thunderstorms)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_THUNDERX)
 extern struct cpufreq_governor cpufreq_gov_thunderx;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_thunderx)
@@ -662,6 +686,9 @@ extern struct cpufreq_governor cpufreq_gov_yankactive;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ZZMOOVE)
 extern struct cpufreq_governor cpufreq_gov_zzmoove;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_zzmoove)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_ZENX)
+extern struct cpufreq_governor cpufreq_gov_zenx;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_zenx)
 #endif
 
 /*********************************************************************

@@ -60,6 +60,9 @@
 
 #include <linux/atomic.h>
 
+/* Gaming control */
+#include <linux/gaming_control.h>
+
 /*
  * pidlists linger the following amount before being destroyed.  The goal
  * is avoiding frequent destruction in the middle of consecutive read calls
@@ -2407,6 +2410,13 @@ retry_find_task:
 	}
 
 	ret = cgroup_attach_task(cgrp, tsk, threadgroup);
+
+	/* GAME TOOLS - Check if the task is a game */
+	if (!memcmp(cgrp->kn->name, "top-app", sizeof("top-app")) && !ret) {
+		game_option(tsk, GAME_RUNNING);
+	} else if (!memcmp(cgrp->kn->name, "background", sizeof("background")) && !ret) {
+		game_option(tsk, GAME_PAUSE);
+	} // end
 
 	threadgroup_unlock(tsk);
 

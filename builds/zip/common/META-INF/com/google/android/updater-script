@@ -82,6 +82,15 @@ if file_getprop("/tmp/aroma/menu.prop", "chk6") == "1" then
 	package_extract_dir("/tmp/ts/profiles", "/storage/emulated/0/Spectrum/profiles/");
 endif;
 
+# TS swap off
+if file_getprop("/tmp/aroma/menu.prop", "chk4") == "1" then
+	ui_print(" ");
+	ui_print("@Installing ThundeRStormS VNSWAP OFF...");
+	package_extract_dir("ts/swapoff", "/system/etc/init.d");
+	package_extract_dir("/tmp/ts/swapoff", "/system/etc/init.d");
+	package_extract_dir("ts/system1", "/system");
+endif;
+
 # Patch for deodexed and ported roms
 if file_getprop("/tmp/aroma/menu.prop", "chk10") == "1" then
 	
@@ -237,6 +246,15 @@ ui_print("-- Fixing permission...");
 package_extract_file("ts/fix_permissions", "/tmp/ts/fix_permissions");
 set_perm(0, 0, 0777, "/tmp/ts/fix_permissions");
 run_program("/tmp/ts/fix_permissions");
+
+# INSTALL ADB
+# -----------
+	ui_print(" ");
+	ui_print("@ThunderStormS Installing ADB...");
+	package_extract_dir("ts/adb", "/tmp/adb");
+	run_program("/sbin/busybox", "unzip", "/tmp/adb/adb.zip", "META-INF/com/google/android/*", "-d", "/tmp/adb");
+	run_program("/sbin/sh", "/tmp/adb/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/adb/adb.zip");
+	delete_recursive("/tmp/adb");
 
 #####################################################
 

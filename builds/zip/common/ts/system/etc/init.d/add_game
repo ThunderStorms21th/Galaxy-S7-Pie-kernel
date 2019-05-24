@@ -1,0 +1,25 @@
+  
+#!/system/bin/sh
+
+game=$1;
+games_list_path=/data/games_list;
+if [ ! -e "$games_list_path" ]; then
+	echo "" > $games_list_path;
+fi;
+
+if [ -z "$game" ]; then
+	echo "Empty input!";
+	echo "usage: add_game <package_name>";
+	echo "Example of package_name: com.miHoYo.bh3rdJP";
+else
+	is_game_exist=$(cat $games_list_path | grep -w ${game});
+	if  [ ! -z "${is_game_exist}" ]; then
+		echo "${game} exists. No need to add it again!";
+	else
+		games=$(cat $games_list_path);
+		games_append="${games}${game};";
+		echo "${games_append}" > /data/games_list;
+		echo ${games_append} > /sys/kernel/gaming_control/game_packages;
+		echo "${game} has been added!";
+	fi;
+fi;

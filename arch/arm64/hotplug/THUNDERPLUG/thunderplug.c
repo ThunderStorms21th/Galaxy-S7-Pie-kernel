@@ -31,7 +31,7 @@
 #define THUNDERPLUG			"thunderplug"
 
 #define DRIVER_VERSION			5
-#define DRIVER_SUBVER			"4TS"
+#define DRIVER_SUBVER			4
 
 #define DEFAULT_CPU_LOAD_THRESHOLD	(90)
 
