@@ -70,7 +70,8 @@ obj-$(CONFIG_CPU_FREQ_GOV_RAGINGMOLASSES)  	+= cpufreq_ragingmolasses.o
 obj-$(CONFIG_CPU_FREQ_GOV_RELAXED)	+= cpufreq_relaxed.o
 obj-$(CONFIG_CPU_FREQ_GOV_SAVAGEDZEN) 	        += cpufreq_savagedzen.o
 obj-$(CONFIG_CPU_FREQ_GOV_SAKURACTIVE) 	        += cpufreq_sakuractive.o
-obj-$(CONFIG_CPU_FREQ_GOV_SCARY)			+= cpufreq_scary.o
+obj-$(CONFIG_CPU_FREQ_GOV_SCARY)		+= cpufreq_scary.o
+obj-$(CONFIG_CPU_FREQ_GOV_SKYWALKER)		+= cpufreq_skywalker.o
 obj-$(CONFIG_CPU_FREQ_GOV_SLIM)			+= cpufreq_slim.o
 obj-$(CONFIG_CPU_FREQ_GOV_SLEEPY)		+= cpufreq_sleepy.o
 obj-$(CONFIG_CPU_FREQ_GOV_SLP)			+= cpufreq_slp.o
@@ -99,6 +100,8 @@ obj-$(CONFIG_CPU_INPUT_BOOST)		+= cpu_input_boost.o
 obj-$(CONFIG_CPU_FREQ_GOV_SCHEDUTIL) += cpufreq_schedutil.o
 
 obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
+
+# CFLAGS_cpufreq_thunderstorms.o := -Wno-implicit-function-declaration
 
 ##################################################################################
 # x86 drivers.

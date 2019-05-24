@@ -30,6 +30,7 @@
 #include <linux/timer.h>
 #include <linux/workqueue.h>
 #include <linux/kthread.h>
+#include <linux/powersuspend.h>
 #include <linux/earlysuspend.h>
 #include <linux/slab.h>
 
@@ -85,7 +86,7 @@ static spinlock_t hotplug_remove_cpumask_lock;
 static unsigned int hispeed_freq;
 
 /* Go to hi speed when CPU load at or above this value. */
-#define DEFAULT_GO_HISPEED_LOAD 99
+#define DEFAULT_GO_HISPEED_LOAD 97
 static unsigned long go_hispeed_load = DEFAULT_GO_HISPEED_LOAD;
 
 /* Unplug auxillary CPUs below these values. */
@@ -99,6 +100,7 @@ static unsigned int unplug_load[] =
 	  DEFAULT_UNPLUG_LOAD_CPUMORE,
 	  DEFAULT_UNPLUG_LOAD_CPUMORE,
 	  DEFAULT_UNPLUG_LOAD_CPUMORE,
+	  DEFAULT_UNPLUG_LOAD_CPUMORE, // added
 	  DEFAULT_UNPLUG_LOAD_CPUMORE,
 	  DEFAULT_UNPLUG_LOAD_CPUMORE
 	};

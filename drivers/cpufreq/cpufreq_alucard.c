@@ -23,8 +23,8 @@
 #include <linux/kthread.h>
 #include <linux/slab.h>
 #include <linux/display_state.h>
-#include <asm-generic/bug.h>
-#include <asm-generic/cputime.h>
+#include <asm/bug.h>
+#include <asm/cputime.h>
 
 struct cpufreq_alucard_policyinfo {
 	struct timer_list policy_timer;

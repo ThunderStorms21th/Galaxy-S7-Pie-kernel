@@ -32,7 +32,7 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/cpufreq_slim.h>
 
-#include <mach/kgsl.h>
+// #include <mach/kgsl.h>
 static int orig_up_threshold = 90;
 static int g_count = 0;
 
@@ -97,6 +97,7 @@ struct cpu_dbs_info_s {
 	unsigned int max_load;
 	int input_event_freq;
 	int cpu;
+	int cpufreq_policy_cpu; // added
 	unsigned int sample_type:1;
 	struct mutex timer_mutex;
 };
@@ -164,6 +165,59 @@ static struct dbs_tuners {
 	.input_event_timeout = INPUT_EVENT_TIMEOUT,
 	.gboost = 1,
 };
+
+// -------------- odl rwsm ----------------------------------
+#define lock_policy_rwsem(mode, cpu)					\
+int lock_policy_rwsem_##mode						\
+(int cpu)								\
+{									\
+	int policy_cpu = per_cpu(cpufreq_policy_cpu, cpu);		\
+	BUG_ON(policy_cpu == -1);					\
+	down_##mode(&per_cpu(cpu_policy_rwsem, policy_cpu));		\
+	if (unlikely(!cpu_online(cpu))) {				\
+		up_##mode(&per_cpu(cpu_policy_rwsem, policy_cpu));	\
+		return -1;						\
+	}								\
+									\
+	return 0;							\
+}
+// ----------------------------------------------------------
+static void lock_policy_rwsem_read(int cpu)
+{
+	int cpufreq_policy_cpu; // added
+	int cpu_policy_rwsem; // added
+	int policy_cpu = per_cpu(cpufreq_policy_cpu, cpu);
+	BUG_ON(policy_cpu == -1);
+	down_read(&per_cpu(cpu_policy_rwsem, policy_cpu));
+}
+
+void lock_policy_rwsem_write(int cpu)
+{
+	int cpufreq_policy_cpu; // added
+	int cpu_policy_rwsem; // added
+	int policy_cpu = per_cpu(cpufreq_policy_cpu, cpu);
+	BUG_ON(policy_cpu == -1);
+	down_write(&per_cpu(cpu_policy_rwsem, policy_cpu));
+}
+
+static void unlock_policy_rwsem_read(int cpu)
+{
+	int cpufreq_policy_cpu; // added
+	int cpu_policy_rwsem; // added
+	int policy_cpu = per_cpu(cpufreq_policy_cpu, cpu);
+	BUG_ON(policy_cpu == -1);
+	up_read(&per_cpu(cpu_policy_rwsem, policy_cpu));
+}
+
+void unlock_policy_rwsem_write(int cpu)
+{
+	int cpufreq_policy_cpu; // added
+	int cpu_policy_rwsem; // added
+	int policy_cpu = per_cpu(cpufreq_policy_cpu, cpu);
+	BUG_ON(policy_cpu == -1);
+	up_write(&per_cpu(cpu_policy_rwsem, policy_cpu));
+}
+// -------------------end-------------------------------------
 
 static inline u64 get_cpu_iowait_time(unsigned int cpu, u64 *wall)
 {

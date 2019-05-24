@@ -131,6 +131,7 @@ struct thunderx_info_s {
 	int ideal_speed;
 };
 static DEFINE_PER_CPU(struct thunderx_info_s, thunderx_info);
+static DEFINE_PER_CPU(struct thunderx_info_s, cpuinfo);
 
 /* Workqueues handle frequency scaling */
 static struct workqueue_struct *up_wq;

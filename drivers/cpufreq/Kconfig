@@ -1758,6 +1758,12 @@ config CPU_FREQ_GOV_ZENX
 	help
 	  'ZenX' - an interactive-based governor
 
+config CPU_FREQ_GOV_SKYWALKER
+	tristate "'skywalker' cpufreq governor"
+	depends on CPU_FREQ
+	help
+	  'skywalker' - an interactive-based governor
+
 config CPU_FREQ_GOV_THUNDERSTORMS
 	tristate "'thunderstorms' cpufreq policy governor"
 	help

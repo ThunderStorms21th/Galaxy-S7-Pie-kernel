@@ -71,6 +71,7 @@ struct cpu_dbs_info_s {
 	struct mutex timer_mutex;
 };
 static DEFINE_PER_CPU(struct cpu_dbs_info_s, cs_cpu_dbs_info);
+static DEFINE_PER_CPU(struct cpu_dbs_info_s, cpuinfo);
 
 static unsigned int dbs_enable;	
 

@@ -31,6 +31,7 @@
 #define DEF_BOOST_CEILING			(12)
 
 static DEFINE_PER_CPU(struct cs_cpu_dbs_info_s, cs_cpu_dbs_info);
+static DEFINE_PER_CPU(struct cs_cpu_dbs_info_s, cpuinfo);
 static DEFINE_PER_CPU(struct cs_dbs_tuners *, cached_tuners);
 
 static unsigned int boost_counter = 0;

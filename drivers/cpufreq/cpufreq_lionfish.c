@@ -53,6 +53,8 @@ struct lf_dbs_tuners {
 	unsigned int jump_level;
 };
 
+static DEFINE_PER_CPU(struct lf_cpu_dbs_info_s, cpuinfo);
+
 struct lf_gdbs_data;
 
 /* Common Governor data across policies */

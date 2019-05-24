@@ -33,7 +33,7 @@
 #include <linux/kthread.h>
 #include <linux/mutex.h>
 #include <linux/slab.h>
-#include <asm/cputime.h>
+#include <asm-generic/cputime.h>
 #include <linux/pm_qos.h>
 
 #define CREATE_TRACE_POINTS

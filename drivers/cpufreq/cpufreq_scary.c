@@ -19,7 +19,7 @@
 #include <linux/ktime.h>
 #include <linux/sched.h>
 #include <linux/earlysuspend.h>
-#include <asm/cputime.h>
+#include <asm-generic/cputime.h>
 #include <linux/cpumask.h>
 #include <linux/timer.h>
 
