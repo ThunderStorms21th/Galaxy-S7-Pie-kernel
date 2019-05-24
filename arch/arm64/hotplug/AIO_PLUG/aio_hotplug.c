@@ -9,6 +9,7 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
+ * MODDED for Exynoss 8890 BY @nalas ThunderStormS Team & HN
  */
 
 // Assume Quad-Core SoCs to be of Traditional Configuration and Hexa/Octa-Core SoCs to be of big.LITTLE Configuration.
@@ -112,53 +113,7 @@ static void __ref AiO_HotPlug_work(struct work_struct *work)
 	  // Operations for a big.LITTLE SoC.
 	  #elif (NR_CPUS == 6 || NR_CPUS == 8)
 	        // Operations for big Cluster.
-                if (max_big_core == 1)
-	        {
-	                if (!cpu_online(0))
-	                   cpu_up(0);
-	        	if (cpu_online(1)) 
-                   	   cpu_down(1);
-	      	        if (cpu_online(2))
-	           	   cpu_down(2);
-	                if (cpu_online(3))
-	          	   cpu_down(3);
-		}
-		else if (max_big_core == 2)
-		{
-	        	if (!cpu_online(0))
-	           	   cpu_up(0);
-	   		if (!cpu_online(1))
-	      	   	   cpu_up(1);
-	   		if (cpu_online(2))
-	           	   cpu_down(2);
-	   		if (cpu_online(3))
-	           	   cpu_down(3);
-		}
-		else if (max_big_core == 3)
-		{
-	   		if (!cpu_online(0))
-	           	   cpu_up(0);
-	   		if (!cpu_online(1))
-	      	   	   cpu_up(1);
-	   		if (!cpu_online(2))
-	      	   	   cpu_up(2);
-	   
-	   		if (cpu_online(3))
-	      	   	   cpu_down(3);
-		}
-		else if (max_big_core == 4)
-		{
-	   		if (!cpu_online(0))
-	      	   	   cpu_up(0);
-	   		if (!cpu_online(1))
-	      	   	   cpu_up(1);
-	   		if (!cpu_online(2))
-	      	   	   cpu_up(2);
-	   		if (!cpu_online(3))
-	      	   	   cpu_up(3);
-		}
-		// Operations for LITTLE Cluster.
-		if (AiO.LITTLE_cores == 0)
+		if (AiO.big_cores == 0)
 		{
 	   	   if (cpu_online(7))
 	      	      cpu_down(7);
@@ -169,31 +124,41 @@ static void __ref AiO_HotPlug_work(struct work_struct *work)
 	   	   if (cpu_online(4))
 	      	      cpu_down(4);
 		}
-		else if (AiO.LITTLE_cores == 1)
-		{
-	   		if (!cpu_online(4))
-	      	   	   cpu_up(4);
-	   
-	   		if (cpu_online(7))
-	      	   	   cpu_down(7);
-	   		if (cpu_online(6))
-	      	   	   cpu_down(6);
-	   		if (cpu_online(5)) 
-              	   	   cpu_down(5);
+                else if (AiO.big_cores == 1)
+	        {
+	                if (!cpu_online(4))
+	                   cpu_up(4);
+	        	if (cpu_online(5)) 
+                   	   cpu_down(5);
+	      	        if (cpu_online(6))
+	           	   cpu_down(6);
+	                if (cpu_online(7))
+	          	   cpu_down(7);
 		}
-		else if (AiO.LITTLE_cores == 2)
+		else if (AiO.big_cores == 2)
+		{
+	        	if (!cpu_online(4))
+	           	   cpu_up(4);
+	   		if (!cpu_online(5))
+	      	   	   cpu_up(5);
+	   		if (cpu_online(6))
+	           	   cpu_down(6);
+	   		if (cpu_online(7))
+	           	   cpu_down(7);
+		}
+		else if (AiO.big_cores == 3)
 		{
 	   		if (!cpu_online(4))
 	           	   cpu_up(4);
 	   		if (!cpu_online(5))
-	           	   cpu_up(5);
+	      	   	   cpu_up(5);
+	   		if (!cpu_online(6))
+	      	   	   cpu_up(6);
 	   
 	   		if (cpu_online(7))
 	      	   	   cpu_down(7);
-	   		if (cpu_online(6))
-	                   cpu_down(6);
 		}
-		else if (AiO.LITTLE_cores == 3)
+		else if (AiO.big_cores == 4)
 		{
 	   		if (!cpu_online(4))
 	      	   	   cpu_up(4);
@@ -201,20 +166,67 @@ static void __ref AiO_HotPlug_work(struct work_struct *work)
 	      	   	   cpu_up(5);
 	   		if (!cpu_online(6))
 	      	   	   cpu_up(6);
+	   		if (!cpu_online(7))
+	      	   	   cpu_up(7);
+		}
+		// Operations for LITTLE Cluster.
+		if (AiO.LITTLE_cores == 0)
+		{
+	   	   if (cpu_online(3))
+	      	      cpu_down(3);
+	   	   if (cpu_online(2))
+	      	      cpu_down(2);
+	  	   if (cpu_online(1)) 
+             	      cpu_down(1);
+	   	   if (cpu_online(0))
+	      	      cpu_down(0);
+		}
+		else if (AiO.LITTLE_cores == 1)
+		{
+	   		if (!cpu_online(0))
+	      	   	   cpu_up(0);
 	   
-	   		if (cpu_online(7))
-	      	  	   cpu_down(7);
+	   		if (cpu_online(3))
+	      	   	   cpu_down(3);
+	   		if (cpu_online(2))
+	      	   	   cpu_down(2);
+	   		if (cpu_online(1)) 
+              	   	   cpu_down(1);
+		}
+		else if (AiO.LITTLE_cores == 2)
+		{
+	   		if (!cpu_online(0))
+	           	   cpu_up(0);
+	   		if (!cpu_online(1))
+	           	   cpu_up(1);
+	   
+	   		if (cpu_online(3))
+	      	   	   cpu_down(3);
+	   		if (cpu_online(2))
+	                   cpu_down(2);
+		}
+		else if (AiO.LITTLE_cores == 3)
+		{
+	   		if (!cpu_online(0))
+	      	   	   cpu_up(0);
+	   		if (!cpu_online(1))
+	      	   	   cpu_up(1);
+	   		if (!cpu_online(2))
+	      	   	   cpu_up(2);
+	   
+	   		if (cpu_online(3))
+	      	  	   cpu_down(3);
 		}
 		else if (AiO.LITTLE_cores == 4)
 		{
-	  		if (!cpu_online(4))
-	           	   cpu_up(4);
-	   		if (!cpu_online(5))
-	           	   cpu_up(5);
-	   		if (!cpu_online(6))
-	           	   cpu_up(6);
-	   		if (!cpu_online(7))
-	           	   cpu_up(7);
+	  		if (!cpu_online(0))
+	           	   cpu_up(0);
+	   		if (!cpu_online(1))
+	           	   cpu_up(1);
+	   		if (!cpu_online(2))
+	           	   cpu_up(2);
+	   		if (!cpu_online(3))
+	           	   cpu_up(3);
                 }
           #endif
 
@@ -274,9 +286,9 @@ static ssize_t show_toggle(struct kobject *kobj,
 #ifdef CONFIG_ASMP
 extern int asmp_enabled __read_mostly;
 #endif
-#ifdef CONFIG_THERMAL_MONITOR
-extern void external_core_control_panel(bool enabled);
-#endif
+// #ifdef CONFIG_THERMAL_MONITOR
+// extern void external_core_control_panel(bool enabled);
+// #endif
 static ssize_t store_toggle(struct kobject *kobj,
 			     struct kobj_attribute *attr,
 			     const char *buf, size_t count)
@@ -305,18 +317,18 @@ static ssize_t store_toggle(struct kobject *kobj,
 #ifdef CONFIG_SCHED_CORE_CTL
 	   disable_core_control(true);
 #endif
-#ifdef CONFIG_THERMAL_MONITOR
-	   external_core_control_panel(false);
-#endif
+//#ifdef CONFIG_THERMAL_MONITOR
+//	   external_core_control_panel(false);
+//#endif
 	   AiO_HotPlug_start();
 	} else {
 	   AiO_HotPlug_stop();
 #ifdef CONFIG_SCHED_CORE_CTL
 	   disable_core_control(false);
 #endif
-#ifdef CONFIG_THERMAL_MONITOR
-	   external_core_control_panel(true);
-#endif
+//#ifdef CONFIG_THERMAL_MONITOR
+//	   external_core_control_panel(true);
+//#endif
 	}
 	return count;
 }
@@ -368,7 +380,8 @@ static ssize_t store_big_cores(struct kobject *kobj,
 	}
 	else if (NR_CPUS == 8)
 	{
-		if (ret != 1 || val < 1 || val > 4)
+		if (ret != 1 || val < 0 || val > 4)
+//		if (ret != 1 || val < 0 || val > 4)
 	           return -EINVAL;
 	}
 
@@ -394,6 +407,7 @@ static ssize_t store_LITTLE_cores(struct kobject *kobj,
 	ret = sscanf(buf, "%u", &val);
 	
 	if (ret != 1 || val < 0 || val > 4 || (val == 0 && AiO.big_cores == 0))
+//	if (ret != 1 || val < 1 || val > 4 || (val == 0 && AiO.big_cores == 0))
 	   return -EINVAL;
 
 	AiO.LITTLE_cores = val;

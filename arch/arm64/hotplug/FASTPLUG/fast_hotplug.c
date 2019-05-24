@@ -26,11 +26,11 @@
 
 #define FAST_HOTPLUG_ENABLED	0
 
-// #define DEBUG_ENABLED		1
+#define DEBUG_ENABLED		0 /* was 1 */
 #define HOTPLUG_INFO_TAG	"[HOTPLUG] : "
 
 #ifndef CONFIG_NR_CPUS
-#define CONFIG_NR_CPUS		4
+#define CONFIG_NR_CPUS		8 /* was 4 */
 #endif
 
 #define REFRESH_RATE		100  /* ms */

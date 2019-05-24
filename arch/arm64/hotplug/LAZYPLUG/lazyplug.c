@@ -74,7 +74,7 @@
 #include <linux/state_notifier.h>
 
 //#define DEBUG_LAZYPLUG
-#undef DEBUG_LAZYPLUG
+//#undef DEBUG_LAZYPLUG
 
 #define LAZYPLUG_MAJOR_VERSION	1
 #define LAZYPLUG_MINOR_VERSION	13
@@ -96,10 +96,10 @@ static struct work_struct lazyplug_boost;
 static struct workqueue_struct *lazyplug_wq;
 static struct workqueue_struct *lazyplug_boost_wq;
 
-static unsigned int __read_mostly lazyplug_active = 1;
+static unsigned int __read_mostly lazyplug_active = 0; // 1
 module_param(lazyplug_active, uint, 0664);
 
-static unsigned int __read_mostly touch_boost_active = 1;
+static unsigned int __read_mostly touch_boost_active = 0; // 1
 module_param(touch_boost_active, uint, 0664);
 
 static unsigned int __read_mostly nr_run_profile_sel = 0;
@@ -123,7 +123,7 @@ struct ip_cpu_info {
 static DEFINE_PER_CPU(struct ip_cpu_info, ip_info);
 
 #define CAPACITY_RESERVE	50
-
+/*
 #if defined(CONFIG_ARCH_MSM8994) || defined(CONFIG_ARCH_MSM_8996) || \
 defined(CONFIG_ARCH_MSM8992)
 #define THREAD_CAPACITY (520 - CAPACITY_RESERVE)
@@ -137,7 +137,8 @@ defined (CONFIG_ARCH_MSM8610) || defined (CONFIG_ARCH_MSM8228)
 #define THREAD_CAPACITY (190 - CAPACITY_RESERVE)
 #else
 #define THREAD_CAPACITY	(250 - CAPACITY_RESERVE)
-#endif
+#endif */
+#define THREAD_CAPACITY	(500 - CAPACITY_RESERVE)
 
 #define MULT_FACTOR	4
 #define DIV_FACTOR	100000
@@ -206,7 +207,7 @@ static unsigned int __read_mostly *nr_run_profiles[] = {
 #define CPU_NR_THRESHOLD	((THREAD_CAPACITY << 1) + (THREAD_CAPACITY / 2))
 
 static unsigned int __read_mostly nr_possible_cores;
-module_param(nr_possible_cores, uint, 0644);
+module_param(nr_possible_cores, uint, 0644);	/* was 0644 */
 
 static unsigned int __read_mostly cpu_nr_run_threshold = CPU_NR_THRESHOLD;
 module_param(cpu_nr_run_threshold, uint, 0664);
@@ -217,11 +218,11 @@ module_param(nr_run_hysteresis, uint, 0664);
 #ifdef DEBUG_LAZYPLUG
 /* those 2 counters will malfunction if uptime exceeds 36.4 years */
 static unsigned int offline_state_count = 0;	/* Total time in all cores(except for CPU0) off, divided by DEF_SAMPLING_MS */
-module_param(offline_state_count, uint, 0444);
+module_param(offline_state_count, uint, 0644);  /* was 0444 */
 static unsigned int online_state_count = 0;	/* Total time in all cores on, divided by DEF_SAMPLING_MS */
-module_param(online_state_count, uint, 0444);
+module_param(online_state_count, uint, 0644);	/* was 0444 */
 static unsigned int switch_count = 0;		/* Counts of switches between those two states, less is better */
-module_param(switch_count, uint, 0444);
+module_param(switch_count, uint, 0644);		/* was 0444 */
 static bool previous_online_status = true;	/* Internal boolean to determine previous status */
 #endif
 
@@ -455,7 +456,7 @@ static int state_notifier_call(struct notifier_block *this,
 }
 
 static unsigned int Lnr_run_profile_sel = 0;
-static unsigned int Ltouch_boost_active = true;
+static unsigned int Ltouch_boost_active = false;	// was true
 static bool Lprevious_state = false;
 void lazyplug_enter_lazy(bool enter)
 {

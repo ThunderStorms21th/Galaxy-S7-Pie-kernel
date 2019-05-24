@@ -18,9 +18,11 @@
 #include <linux/slab.h>
 #include <linux/input.h>
 #include <linux/kobject.h>
-#ifdef CONFIG_STATE_NOTIFIER
 #include <linux/state_notifier.h>
-#endif
+
+// #ifdef CONFIG_STATE_NOTIFIER
+// #include <linux/state_notifier.h>
+// #endif
 #include <linux/cpufreq.h>
 
 #define INTELLI_PLUG			"intelli_plug"
@@ -60,6 +62,8 @@ static struct work_struct up_down_work;
 static struct workqueue_struct *intelliplug_wq;
 static struct mutex intelli_plug_mutex;
 static struct notifier_block notif;
+
+unsigned int cpu;
 
 struct ip_cpu_info {
 	unsigned long cpu_nr_running;
@@ -149,6 +153,9 @@ static unsigned int *nr_run_profiles[] = {
 
 static unsigned int nr_run_last;
 static unsigned int down_lock_dur = DEFAULT_DOWN_LOCK_DUR;
+
+extern unsigned long avg_nr_running(void);
+extern unsigned long avg_cpu_nr_running(unsigned int cpu);
 
 struct down_lock {
 	unsigned int locked;
