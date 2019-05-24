@@ -1,7 +1,8 @@
-/* AiO HotPlug v2.0, an All in One HotPlug for Traditional Quad-Core SoCs and 
- * Hexa/Octa-Core big.LITTLE SoCs.
+/* AiO HotPlug v2.1, an All in One HotPlug for Traditional Quad-Core SoCs and 
+ * Hexa/Octa-Core big.LITTLE Samsung Exynos SoCs.
  *
  * Copyright (c) 2017, Shoaib Anwar <Shoaib0595@gmail.com>
+ * Copyright (c) 2019, @nalas XDA
  *
  * Based on State_Helper HotPlug, by Pranav Vashi <neobuddy89@gmail.com>
  *
@@ -9,16 +10,15 @@
  * it under the terms of the GNU General Public License version 2 as
  * published by the Free Software Foundation.
  *
- * MODDED for Exynoss 8890 BY @nalas ThunderStormS Team & HN
+ * MODDED for Exynoss 8890 BY @nalas  & HN ThunderStormS Team
  */
 
-// Assume Quad-Core SoCs to be of Traditional Configuration and Hexa/Octa-Core SoCs to be of big.LITTLE Configuration.
+// Assume Quad-Core SoCs to be of Traditional Configuration and Hexa/Octa-Core SoCs to be of big.LITTLE Samsung Exynos Configuration.
 
 #include <linux/cpu.h>
 #include <linux/module.h>
 #include <linux/workqueue.h>
 #include <linux/platform_device.h>
-// #include <linux/msm_thermal.h>
 
 #define AIO_HOTPLUG			"AiO_HotPlug"
 #define AIO_TOGGLE			0
@@ -32,7 +32,6 @@
       #define DEFAULT_BIG_CORES		4
       #define DEFAULT_LITTLE_CORES	4
 #endif
-
 
 static struct AiO_HotPlug {
        unsigned int toggle;
@@ -57,17 +56,15 @@ static struct workqueue_struct *AiO_wq;
 
 int AiO_HotPlug = AIO_TOGGLE;
 
+#ifdef CONFIG_ALUCARD_HOTPLUG
+extern int alucard;
+#endif
+
 static void __ref AiO_HotPlug_work(struct work_struct *work)
 {
 	 #if (NR_CPUS == 6 || NR_CPUS == 8)
          unsigned int max_big_core = AiO.big_cores;
 
-//#ifdef CONFIG_THERMAL_MONITOR
-//        if (mitigation_thermal_core_control()) {
-//             if (max_big_core > 2)
-//                 max_big_core = 2;
-//         }
-//#endif
          #endif
 
          // Operations for a Traditional Quad-Core SoC.
@@ -286,9 +283,10 @@ static ssize_t show_toggle(struct kobject *kobj,
 #ifdef CONFIG_ASMP
 extern int asmp_enabled __read_mostly;
 #endif
-// #ifdef CONFIG_THERMAL_MONITOR
-// extern void external_core_control_panel(bool enabled);
-// #endif
+#ifdef CONFIG_ASMPTS
+extern int asmp_enabled __read_mostly;
+#endif
+
 static ssize_t store_toggle(struct kobject *kobj,
 			     struct kobj_attribute *attr,
 			     const char *buf, size_t count)
@@ -300,10 +298,21 @@ static ssize_t store_toggle(struct kobject *kobj,
 	if (ret != 1 || val < 0 || val > 1)
 	   return -EINVAL;
 
+#ifdef CONFIG_ALUCARD_HOTPLUG
+	if (alucard)
+	   return -EINVAL; 
+#endif
+
 	if (val == AiO.toggle)
 	   return count;
 
 #ifdef CONFIG_ASMP
+	if (asmp_enabled) {
+		pr_info(AIO_HOTPLUG" You can't enable more than 1 hotplug!\n");
+		return count;
+	}
+#endif
+#ifdef CONFIG_ASMPTS
 	if (asmp_enabled) {
 		pr_info(AIO_HOTPLUG" You can't enable more than 1 hotplug!\n");
 		return count;
@@ -317,18 +326,14 @@ static ssize_t store_toggle(struct kobject *kobj,
 #ifdef CONFIG_SCHED_CORE_CTL
 	   disable_core_control(true);
 #endif
-//#ifdef CONFIG_THERMAL_MONITOR
-//	   external_core_control_panel(false);
-//#endif
+
 	   AiO_HotPlug_start();
 	} else {
 	   AiO_HotPlug_stop();
 #ifdef CONFIG_SCHED_CORE_CTL
 	   disable_core_control(false);
 #endif
-//#ifdef CONFIG_THERMAL_MONITOR
-//	   external_core_control_panel(true);
-//#endif
+
 	}
 	return count;
 }
@@ -380,9 +385,8 @@ static ssize_t store_big_cores(struct kobject *kobj,
 	}
 	else if (NR_CPUS == 8)
 	{
-		if (ret != 1 || val < 0 || val > 4)
-//		if (ret != 1 || val < 0 || val > 4)
-	           return -EINVAL;
+	   if (ret != 1 || val < 0 || val > 4 || (val == 0 && AiO.LITTLE_cores == 0))
+	      return -EINVAL;
 	}
 
 	AiO.big_cores = val;
@@ -515,6 +519,8 @@ static void __exit AiO_HotPlug_exit(void)
 late_initcall(AiO_HotPlug_init);
 module_exit(AiO_HotPlug_exit);
 
-MODULE_AUTHOR("Shoaib Anwar <Shoaib0595@gmail.com>");
-MODULE_DESCRIPTION("AiO HotPlug v2.0, an All in One HotPlug for Traditional Quad-Core SoCs and Hexa-Core and Octa-Core big.LITTLE SoCs.");
+// MODULE_AUTHOR("Shoaib Anwar <Shoaib0595@gmail.com>");
+MODULE_AUTHOR("@nalas XDA");
+// MODULE_DESCRIPTION("AiO HotPlug v2.0, an All in One HotPlug for Traditional Quad-Core SoCs and Hexa-Core and Octa-Core big.LITTLE SoCs.");
+MODULE_DESCRIPTION("AiO HotPlug v2.1, an All in One HotPlug for Traditional Quad-Core SoCs and Hexa-Core and Octa-Core big.LITTLE Samsung Exynos SoCs.");
 MODULE_LICENSE("GPLv2");

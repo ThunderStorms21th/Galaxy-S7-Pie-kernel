@@ -15,6 +15,9 @@
  * Copyright (C) 2018, Ryan Andri (Rainforce279) <ryanandri@linuxmail.org>
  * 		 Adaptation for Octa core processor.
  *
+ * Copyright (C) 2019, @nalas XDA
+ * 		 Adaptation for Samsung Exynos Octa core processor.
+ *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +25,7 @@
  * General Public License included with the Linux kernel or available
  * at www.gnu.org/licenses
  *
- * MODDED for Exynoss 8890 BY @nalas ThunderStormS Team & HN
+ * MODDED for Exynoss 8890 BY @nalas  & HN ThunderStormS Team
  */
 
 #include <linux/moduleparam.h>
@@ -71,10 +74,10 @@ static struct asmp_param_struct {
 	.max_cpus_lc = 4, /* Max cpu Little cluster ! */
 	.min_cpus_bc = 1, /* Minimum Big cluster online */
 	.min_cpus_lc = 1, /* Minimum Little cluster online */
-	.cpufreq_up_bc = 90,
-	.cpufreq_up_lc = 80,
-	.cpufreq_down_bc = 50,
-	.cpufreq_down_lc = 40,
+	.cpufreq_up_bc = 80,
+	.cpufreq_up_lc = 70,
+	.cpufreq_down_bc = 60,
+	.cpufreq_down_lc = 50,
 	.cycle_up = 1,
 	.cycle_down = 1,
 };
@@ -145,7 +148,7 @@ static void update_prev_idle(unsigned int cpu)
 
 static void __ref asmp_work_fn(struct work_struct *work) {
 	unsigned int cpu = 0, load = 0;
-	unsigned int slow_cpu_bc = 4, slow_cpu_lc = 0; // was bc at 0 and lc at 4
+	unsigned int slow_cpu_bc = 4, slow_cpu_lc = 0;
 	unsigned int cpu_load_bc = 0, fast_load_bc = 0;
 	unsigned int cpu_load_lc = 0, fast_load_lc = 0;
 	unsigned int slow_load_lc = 100, slow_load_bc = 100;
@@ -156,10 +159,10 @@ static void __ref asmp_work_fn(struct work_struct *work) {
 	int nr_cpu_online_lc = 0, nr_cpu_online_bc = 0;
 
 	/* Perform always check cpu 0/4 */
-	if (!cpu_online(4)) /* was 4 */
-		asmp_online_cpus(4); 
-	if (!cpu_online(0)) /* was 0 */
-		asmp_online_cpus(0);
+	if (!cpu_online(0))
+		asmp_online_cpus(0); 
+	if (!cpu_online(4))
+		asmp_online_cpus(4);
 
 	cycle++;
 
@@ -182,9 +185,9 @@ static void __ref asmp_work_fn(struct work_struct *work) {
 
 	/* find current max and min cpu freq to estimate load */
 	get_online_cpus();
-	cpu_load_lc = get_cpu_loads(0); // was 4
+	cpu_load_lc = get_cpu_loads(0);
 	fast_load_lc = cpu_load_lc;
-	cpu_load_bc = get_cpu_loads(4); // was 0
+	cpu_load_bc = get_cpu_loads(4);
 	fast_load_bc = cpu_load_bc;
 	for_each_online_cpu(cpu) {
 		if (cpu > 4) {
@@ -215,7 +218,7 @@ static void __ref asmp_work_fn(struct work_struct *work) {
 	if (cpu_load_lc < slow_load_lc)
 		slow_load_lc = cpu_load_lc;
 
-	/* Always check cpu 4 (0) before + up nr */
+	/* Always check cpu 0 before + up nr */
 	if (cpu_online(0))
 		nr_cpu_online_lc += 1;
 
@@ -223,7 +226,7 @@ static void __ref asmp_work_fn(struct work_struct *work) {
 	if (slow_load_lc > up_load_lc) {
 		if ((nr_cpu_online_lc < max_cpu_lc) &&
 		    (cycle >= asmp_param.cycle_up)) {
-			cpu = cpumask_next_zero(0, cpu_online_mask); // was 4
+			cpu = cpumask_next_zero(0, cpu_online_mask);
 			asmp_online_cpus(cpu);
 			cycle = 0;
 		}
@@ -243,7 +246,7 @@ static void __ref asmp_work_fn(struct work_struct *work) {
 	if (cpu_load_bc < slow_load_bc)
 		slow_load_bc = cpu_load_bc;
 
-	/* Always check cpu 0 (4) before + up nr */
+	/* Always check cpu 4 before + up nr */
 	if (cpu_online(4))
 		nr_cpu_online_bc += 1;
 
@@ -251,7 +254,7 @@ static void __ref asmp_work_fn(struct work_struct *work) {
 	if (slow_load_bc > up_load_bc) {
 		if ((nr_cpu_online_bc < max_cpu_bc) &&
 		    (cycle >= asmp_param.cycle_up)) {
-			cpu = cpumask_next_zero(4, cpu_online_mask); // was 0
+			cpu = cpumask_next_zero(4, cpu_online_mask);
 			asmp_online_cpus(cpu);
 			cycle = 0;
 		}
@@ -291,10 +294,8 @@ static void __ref asmp_suspend(void)
 	cancel_delayed_work_sync(&asmp_work);
 
 	/* WAS leave only cpu 0 and cpu 4 to stay online */
-	/* leave only cpu 4 and cpu 0 to stay online */
 	for_each_online_cpu(cpu) {
 		if (cpu && cpu != 4)
-//		if (cpu && cpu != 0)
 			asmp_offline_cpus(cpu);
 	}
 }
@@ -411,6 +412,7 @@ static void __ref asmp_stop(void)
 	pr_info(ASMP_TAG"disabled\n");
 }
 
+// If AiO is ON 
 #ifdef CONFIG_AIO_HOTPLUG
 extern int AiO_HotPlug;
 #endif
@@ -421,6 +423,7 @@ static int set_enabled(const char *val,
 
 	ret = param_set_bool(val, kp);
 	if (asmp_enabled) {
+// If AiO is ON
 #ifdef CONFIG_AIO_HOTPLUG
 		if (AiO_HotPlug) {
 			asmp_enabled = 0;
@@ -433,6 +436,7 @@ static int set_enabled(const char *val,
 #endif
 		asmp_start();
 	} else {
+// If AiO is ON
 #ifdef CONFIG_AIO_HOTPLUG
 		if (AiO_HotPlug)
 			return ret;

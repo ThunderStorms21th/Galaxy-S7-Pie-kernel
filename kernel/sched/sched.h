@@ -695,7 +695,8 @@ extern int migrate_swap(struct task_struct *, struct task_struct *);
 
 // added for INTELLI_PLUG
 // #ifdef CONFIG_INTELLI_PLUG
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_HIMA_HOTPLUG) || defined(CONFIG_MSM_RUN_QUEUE_STATS_BE_CONSERVATIVE)
+// #if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
 struct nr_stats_s {
 	/* time-based average load */
 	u64 nr_last_stamp;
@@ -1312,7 +1313,7 @@ static inline void add_nr_running(struct rq *rq, unsigned count)
 
 // added Intelli
 // #ifdef CONFIG_INTELLI_PLUG
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_HIMA_HOTPLUG) || defined(CONFIG_MSM_RUN_QUEUE_STATS_BE_CONSERVATIVE)
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
 // static inline void do_avg_nr_running(struct rq *rq)
 static inline unsigned int do_avg_nr_running(struct rq *rq)
 {
@@ -1339,12 +1340,14 @@ static inline void sub_nr_running(struct rq *rq, unsigned count)
 {
 // added Intelli
 // #ifdef CONFIG_INTELLI_PLUG
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_HIMA_HOTPLUG) || defined(CONFIG_MSM_RUN_QUEUE_STATS_BE_CONSERVATIVE)
+// #if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
 	struct nr_stats_s *nr_stats = &per_cpu(runqueue_stats, rq->cpu);
 #endif
 
 // #ifdef CONFIG_INTELLI_PLUG
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_HIMA_HOTPLUG) || defined(CONFIG_MSM_RUN_QUEUE_STATS_BE_CONSERVATIVE)
+// #if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
 	write_seqcount_begin(&nr_stats->ave_seqcnt);
 	nr_stats->ave_nr_running = do_avg_nr_running(rq);
 	nr_stats->nr_last_stamp = rq->clock_task;
@@ -1352,7 +1355,8 @@ static inline void sub_nr_running(struct rq *rq, unsigned count)
 	rq->nr_running -= count;
 //added INtelli
 // #ifdef CONFIG_INTELLI_PLUG
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_HIMA_HOTPLUG) || defined(CONFIG_MSM_RUN_QUEUE_STATS_BE_CONSERVATIVE)
+// #if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
 	write_seqcount_end(&nr_stats->ave_seqcnt);
 #endif
 

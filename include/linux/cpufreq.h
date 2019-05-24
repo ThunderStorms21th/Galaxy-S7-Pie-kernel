@@ -77,9 +77,10 @@ struct cpufreq_policy {
 	unsigned int		max;    /* in kHz */
 	unsigned int		cur;    /* in kHz, only needed if cpufreq
 					 * governors are used */
+	unsigned int            util;  /* CPU utilization at max frequency BLU HOTPLUG */
 	unsigned int		restore_freq; /* = policy->cur before transition */
 	unsigned int		suspend_freq; /* freq to set during suspend */
-	unsigned int		util;	/* CPU utilization at max frequency */
+//	unsigned int		util;	/* CPU utilization at max frequency */
 	unsigned int		load_at_max;  /* CPU utilization at max frequency */
 
 	unsigned int		policy; /* see above */
@@ -162,6 +163,7 @@ extern int __cpufreq_driver_getavg(struct cpufreq_policy *policy,
 unsigned int cpufreq_get(unsigned int cpu);
 unsigned int cpufreq_quick_get(unsigned int cpu);
 unsigned int cpufreq_quick_get_max(unsigned int cpu);
+unsigned int cpufreq_quick_get_util(unsigned int cpu);	// added for BLU Hotplug
 void disable_cpufreq(void);
 
 u64 get_cpu_idle_time(unsigned int cpu, u64 *wall, int io_busy);

@@ -91,6 +91,7 @@
 #include <linux/sched/rt.h>
 #include <linux/cpumask.h>
 
+
 #include <asm/switch_to.h>
 #include <asm/tlb.h>
 #include <asm/irq_regs.h>
@@ -137,7 +138,9 @@ DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
 
 // added for INTELLI_PLUG
 // #ifdef CONFIG_INTELLI_PLUG
-#if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_HIMA_HOTPLUG)
+// #if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
+DECLARE_PER_CPU(struct nr_stats_s, runqueue_stats);
 DEFINE_PER_CPU_SHARED_ALIGNED(struct nr_stats_s, runqueue_stats);
 #endif
 
@@ -2544,6 +2547,62 @@ unsigned long this_cpu_load(void)
 	return this->cpu_load[0];
 } // end
 
+
+// added BRICKED PLUG ---------------------------------------------------------
+#if defined(CONFIG_BRICKED_HOTPLUG)
+static inline void rq_pin_lock(struct rq *rq, struct rq_flags *rf)
+{
+
+struct rq_flags {
+	unsigned long flags;
+	int coockie;
+	struct pin_cookie cookie;
+#ifdef CONFIG_SCHED_DEBUG
+	/*
+	 * A copy of (rq::clock_update_flags & RQCF_UPDATED) for the
+	 * current pin context is stashed here in case it needs to be
+	 * restored in rq_repin_lock().
+	 */
+	unsigned int clock_update_flags;
+#endif
+};
+	unsigned int cookie;
+	rf->cookie = lockdep_pin_lock(&rq->lock);
+
+#ifdef CONFIG_SCHED_DEBUG
+	rq->clock_update_flags &= (RQCF_REQ_SKIP|RQCF_ACT_SKIP);
+	rf->clock_update_flags = 0;
+#endif
+}
+
+static inline void
+rq_lock(struct rq *rq, struct rq_flags *rf)
+	__acquires(rq->lock)
+{
+	unsigned int rq_info;
+	raw_spin_lock(&rq->lock);
+	rq_pin_lock(rq, rf);
+}
+
+unsigned int get_rq_info(void)
+{
+	unsigned long flags = 0;
+        unsigned int rq = 0;
+
+        spin_lock_irqsave(&rq_lock, flags);
+
+        rq = rq_info.rq_avg;
+        rq_info.rq_avg = 0;
+
+        spin_unlock_irqrestore(&rq_lock, flags);
+
+        return rq;
+}
+EXPORT_SYMBOL(get_rq_info);
+#endif
+// end -------------------------------------------------------
+
+
 // added for INTELLI_PLUG
 /*
  * Global load-average calculations
@@ -2592,11 +2651,13 @@ unsigned long this_cpu_load(void)
  *  This covers the NO_HZ=n code, for extra head-aches, see the comment below.
  */
 
-// #if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_HIMA_HOTPLUG))
-#ifdef CONFIG_INTELLI_PLUG || CONFIG_HIMA_HOTPLUG
+// #if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+/*
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
 static inline unsigned int do_avg_nr_running(struct rq *rq)
 {
 
+	unsigned int runqueue_stats;
 	struct nr_stats_s *nr_stats = &per_cpu(runqueue_stats, rq->cpu);
 	unsigned int ave_nr_running = nr_stats->ave_nr_running;
 	s64 nr, deltax;
@@ -2612,14 +2673,16 @@ static inline unsigned int do_avg_nr_running(struct rq *rq)
 
 	return ave_nr_running;
 }
-#endif
+#endif */
 
-#ifdef CONFIG_INTELLI_PLUG || CONFIG_HIMA_HOTPLUG
-// #if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_HIMA_HOTPLUG))
+// #ifdef CONFIG_INTELLI_PLUG
+// #if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
 unsigned long avg_nr_running(void)
 {
 	unsigned long i, sum = 0;
 	unsigned int seqcnt, ave_nr_running;
+	unsigned int runqueue_stats;
 
 	for_each_online_cpu(i) {
 		struct nr_stats_s *stats = &per_cpu(runqueue_stats, i);
@@ -2646,11 +2709,12 @@ unsigned long avg_nr_running(void)
 EXPORT_SYMBOL(avg_nr_running);
 #endif
 
-#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_HIMA_HOTPLUG))
-// #ifdef CONFIG_INTELLI_PLUG
+// #if defined(CONFIG_INTELLI_PLUG) || defined(CONFIG_LAZYPLUG)
+#if defined(CONFIG_INTELLI_PLUG) || (defined(CONFIG_LAZYPLUG))
 unsigned long avg_cpu_nr_running(unsigned int cpu)
 {
 	unsigned int seqcnt, ave_nr_running;
+	unsigned int runqueue_stats;
 
 	struct nr_stats_s *stats = &per_cpu(runqueue_stats, cpu);
 	struct rq *q = cpu_rq(cpu);
