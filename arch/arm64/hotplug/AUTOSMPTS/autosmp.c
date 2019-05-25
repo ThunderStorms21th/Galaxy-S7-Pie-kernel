@@ -15,7 +15,7 @@
  * Copyright (C) 2018, Ryan Andri (Rainforce279) <ryanandri@linuxmail.org>
  * 		 Adaptation for Octa core processor.
  *
- * Copyright (C) 2019, @nalas XDA
+ * Copyright (C) 2019, @nalas & HN XDA
  * 		 Adaptation for Samsung Exynos Octa core processor.
  *
  * This program is free software; you can redistribute it and/or modify
@@ -68,12 +68,12 @@ static struct asmp_param_struct {
 	unsigned int cycle_up;
 	unsigned int cycle_down;
 } asmp_param = {
-	.delay = 150, /* was 100 ms */
-	.scroff_single_core = true,
-	.max_cpus_bc = 4, /* Max cpu Big cluster ! */
-	.max_cpus_lc = 4, /* Max cpu Little cluster ! */
-	.min_cpus_bc = 1, /* Minimum Big cluster online */
-	.min_cpus_lc = 1, /* Minimum Little cluster online */
+	.delay = 80, 		/* was 100 ms */
+	.scroff_single_core = false,
+	.max_cpus_bc = 4, 	/* Max cpu Big cluster ! */
+	.max_cpus_lc = 4, 	/* Max cpu Little cluster ! */
+	.min_cpus_bc = 1, 	/* Minimum Big cluster online */
+	.min_cpus_lc = 2, 	/* Minimum Little cluster online */
 	.cpufreq_up_bc = 80,
 	.cpufreq_up_lc = 70,
 	.cpufreq_down_bc = 60,

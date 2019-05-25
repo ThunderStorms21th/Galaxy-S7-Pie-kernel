@@ -41,7 +41,7 @@
 <*>LED control with FADE</*>
 <*>IRIS service off</*>
 <*>Added TTL support for IP</*>
-<*>Added Fingerprint Boost default ON</*>
+<*>Added Fingerprint Boost default OFF</*>
 <*>VNSwap - default is turned ON.</*>
 <*>VNSwap - added script for disable it in Aroma.</*>
 <*>ZRAM - default is turned OFF, file set max at 2.5GB</*>

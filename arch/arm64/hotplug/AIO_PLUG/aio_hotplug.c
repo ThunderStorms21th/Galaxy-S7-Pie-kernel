@@ -2,7 +2,7 @@
  * Hexa/Octa-Core big.LITTLE Samsung Exynos SoCs.
  *
  * Copyright (c) 2017, Shoaib Anwar <Shoaib0595@gmail.com>
- * Copyright (c) 2019, @nalas XDA
+ * Copyright (c) 2019, @nalas & HN XDA
  *
  * Based on State_Helper HotPlug, by Pranav Vashi <neobuddy89@gmail.com>
  *
