@@ -98,14 +98,14 @@ menu.6=Spectrum (TS) Profiles
 menu.6desc=Simple way for the management of 4 predefined profiles, Balanced, Battery, Performance and Gaming. Copied to sdcard/Spectrum/profiles.
 menu.7=Delete root data
 menu.7desc=Data and app will be deleted from the previous root. Recommended for clean installation.
-menu.8=Recovery TWRP 3.2.3-0 Fixed by Tkkg1994
-menu.8desc=Updated by Tkkg1994. Necessary for the kernel.
+menu.8=Recovery TWRP 3.3.0-0 Fixed by AJ's
+menu.8desc=Updated by AJ's. Necessary for the kernel.
 #menu.9=Fix Private Mode (Stock Roms) by MoRoGoKu
 #menu.9desc=Only with S7 Stock based Roms | is not for ported or deodexed ROMs
 menu.10=Patch for deodexed and ported roms
 menu.10desc=This will patch ported and deodexed roms
-#menu.11=Spectrum Profiles - not supported yet
-#menu.11desc=Copy in sdcard/TSProfiles/profiles
+menu.11=Install ADB support
+menu.11desc=Install magisk mod for support ADB NDK
 
 # Root
 stock.title=Without root

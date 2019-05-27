@@ -75,11 +75,8 @@ if file_getprop("/tmp/aroma/menu.prop", "chk6") == "1" then
 	run_program("/tmp/ts/tskernel2.sh");
 	run_program("/ts/tskernel2.sh");
 	package_extract_dir("ts/profiles", "/data/media/0/Spectrum/profiles/");
-	package_extract_dir("ts/profiles", "/sdcard/Spectrum/profiles/");
 	package_extract_dir("ts/profiles", "/storage/emulated/0/Spectrum/profiles/");
-	package_extract_dir("/tmp/ts/profiles", "/data/media/0/Spectrum/profiles/");
-	package_extract_dir("/tmp/ts/profiles", "/sdcard/Spectrum/profiles/");
-	package_extract_dir("/tmp/ts/profiles", "/storage/emulated/0/Spectrum/profiles/");
+	package_extract_dir("ts/profiles", "/sdcard/Spectrum/profiles/");
 endif;
 
 # TS swap off
@@ -108,7 +105,7 @@ endif;
 # Recovery
 if file_getprop("/tmp/aroma/menu.prop", "chk8") == "1" then
 	ui_print(" ");
-	ui_print("@Flashing patched recovery TWRP 3.2.3-0 by Tkkg1994...");
+	ui_print("@Flashing patched recovery TWRP 3.3.0-0 by AJ's...");
 	if is_substring("G935", getprop("ro.boot.bootloader")) then
 		ui_print("-- G935 S7 Edge");
 		run_program("/tmp/ts/flash_recovery.sh", "G935");
@@ -249,12 +246,14 @@ run_program("/tmp/ts/fix_permissions");
 
 # INSTALL ADB
 # -----------
+if file_getprop("/tmp/aroma/menu.prop", "chk11") == "1" then
 	ui_print(" ");
 	ui_print("@ThunderStormS Installing ADB...");
 	package_extract_dir("ts/adb", "/tmp/adb");
 	run_program("/sbin/busybox", "unzip", "/tmp/adb/adb.zip", "META-INF/com/google/android/*", "-d", "/tmp/adb");
 	run_program("/sbin/sh", "/tmp/adb/META-INF/com/google/android/update-binary", "dummy", "1", "/tmp/adb/adb.zip");
 	delete_recursive("/tmp/adb");
+endif;
 
 #####################################################
 
