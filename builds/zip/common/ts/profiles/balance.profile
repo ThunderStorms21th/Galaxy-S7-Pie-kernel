@@ -10,11 +10,11 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 93
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "50000 754000:30000 754000:30000 962000:20000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "40000 650000:30000 754000:30000 962000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 40000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 754000
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 650000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 30000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
@@ -43,7 +43,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 95
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "60000 624000:30000 1040000:25000 1248000:20000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "50000 624000:30000 1040000:30000 1248000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 40000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
@@ -66,7 +66,8 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 20000
 
    # CPU HOTPLUG
-   write /sys/power/cpuhotplug/enabled 1
+   # write /sys/power/cpuhotplug/enabled 0
+   # write /sys/module/autosmp/parameters/enabled 1
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 0
 
    # HMP
@@ -80,7 +81,7 @@
    write /sys/kernel/hmp/down_compensation_mid_freq 858000
    chmod 0664 /sys/kernel/hmp/down_compensation_low_freq
    write /sys/kernel/hmp/down_compensation_low_freq 754000
-   write /proc/sys/kernel/random/write_wakeup_threshold 128
+   write /proc/sys/kernel/random/write_wakeup_threshold 256
    write /proc/sys/kernel/random/read_wakeup_threshold 64
    write /proc/sys/vm/dirty_expire_centisecs 500
    write /proc/sys/vm/dirty_writeback_centisecs 1000
@@ -135,8 +136,11 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SSWAP
-   write /proc/sys/vm/swappiness 130
+   write /proc/sys/vm/swappiness 90
 
    # LMK
-   write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,102400"
+   write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,92400"
+
+   # WiFi
+   setprop wifi.supplicant_scan_interval 400
 

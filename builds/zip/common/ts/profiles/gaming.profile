@@ -14,7 +14,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 650000
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1066000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
@@ -47,7 +47,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1040000
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1248000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
@@ -66,7 +66,7 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 40000
 
    # CPU HOTPLUG
-   write /sys/power/cpuhotplug/enabled 1
+   # write /sys/power/cpuhotplug/enabled 1
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 1
 
    # HMP

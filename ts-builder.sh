@@ -3,7 +3,7 @@
 # Thanks to Tkkg1994 and djb77 for the script
 #
 # Thanks to MoRoGoku for the script
-# Kernel Build Script v1.5, modified by ThunderStorms Team
+# Kernel Build Script v1.6, modified by ThunderStorms Team
 #
 
 # SETUP
@@ -44,7 +44,7 @@ DEFCONFIG=ts-kernel_defconfig
 DEFCONFIG_S7EDGE=hero2lte_defconfig
 DEFCONFIG_S7FLAT=herolte_defconfig
 
-export K_VERSION="v1.5.1"
+export K_VERSION="v1.6"
 export K_BASE="U4CSC4"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"

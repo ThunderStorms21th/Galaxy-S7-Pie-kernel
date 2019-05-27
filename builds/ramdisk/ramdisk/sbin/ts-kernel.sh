@@ -126,18 +126,18 @@ echo "2288000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
 echo "208000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 echo "1586000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "130000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-echo "754000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+echo "650000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
 echo "728000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-echo "50000 754000:30000 754000:30000 962000:20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-echo "60000 728000:30000 1040000:25000 1248000:20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
+echo "40000 650000:30000 754000:30000 962000:20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+echo "50000 728000:30000 1040000:30000 1248000:20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
 echo "80 858000:85 1066000:90" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 echo "80 832000:85 1040000:88 1352000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
 echo "93" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
 echo "95" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
 echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
+echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+echo "30000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
 echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
 echo "30000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
 
@@ -168,11 +168,12 @@ echo "368" > /sys/block/sda/queue/nr_requests
 echo "368" > /sys/block/mmcblk0/queue/nr_requests
 
 # LMK
-echo "18920,23552,32256,42472,65536,102400" > /sys/module/lowmemorykiller/parameters/minfree
+echo "18920,23552,32256,42472,65536,92400" > /sys/module/lowmemorykiller/parameters/minfree
+# echo "18920,23552,32256,42472,65536,102400" > /sys/module/lowmemorykiller/parameters/minfree
 
 # SSWAP and Entropy
-echo "130" > /proc/sys/vm/swappiness
-echo "128" > /proc/sys/kernel/random/write_wakeup_threshold
+echo "90" > /proc/sys/vm/swappiness
+echo "256" > /proc/sys/kernel/random/write_wakeup_threshold
 echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 echo "500" > /proc/sys/vm/dirty_expire_centisecs
 echo "1000" > /proc/sys/vm/dirty_writeback_centisecs
@@ -192,8 +193,8 @@ for ZRAM in /dev/block/zram*; do
     swapoff $ZRAM
 done;
 
-# FINGERPRINT BOOST - ON
-echo 1 > /sys/kernel/fp_boost/enabled
+# FINGERPRINT BOOST - OFF
+echo 0 > /sys/kernel/fp_boost/enabled
 
 # Tweaks: Internet Speed
 echo 'westwood' > /proc/sys/net/ipv4/tcp_congestion_control
@@ -204,7 +205,7 @@ echo "1" > /proc/sys/net/ipv4/tcp_tw_recycle
 echo "1" > /proc/sys/net/ipv4/tcp_window_scaling
 echo "5" > /proc/sys/net/ipv4/tcp_keepalive_probes
 echo "20" > /proc/sys/net/ipv4/tcp_keepalive_intvl
-echo "30" > /proc/sys/net/ipv4/tcp_fin_timeout
+echo "20" > /proc/sys/net/ipv4/tcp_fin_timeout
 echo "404480" > /proc/sys/net/core/wmem_max
 echo "404480" > /proc/sys/net/core/rmem_max
 echo "256960" > /proc/sys/net/core/rmem_default
