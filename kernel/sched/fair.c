@@ -688,6 +688,11 @@ static inline void __update_task_entity_contrib(struct sched_entity *se);
 void init_task_runnable_average(struct task_struct *p)
 {
 	u32 slice;
+	struct sched_entity *se = &p->se;
+	struct cfs_rq *cfs_rq = cfs_rq_of(se);
+	struct sched_avg *sa = &se->avg;
+	long cpu_scale = arch_scale_cpu_capacity(cpu_of(rq_of(cfs_rq)));
+	long cap = (long)(cpu_scale - cfs_rq->avg.util_avg) / 2;
 
 	p->se.avg.decay_count = 0;
 	slice = sched_slice(task_cfs_rq(p), &p->se) >> 10;
@@ -7315,9 +7320,9 @@ static void update_cpu_capacity(struct sched_domain *sd, int cpu)
 
 /*	if (sched_feat(ARCH_CAPACITY)) */
 	if (Larch_power)
-		capacity *= arch_scale_cpu_capacity(sd, cpu);
+		capacity *= arch_scale_cpu_capacity(cpu);
 	else
-		capacity *= default_scale_cpu_capacity(sd, cpu);
+		capacity *= default_scale_cpu_capacity(cpu);
 
 	capacity >>= SCHED_CAPACITY_SHIFT;
 
@@ -7325,9 +7330,9 @@ static void update_cpu_capacity(struct sched_domain *sd, int cpu)
 
 /*	if (sched_feat(ARCH_CAPACITY)) */
 	if (Larch_power)
-		capacity *= arch_scale_freq_capacity(sd, cpu);
+		capacity *= arch_scale_freq_capacity(cpu);
 	else
-		capacity *= default_scale_capacity(sd, cpu);
+		capacity *= default_scale_capacity(cpu);
 
 	capacity >>= SCHED_CAPACITY_SHIFT;
 
@@ -7846,6 +7851,10 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
 {
 	unsigned long max_pull, load_above_capacity = ~0UL;
 	struct sg_lb_stats *local, *busiest;
+	struct rq *rq = cpu_rq(cpu);
+	unsigned long max = arch_scale_cpu_capacity(cpu);
+	unsigned long used, free;
+	unsigned long irq;
 
 	local = &sds->local_stat;
 	busiest = &sds->busiest_stat;
@@ -7931,6 +7940,7 @@ static struct sched_group *find_busiest_group(struct lb_env *env)
 {
 	struct sg_lb_stats *local, *busiest;
 	struct sd_lb_stats sds;
+	cpu_rq(cpu)->cpu_capacity_orig = arch_scale_cpu_capacity(cpu);
 
 	init_sd_lb_stats(&sds);
 

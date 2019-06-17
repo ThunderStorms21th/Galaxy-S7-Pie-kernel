@@ -616,6 +616,36 @@ static void update_curr_dl(struct rq *rq)
 
 	sched_rt_avg_update(rq, delta_exec);
 
+	/*
+	 * For tasks that participate in GRUB, we implement GRUB-PA: the
+	 * spare reclaimed bandwidth is used to clock down frequency.
+	 *
+	 * For the others, we still need to scale reservation parameters
+	 * according to current frequency and CPU maximum capacity.
+	 */
+	if (unlikely(dl_se->flags & SCHED_FLAG_RECLAIM)) {
+		scaled_delta_exec = grub_reclaim(delta_exec,
+						 rq,
+						 &curr->dl);
+	} else {
+		unsigned long scale_freq = arch_scale_freq_capacity(cpu);
+		unsigned long scale_cpu = arch_scale_cpu_capacity(cpu);
+
+		scaled_delta_exec = cap_scale(delta_exec, scale_freq);
+		scaled_delta_exec = cap_scale(scaled_delta_exec, scale_cpu);
+	}
+
+	dl_se->runtime -= scaled_delta_exec;
+
+throttle:
+	if (dl_runtime_exceeded(dl_se) || dl_se->dl_yielded) {
+		dl_se->dl_throttled = 1;
+
+		/* If requested, inform the user about runtime overruns. */
+		if (dl_runtime_exceeded(dl_se) &&
+		    (dl_se->flags & SCHED_FLAG_DL_OVERRUN))
+			dl_se->dl_overrun = 1;
+
 	dl_se->runtime -= delta_exec;
 	if (dl_runtime_exceeded(rq, dl_se)) {
 		__dequeue_task_dl(rq, curr, 0);
