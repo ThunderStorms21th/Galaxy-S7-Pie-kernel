@@ -88,9 +88,6 @@
 #define CREATE_TRACE_POINTS
 #include <trace/events/task.h>
 
-/* Gaming control */
-#include <linux/gaming_control.h>
-
 #ifdef CONFIG_SECURITY_DEFEX
 #include <linux/defex.h>
 #endif
@@ -1688,9 +1685,6 @@ long do_fork(unsigned long clone_flags,
 	struct task_struct *p;
 	int trace = 0;
 	long nr;
-
-// Game tools
-	game_option(current, GAME_START);
 
 	/*
 	 * Determine whether and which event to report to ptracer.  When

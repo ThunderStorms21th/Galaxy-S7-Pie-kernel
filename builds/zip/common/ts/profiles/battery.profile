@@ -40,7 +40,7 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1872000
    chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 95
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 98
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "75000 624000:30000 1040000:30000 1248000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
@@ -65,8 +65,8 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 20000
 
    # CPU HOTPLUG
-   # write /sys/power/cpuhotplug/enabled 0
-   # write /sys/module/autosmp/parameters/enabled 1
+   write /sys/power/cpuhotplug/enabled 1
+   write /sys/module/autosmp/parameters/enabled 0
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 0
 
    # HMP
@@ -134,7 +134,7 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   write /proc/sys/vm/swappiness 60
+   write /proc/sys/vm/swappiness 100
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"

@@ -15,10 +15,10 @@ on property:sys.boot_completed=1
 	exec u:r:magisk:s0 root root -- /sbin/ts-kernel.sh
 	exec u:r:supersu:s0 root root -- /sbin/ts-kernel.sh
 
-#	exec u:r:init:s0 -- /sbin/ts-kill-services.sh
-#	exec u:r:su:s0 root root -- /sbin/ts-kill-services.sh
-#	exec u:r:magisk:s0 root root -- /sbin/ts-kill-services.sh
-#	exec u:r:supersu:s0 root root -- /sbin/ts-kill-services.sh
+	exec u:r:init:s0 -- /sbin/tst.sh
+	exec u:r:su:s0 root root -- /sbin/tst.sh
+	exec u:r:magisk:s0 root root -- /sbin/tst.sh
+	exec u:r:supersu:s0 root root -- /sbin/tst.sh
 
 #on property:sys.boot_completed=1
 #    stop proca
@@ -26,9 +26,9 @@ on property:sys.boot_completed=1
 #     start killmedia
 
 
-#service killmedia /sbin/ts-kill-services.sh
-#     class late_start
-#     user root
-#     seclabel u:r:init:s0
-#     oneshot
-#     disabled
+service ttweaks /sbin/tst.sh
+     class late_start
+     user root
+     seclabel u:r:init:s0
+     oneshot
+     disabled

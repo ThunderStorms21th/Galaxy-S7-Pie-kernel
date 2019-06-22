@@ -4,7 +4,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 338000
+   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 442000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
@@ -36,7 +36,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactive
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 416000
+   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 520000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2600000
    chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
@@ -66,7 +66,8 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 40000
 
    # CPU HOTPLUG
-   # write /sys/power/cpuhotplug/enabled 1
+   write /sys/power/cpuhotplug/enabled 1
+   write /sys/module/autosmp/parameters/enabled 0
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 1
 
    # HMP
@@ -97,7 +98,7 @@
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 546
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 90
+   write /sys/devices/14ac0000.mali/highspeed_load 93
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
 
@@ -106,8 +107,8 @@
    write /sys/block/sda/queue/read_ahead_kb 1024
    write /sys/block/mmcblk0/queue/scheduler fiops
    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
-   write /sys/block/sda/queue/rq_affinity 2
-   write /sys/block/mmcblk0/queue/rq_affinity 2
+   write /sys/block/sda/queue/rq_affinity 1
+   write /sys/block/mmcblk0/queue/rq_affinity 1
    write /sys/block/sda/queue/nr_requests 512
    write /sys/block/mmcblk0/queue/nr_requests 512
 
@@ -129,8 +130,11 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   write /proc/sys/vm/swappiness 120
+   write /proc/sys/vm/swappiness 170
+   write /proc/sys/vm/vfs_cache_pressure 100
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"
+
+
 

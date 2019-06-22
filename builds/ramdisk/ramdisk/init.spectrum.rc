@@ -37,3 +37,9 @@ on property:persist.spectrum.profile=3
    exec u:r:su:s0 root root -- /sbin/spa gaming
    exec u:r:magisk:s0 root root -- /sbin/spa gaming
 
+# Thunderstorms
+on property:persist.spectrum.profile=4
+   exec u:r:init:s0 root root -- /sbin/spa thunderstorms
+   exec u:r:su:s0 root root -- /sbin/spa thunderstorms
+   exec u:r:magisk:s0 root root -- /sbin/spa thunderstorms
+

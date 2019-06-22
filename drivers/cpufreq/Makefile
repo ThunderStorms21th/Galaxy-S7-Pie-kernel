@@ -46,6 +46,7 @@ obj-$(CONFIG_CPU_FREQ_GOV_INTELLIMM)	        += cpufreq_intellimm.o
 obj-$(CONFIG_CPU_FREQ_GOV_INTERACTIVE)	+= cpufreq_interactive.o
 obj-$(CONFIG_CPU_FREQ_GOV_DYNAMIC_INTERACTIVE) 	+= cpufreq_dynamic_interactive.o
 obj-$(CONFIG_CPU_FREQ_GOV_THUNDERSTORMS_INTERACTIVE) 	+= cpufreq_thunderstorms_interactive.o
+obj-$(CONFIG_CPU_FREQ_GOV_THUNDERSTORM) 	+= cpufreq_thunderstorm.o
 obj-$(CONFIG_CPU_FREQ_GOV_IRONACTIVE)	+= cpufreq_ironactive.o
 obj-$(CONFIG_CPU_FREQ_GOV_KTOONSERVATIVEQ) 	+= cpufreq_ktoonservativeq.o
 obj-$(CONFIG_CPU_FREQ_GOV_LAGFREE)      	+= cpufreq_lagfree.o
@@ -95,9 +96,9 @@ obj-$(CONFIG_CPU_FREQ_GOV_THUNDERSTORMS)	+= cpufreq_thunderstorms.o
 obj-$(CONFIG_CPU_FREQ_GOV_COMMON)		+= cpufreq_governor.o
 obj-$(CONFIG_CPU_BOOST)			+= cpu-boost.o
 obj-$(CONFIG_FINGERPRINT_BOOST)		+= fp-boost.o
-obj-$(CONFIG_CPU_INPUT_BOOST)		+= cpu_input_boost.o
-#obj-$(CONFIG_CPU_FREQ_GOV_SCHED) += cpufreq_sched.o
-obj-$(CONFIG_CPU_FREQ_GOV_SCHEDUTIL) += cpufreq_schedutil.o
+# obj-$(CONFIG_CPU_INPUT_BOOST)		+= cpu_input_boost.o
+# obj-$(CONFIG_CPU_FREQ_GOV_SCHED) += cpufreq_sched.o
+# obj-$(CONFIG_CPU_FREQ_GOV_SCHEDUTIL) += cpufreq_schedutil.o
 
 obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
 

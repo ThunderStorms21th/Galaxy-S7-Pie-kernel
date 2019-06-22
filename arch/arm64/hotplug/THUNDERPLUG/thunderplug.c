@@ -43,7 +43,7 @@
 #define MIN_CPU_UP_TIME			(300)
 
 #define DEFAULT_BOOST_LOCK_DUR		500 * 1000L
-#define DEFAULT_NR_CPUS_BOOSTED		2
+#define DEFAULT_NR_CPUS_BOOSTED		8		// 2
 #define MIN_INPUT_INTERVAL		150 * 1000L
 
 static bool isSuspended = false;
@@ -84,10 +84,10 @@ static struct thunder_param_struct {
 } thunder_param = {
 	.cpus_boosted = DEFAULT_NR_CPUS_BOOSTED,
 	.boost_lock_dur = DEFAULT_BOOST_LOCK_DUR,
-	.suspend_cpu_num = 3,
+	.suspend_cpu_num = 2,				// 3
 	.resume_cpu_num = (NR_CPUS -1),
 	.max_core_online = NR_CPUS,
-	.min_core_online = 1,
+	.min_core_online = 2,				// 1
 	.sampling_time = DEF_SAMPLING_MS,
 	.load_threshold = DEFAULT_CPU_LOAD_THRESHOLD,
 	.tplug_hp_enabled = HOTPLUG_ENABLED,
@@ -421,7 +421,10 @@ static void __cpuinit tplug_work_fn(struct work_struct *work)
 
 				if (!(i + 1) == 0) {
 					now[i + 1] = ktime_to_ms(ktime_get());
-					if ((now[i + 1] - last_time[i + 1]) >
+//					if ((now[i + 1] - last_time[i + 1]) >
+// added
+					if (i != 3 && (now[i + 1] - last_time[i + 1]) >
+// end
 							MIN_CPU_UP_TIME)
 						cpu_down(i + 1);
 				}

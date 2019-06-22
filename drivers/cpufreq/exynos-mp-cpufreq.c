@@ -1473,6 +1473,7 @@ void enable_nonboot_cluster_cpus(void)
 void disable_nonboot_cluster_cpus(void)
 {
 //	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS);
+//	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST0_CPUS); // added
 	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST1_CPUS + 1); // big cpu 3 cores down when screen is off
 	pm_qos_update_request(&cpufreq_cpu_hotplug_max_request, NR_CLUST0_CPUS + 1); // little cpu - 3 cores down when screen is off
 }
@@ -2940,7 +2941,7 @@ static int __init exynos_mp_cpufreq_init(void)
 	return platform_driver_register(&exynos_mp_cpufreq_driver);
 }
 // #ifdef CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE
-#if defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE) || defined(CONFIG_CPU_FREQ_DEFAULT_GOV_CAFACTIVE)
+#if defined(CONFIG_CPU_FREQ_DEFAULT_GOV_INTERACTIVE) || defined(CONFIG_CPU_FREQ_DEFAULT_GOV_CAFACTIVE) || defined(CONFIG_CPU_FREQ_DEFAULT_GOV_THUNDERSTORM)
 device_initcall(exynos_mp_cpufreq_init);
 #else
 late_initcall(exynos_mp_cpufreq_init);

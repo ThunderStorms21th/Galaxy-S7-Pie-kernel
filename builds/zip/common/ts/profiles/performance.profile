@@ -66,7 +66,8 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 40000
 
    # CPU HOTPLUG
-   # write /sys/power/cpuhotplug/enabled 1
+   write /sys/power/cpuhotplug/enabled 1
+   write /sys/module/autosmp/parameters/enabled 0
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 1
 
    # HMP
@@ -96,7 +97,7 @@
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 419
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 92
+   write /sys/devices/14ac0000.mali/highspeed_load 93
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
 
@@ -105,8 +106,8 @@
    write /sys/block/sda/queue/read_ahead_kb 1024
    write /sys/block/mmcblk0/queue/scheduler zen
    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
-   write /sys/block/sda/queue/rq_affinity 2
-   write /sys/block/mmcblk0/queue/rq_affinity 2
+   write /sys/block/sda/queue/rq_affinity 1
+   write /sys/block/mmcblk0/queue/rq_affinity 1
    write /sys/block/sda/queue/nr_requests 512
    write /sys/block/mmcblk0/queue/nr_requests 512
 
@@ -124,12 +125,14 @@
    write /sys/kernel/dyn_fsync/Dyn_fsync_active 0
    write /sys/kernel/sched/gentle_fair_sleepers 0
    write /sys/kernel/sched/arch_power 0
-   write /sys/kernel/power_suspend/power_suspend_mode 2
+   write /sys/kernel/power_suspend/power_suspend_mode 3
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   write /proc/sys/vm/swappiness 120
+   # write /proc/sys/vm/swappiness 170
+   write /proc/sys/vm/vfs_cache_pressure 100
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "20432,26040,32648,42256,59064,101152"
+
 

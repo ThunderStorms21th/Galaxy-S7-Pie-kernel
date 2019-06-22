@@ -2,16 +2,49 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-Pie</#></b>	
-	VERSION	: <b><#selectbg_g>v1.6</#></b>
-	DATE	: <b><#selectbg_g>27/05/2019</#></b>
+	VERSION	: <b><#selectbg_g>v1.7</#></b>
+	DATE	: <b><#selectbg_g>18/06/2019</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
-<#53a6f4><b>  ONLY FOR Galaxy S7/S7Edge | stock odex/deodex roms |</b></#>
+<#53a6f4><b> ONLY FOR Galaxy S7/S7Edge | stock odex/deodex roms |</b></#>
 
 
 <b>CHANGELOG:</b>
 
 ---------------------------------------------------------------------------
+<u><b><#selectbg_g>FBT-Kernel-P-v1.7 : 18.06.2019</#></b></u>
+<*>Samsung sources G930FXXU4CSC4</*>
+<*>Samsung ramdisk G930FXXS4CSC4</*>
+<*>Support odexed / deodexed roms NFE/N8</*>
+<*>ThunderTweaks v1.0.0</*>
+<*>Added GPU libs and drivers from OREO and PIE</*>
+<*>Flat and Edge versions</*>
+<*>Fixed Private Mode (Stock ROMS) by MoRoGoKu</*>
+<*>Removed MTweaks</*>
+<*>Removed TWRP</*>
+<*>Added Archpower support - default is off</*>
+<*>Added Dynamic Fsync and Powersuspend</*>
+<*>Magisk 19.0 official</*>
+<*>Knox 0x0 & SafetyNet with SuperSU and Magisk</*>
+<*>Linux 3.18.91 Samsung</*>
+<*>CPU big : 2600/208 MHZ</*>
+<*>CPU little : 1586/130 MHZ</*>
+<*>Moro Sound Driver v2.1.1</*>
+<*>Added NEW Thunderstorm CPU governor</*>
+<*>Added selectable libs to install for Oreo and PIE</*>
+<*>Added new thunderstorm CPU gov</*>
+  Do not change more then 50 in
+  DOWN_LOW_LOAD_THRESHOLD !!!
+  For now is not selectable at max 50 !
+<*>Now default settings are like Samsung stock's</*>
+<*>SELinux : permissive</*>
+<*>Added support for NEW ThundeRStormS Spectrum profile</*>
+<*>compiler : aarch64-linux-android-4.9</*>
+<*>Fix: No heat and no lags and more stability</*>
+<*>Fix for SCSI drivers and maybe deepsleep drain</*>
+<*>Rest like in TS-PIE v1.6</*>
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
 <u><b><#selectbg_g>FBT-Kernel-P-v1.6 : 27.05.2019</#></b></u>
 <*>Samsung sources G930FXXU4CSC4</*>
 <*>Samsung ramdisk G930FXXS4CSC4</*>

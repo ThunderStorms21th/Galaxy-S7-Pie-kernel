@@ -72,15 +72,15 @@ static struct hotplug_tuners {
 	struct mutex alu_hotplug_mutex;
 #endif
 } hotplug_tuners_ins = {
-	.hotplug_sampling_rate = 30,
+	.hotplug_sampling_rate = 50,
 #ifdef CONFIG_MACH_JF
 	.hotplug_enable = 0,
 #else
 	.hotplug_enable = 0,
 #endif
-	.min_cpus_online = 1,
+	.min_cpus_online = 2,
 	.maxcoreslimit = NR_CPUS,
-	.maxcoreslimit_sleep = 1,
+	.maxcoreslimit_sleep = 0,
 	.hp_io_is_busy = 0,
 #if defined(CONFIG_POWERSUSPEND) || \
 	defined(CONFIG_HAS_EARLYSUSPEND)

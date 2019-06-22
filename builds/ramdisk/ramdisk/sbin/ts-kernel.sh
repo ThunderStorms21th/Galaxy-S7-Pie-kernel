@@ -4,8 +4,12 @@
 # Thanks to MoRoGoKu and djb77
 
 # Set Variables
+
 RESETPROP="/sbin/magisk resetprop -v -n"
 TS_DIR="/data/.tskernel"
+LOG="$TS_DIR/tskernel.log"
+
+rm -f $LOG
 
 # Mount
 mount -o remount,rw -t auto /
@@ -40,44 +44,28 @@ chmod 640 /sys/fs/selinux/enforce
 chmod 440 /sys/fs/selinux/policy
 
 ##KILL MEDIA
-if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
-busybox killall -9 android.process.media
-busybox killall -9 mediaserver
-busybox killall -9 com.google.android.gms
-busybox killall -9 com.google.android.gms.persistent
-busybox killall -9 com.google.process.gapps
-busybox killall -9 com.google.android.gsf
-busybox killall -9 com.google.android.gsf.persistent
-fi;
+# if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
+# busybox killall -9 android.process.media
+# busybox killall -9 mediaserver
+# busybox killall -9 com.google.android.gms
+# busybox killall -9 com.google.android.gms.persistent
+# busybox killall -9 com.google.process.gapps
+# busybox killall -9 com.google.android.gsf
+# busybox killall -9 com.google.android.gsf.persistent
+# fi;
 
 # Google play services wakelock fix
-sleep 1
+sleep 2
 su -c "pm enable com.google.android.gms/.update.SystemUpdateActivity"
 su -c "pm enable com.google.android.gms/.update.SystemUpdateService"
 su -c "pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver"
 su -c "pm enable com.google.android.gms/.update.SystemUpdateService$Receiver"
 su -c "pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver"
-su -c "pm enable com.google.android.gsf/.update.SystemUpdateActivity"
-su -c "pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity"
-su -c "pm enable com.google.android.gsf/.update.SystemUpdateService"
-su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver"
-su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver"
-
-# Install APK
-if [ ! -d $TS_DIR/apk ]; then
-	mkdir -p $TS_DIR/apk;
-	chown -R root.root $TS_DIR/apk;
-	chmod 750 $TS_DIR/apk;
-fi
-
-if [ "$(ls -A /$TS_DIR/apk)" ]; then
-	cd $TS_DIR/apk
-	chmod 777 *;
-	for apk in *.apk; do
-		pm install -r $apk;
-		rm $apk
-	done;
-fi
+#su -c "pm enable com.google.android.gsf/.update.SystemUpdateActivity"
+#su -c "pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity"
+#su -c "pm enable com.google.android.gsf/.update.SystemUpdateService"
+#su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver"
+#su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver"
 
 # init.d
 if [ ! -d /system/etc/init.d ]; then
@@ -111,9 +99,6 @@ if [ ! -f /data/system/users/0/personalist.xml ]; then
 	chown system:system /data/system/users/0/personalist.xml
 fi
 
-# Symlink TS shell scripts
-ln -sf /system/etc/init.d/add_game /sbin/add_game;
-
 # PWMFix (0 = Disabled, 1 = Enabled)
 echo "0" > /sys/class/lcd/panel/smart_on
 
@@ -126,24 +111,24 @@ echo "2288000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
 echo "208000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 echo "1586000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "130000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-echo "650000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
-echo "728000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-echo "40000 650000:30000 754000:30000 962000:20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-echo "50000 728000:30000 1040000:30000 1248000:20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-echo "80 858000:85 1066000:90" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
-echo "80 832000:85 1040000:88 1352000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
-echo "93" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-echo "95" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
+echo "858000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
+echo "1248000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
+echo "19000 1274000:39000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+echo "59000 1248000:79000 1664000:19000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
+echo "75 1170000:85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
+echo "80 1040000:81 1352000:87 1664000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
+echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
+echo "89" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
 echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-echo "30000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
-echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
-echo "30000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
+echo "20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+echo "20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
+echo "20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
+echo "20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
 
 # HMP settings
-echo "740" > /sys/kernel/hmp/up_threshold
-echo "270" > /sys/kernel/hmp/down_threshold
+echo "524" > /sys/kernel/hmp/up_threshold
+echo "214" > /sys/kernel/hmp/down_threshold
 echo "962000" > /sys/kernel/hmp/down_compensation_high_freq
 echo "858000" > /sys/kernel/hmp/down_compensation_mid_freq
 echo "754000" > /sys/kernel/hmp/down_compensation_low_freq
@@ -158,28 +143,29 @@ echo "95" /sys/devices/14ac0000.mali/highspeed_load
 # I/O sched settings
 echo 'cfq' > /sys/block/sda/queue/scheduler
 echo "512" > /sys/block/sda/queue/read_ahead_kb
-echo 'bfq' > /sys/block/mmcblk0/queue/scheduler
-echo "512" > /sys/block/mmcblk0/queue/read_ahead_kb
+echo 'cfq' > /sys/block/mmcblk0/queue/scheduler
+echo "768" > /sys/block/mmcblk0/queue/read_ahead_kb
 echo "0" > /sys/block/sda/queue/iostats
 echo "0" > /sys/block/mmcblk0/queue/iostats
 echo "1" > /sys/block/sda/queue/rq_affinity
 echo "1" > /sys/block/mmcblk0/queue/rq_affinity
-echo "368" > /sys/block/sda/queue/nr_requests
-echo "368" > /sys/block/mmcblk0/queue/nr_requests
+echo "256" > /sys/block/sda/queue/nr_requests
+echo "256" > /sys/block/mmcblk0/queue/nr_requests
 
 # LMK
-echo "18920,23552,32256,42472,65536,92400" > /sys/module/lowmemorykiller/parameters/minfree
+echo "18432,23040,27648,32256,56064,81152" > /sys/module/lowmemorykiller/parameters/minfree
 # echo "18920,23552,32256,42472,65536,102400" > /sys/module/lowmemorykiller/parameters/minfree
 
 # SSWAP and Entropy
-echo "90" > /proc/sys/vm/swappiness
-echo "256" > /proc/sys/kernel/random/write_wakeup_threshold
+echo "170" > /proc/sys/vm/swappiness
+echo "896" > /proc/sys/kernel/random/write_wakeup_threshold
 echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 echo "500" > /proc/sys/vm/dirty_expire_centisecs
 echo "1000" > /proc/sys/vm/dirty_writeback_centisecs
+echo "80" > /proc/sys/vm/vfs_cache_pressure
 
 # ZRAM assigns size limit to virtual ram disk
-echo 2560M > /sys/block/zram0/disksize
+echo 4096M > /sys/block/zram0/disksize
 echo "0" > /sys/block/zram0/reset
 # ON
 # swapon /dev/block/zram0 >/dev/null 2>&1
@@ -194,18 +180,18 @@ for ZRAM in /dev/block/zram*; do
 done;
 
 # FINGERPRINT BOOST - OFF
-echo 0 > /sys/kernel/fp_boost/enabled
+echo "0" > /sys/kernel/fp_boost/enabled
 
 # Tweaks: Internet Speed
-echo 'westwood' > /proc/sys/net/ipv4/tcp_congestion_control
+echo 'bic' > /proc/sys/net/ipv4/tcp_congestion_control
 echo "0" > /proc/sys/net/ipv4/tcp_timestamps
 echo "1" > /proc/sys/net/ipv4/tcp_tw_reuse
 echo "1" > /proc/sys/net/ipv4/tcp_sack
 echo "1" > /proc/sys/net/ipv4/tcp_tw_recycle
 echo "1" > /proc/sys/net/ipv4/tcp_window_scaling
 echo "5" > /proc/sys/net/ipv4/tcp_keepalive_probes
-echo "20" > /proc/sys/net/ipv4/tcp_keepalive_intvl
-echo "20" > /proc/sys/net/ipv4/tcp_fin_timeout
+# echo "20" > /proc/sys/net/ipv4/tcp_keepalive_intvl
+# echo "20" > /proc/sys/net/ipv4/tcp_fin_timeout
 echo "404480" > /proc/sys/net/core/wmem_max
 echo "404480" > /proc/sys/net/core/rmem_max
 echo "256960" > /proc/sys/net/core/rmem_default

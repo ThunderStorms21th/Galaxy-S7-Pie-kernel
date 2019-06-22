@@ -509,8 +509,8 @@ extern unsigned int cpufreq_interactive_get_hispeed_freq(int cpu);
 extern unsigned int cpufreq_cafactive_get_hispeed_freq(int cpu);
 extern void cafactive_boost_ondemand(int cpu, s64 miliseconds, bool static_switch);
 #endif
-#ifdef CONFIG_CPU_FREQ_GOV_THUNDERSTORMS
-extern unsigned int cpufreq_thunderstorms_get_hispeed_freq(int cpu);
+#ifdef CONFIG_CPU_FREQ_GOV_THUNDERSTORM
+extern unsigned int cpufreq_thunderstorm_get_hispeed_freq(int cpu);
 #endif
 //#ifdef CONFIG_CPU_FREQ_GOV_DYNAMIC_INTERACTIVE
 //extern unsigned int cpufreq_dynamic_interactive_get_hispeed_freq(int cpu);
@@ -597,7 +597,10 @@ extern struct cpufreq_governor cpufreq_gov_dynamic_interactive;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_dynamic_interactive)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_THUNDERSTORMS_INTERACTIVE)
 extern struct cpufreq_governor cpufreq_gov_thunderstorms_interactive;
-#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_thunderstorms_interactive)
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_thunderstorm)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_THUNDERSTORM)
+extern struct cpufreq_governor cpufreq_gov_thunderstorm;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_thunderstorm)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_IRONACTIVE)
 extern struct cpufreq_governor cpufreq_gov_ironactive;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_ironactive)
