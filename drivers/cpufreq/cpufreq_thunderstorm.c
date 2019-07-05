@@ -146,7 +146,7 @@ struct cpufreq_thunderstorm_tunables {
 	unsigned int *policy;
 
 /* added 3% so no jump to high freq - was 6 */
-#define DEFAULT_DOWN_LOW_LOAD_THRESHOLD 20
+#define DEFAULT_DOWN_LOW_LOAD_THRESHOLD 8
 	unsigned long down_low_load_threshold;
 
 #if defined(CONFIG_EXYNOS_DUAL_GOV_PARAMS_SUPPORT)
@@ -2040,16 +2040,18 @@ static ssize_t store_exynos_fb_down_low_load_threshold_quad(
 //	val_round = ret + val; // was val
 		return ret;
 
+
 //	val_round = jiffies_to_usecs(usecs_to_jiffies(val));
 	val_round = val; // was val or ret or val + ret
-	   
+//	val_round = ret;	   
+
 //	else if (ret > 50)
 //	val_round = 50; // was val
 //		return ret;
 
-	if (val != val_round)
-		pr_warn("down_low_load_threshold not aligned to jiffy. Rounded up to %lu\n",
-			val_round);
+//	if (val != val_round)
+//		pr_warn("down_low_load_threshold not aligned to jiffy. Rounded up to %lu\n",
+//			val_round);
 
 	spin_lock_irqsave(&exynos_fb_lock, flags);
 

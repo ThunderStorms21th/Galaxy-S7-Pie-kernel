@@ -2066,10 +2066,10 @@ static int exynos_cluster0_min_qos_handler(struct notifier_block *b, unsigned lo
 //	threshold_freq = cpufreq_dynamic_interactive_get_hispeed_freq(0);
 //	if (!threshold_freq)
 //		threshold_freq = 1000000;	/* 1.0GHz */
-//#elif defined(CONFIG_CPU_FREQ_GOV_THUNDERSTORMS_INTERACTIVE) /* added fix */
-//	threshold_freq = cpufreq_thunderstorms_interactive_get_hispeed_freq(0);
-//	if (!threshold_freq)
-//		threshold_freq = 1000000;	/* 1.0GHz */
+#elif defined(CONFIG_CPU_FREQ_GOV_THUNDERSTORM) /* added fix */
+	threshold_freq = cpufreq_thunderstorm_get_hispeed_freq(0);
+	if (!threshold_freq)
+		threshold_freq = 1000000;	/* 1.0GHz */
 #else
 	threshold_freq = 1000000;	/* 1.0GHz */
 #endif
