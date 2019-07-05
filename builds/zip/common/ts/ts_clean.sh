@@ -9,7 +9,7 @@
 #
 #
 # Usage:
-#	fbt_clean3.sh [apk_package] -[options]
+#	ts_clean3.sh [apk_package] -[options]
 #
 # Options:
 #	a: remove apk in /data/app/apk_package
@@ -18,17 +18,17 @@
 # 
 # example:
 #	clean only in packages.xml:
-#	    fbt_clean3.sh com.sec.android.app.music
+#	    ts_clean3.sh com.sec.android.app.music
 #
 #	clean in packages.xml and remove apk in data/app:
-#	    fbt_clean3.sh com.sec.android.app.music -a
+#	    ts_clean3.sh com.sec.android.app.music -a
 #
 #	clean on packages.xml, remove in data/app, remove data, and remove in system
-#	    fbt_clean3.sh com.sec.android.app.music -ads
+#	    ts_clean3.sh com.sec.android.app.music -ads
 #
 #
-# In a updater-script file, copy fbt_clean.sh to tmp and:
-#   run_program("/tmp/fbt_clean3.sh", "com.sec.android.app.music", "-ads");
+# In a updater-script file, copy ts_clean.sh to tmp and:
+#   run_program("/tmp/ts_clean3.sh", "com.sec.android.app.music", "-ads");
 #
 #
 

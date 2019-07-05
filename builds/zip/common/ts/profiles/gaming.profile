@@ -8,7 +8,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 80
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "30000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
@@ -16,11 +16,11 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 1066000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 40000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "75"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 90000
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 60000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/mode
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/mode 0
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
@@ -41,7 +41,7 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2600000
    chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 90
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 85
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "30000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
@@ -49,11 +49,11 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1248000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 40000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "75"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 90000
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 60000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/mode
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/mode 0
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
@@ -67,8 +67,18 @@
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
-   write /sys/module/autosmp/parameters/enabled 0
+   write /sys/module/autosmp/parameters/enabled N
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 1
+   write /sys/module/workqueue/parameters/power_efficient N
+
+   # Samsung Hotplug settings
+   chmod 0664 /sys/power/cpuhotplug/max_online_cpu
+   write /sys/power/cpuhotplug/max_online_cpu 8
+   chmod 0664 /sys/power/cpuhotplug/min_online_cpu
+   write /sys/power/cpuhotplug/min_online_cpu 1
+
+   # FINGERPRINT BOOST
+   write /sys/kernel/fp_boost/enabled 0
 
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
@@ -130,11 +140,14 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   write /proc/sys/vm/swappiness 170
+   write /proc/sys/vm/swappiness 150
    write /proc/sys/vm/vfs_cache_pressure 100
+   # write /sys/module/zswap/parameters/max_pool_percent 500
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"
+
+
 
 
 

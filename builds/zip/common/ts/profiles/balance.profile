@@ -67,8 +67,18 @@
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
-   write /sys/module/autosmp/parameters/enabled 0
+   write /sys/module/autosmp/parameters/enabled N
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 0
+   write /sys/module/workqueue/parameters/power_efficient N
+
+   # Samsung Hotplug settings
+   chmod 0664 /sys/power/cpuhotplug/max_online_cpu
+   write /sys/power/cpuhotplug/max_online_cpu 8
+   chmod 0664 /sys/power/cpuhotplug/min_online_cpu
+   write /sys/power/cpuhotplug/min_online_cpu 1
+
+   # FINGERPRINT BOOST
+   write /sys/kernel/fp_boost/enabled 0
 
    # HMP
    chmod 0644 /sys/kernel/hmp/up_threshold
@@ -91,11 +101,12 @@
    write /sys/devices/14ac0000.mali/highspeed_load 95
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
-   #write /sys/devices/14ac0000.mali/throttling1 600
-   #write /sys/devices/14ac0000.mali/throttling2 546
-   #write /sys/devices/14ac0000.mali/throttling3 419
-   #write /sys/devices/14ac0000.mali/throttling4 338
-   #write /sys/devices/14ac0000.mali/trippimg 260
+   write /sys/devices/14ac0000.mali/throttling1 600
+   write /sys/devices/14ac0000.mali/throttling2 546
+   write /sys/devices/14ac0000.mali/throttling3 419
+   write /sys/devices/14ac0000.mali/throttling4 338
+   write /sys/devices/14ac0000.mali/trippimg 260
+   chmod 0664 /sys/kernel/hmp/down_compensation_high_freq
    write /sys/kernel/hmp/down_compensation_high_freq 962000
    chmod 0664 /sys/kernel/hmp/down_compensation_mid_freq
    write /sys/kernel/hmp/down_compensation_mid_freq 858000
@@ -129,8 +140,10 @@
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"
-   write /proc/sys/vm/vfs_cache_pressure 80
-   write /proc/sys/vm/swappiness 170
+   write /proc/sys/vm/vfs_cache_pressure 50
+   write /proc/sys/vm/swappiness 120
+
+
 
 
 

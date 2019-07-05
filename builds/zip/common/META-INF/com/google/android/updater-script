@@ -21,9 +21,6 @@ ifelse(is_mounted("/system"), unmount("/system"));
 ifelse(is_mounted("/data"), unmount("/data"));
 run_program("/sbin/busybox", "mount", "/system");
 run_program("/sbin/busybox", "mount", "/data");
-#run_program("/sbin/mount", "/system");
-#run_program("/sbin/mount", "/data");
-
 
 ui_print(" ");
 ui_print("@Flashing kernel...");
@@ -80,8 +77,9 @@ if file_getprop("/tmp/aroma/menu.prop", "chk3") == "1" then
 	ui_print("@Installing ThunderTweaks App...");
 	run_program("/tmp/ts/ts_clean.sh", "com.moro.mtweaks", "-ads");
 	run_program("/tmp/ts/ts_clean.sh", "com.thunder.thundertweaks", "-ads");
-        # run_program("/tmp/ts/ttweaksfix.sh:);
         run_program("/tmp/ts/ttweaks.sh");
+	package_extract_dir("ts/ttweaks", "/data/.tskernel");
+        # run_program("/tmp/ts/ttweaksfix.sh:);
 endif;
 
 # TS swap off
@@ -161,19 +159,21 @@ set_metadata("/system/vendor/lib64/libsecure_storage.so", "uid", 0, "gid", 2000,
 set_metadata("/system/vendor/lib/egl/libGLES_mali.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 set_metadata("/system/vendor/lib64/egl/libGLES_mali.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 set_metadata_recursive("/system/priv-app/PersonalPageService", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabilities", 0x440000040, "selabel", "u:object_r:logd_exec:s0");
+# set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabilities", 0x440000040, "selabel", "u:object_r:logd_exec:s0");
 
 #--PERMISSION
 ui_print("-- Fixing permission...");
-package_extract_file("ts/fix_permissions", "/tmp/ts/fix_permissions");
-set_perm(0, 0, 0777, "/tmp/ts/fix_permissions");
-run_program("/tmp/ts/fix_permissions");
+package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
+set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
+run_program("/tmp/ts/fix_permissions.sh");
 
 #####################################################
 
 # ui_print(" ");
 # ui_print("-- Unmounting Partition...");
 delete_recursive("/tmp");
+ifelse(is_mounted("/system"), unmount("/system"));
+ifelse(is_mounted("/data"), unmount("/data"));
 
 set_progress(1.00);
 ui_print(" ");

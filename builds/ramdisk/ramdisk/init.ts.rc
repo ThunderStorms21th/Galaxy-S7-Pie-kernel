@@ -16,11 +16,11 @@ on boot
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
-   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 130000
+   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 234000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 90
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "19000 1274000:39000"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
@@ -48,12 +48,12 @@ on boot
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactive
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 208000
+   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 416000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2280000
    chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 89
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 93
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "59000 1248000:79000 1664000:19000"
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
@@ -90,9 +90,23 @@ on boot
    write /sys/kernel/hmp/down_compensation_low_freq 754000
    write /proc/sys/kernel/random/write_wakeup_threshold 896
    write /proc/sys/kernel/random/read_wakeup_threshold 64
-   write /proc/sys/vm/dirty_expire_centisecs 500
-   write /proc/sys/vm/dirty_writeback_centisecs 1000
+   write /proc/sys/vm/dirty_expire_centisecs 1000
+   write /proc/sys/vm/dirty_writeback_centisecs 2000
+
+   # CPU HOTPLUG
+   write /sys/power/cpuhotplug/enabled 1
+   write /sys/module/autosmp/parameters/enabled N
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 0
+   write /sys/module/workqueue/parameters/power_efficient N
+
+   # Samsung Hotplug settings
+   chmod 0664 /sys/power/cpuhotplug/max_online_cpu
+   write /sys/power/cpuhotplug/max_online_cpu 8
+   chmod 0664 /sys/power/cpuhotplug/min_online_cpu
+   write /sys/power/cpuhotplug/min_online_cpu 1
+
+   # FINGERPRINT BOOST
+   write /sys/kernel/fp_boost/enabled 0
 
    # GPU set at max/min freq
    chmod 0664 /sys/devices/14ac0000.mali/max_clock
@@ -109,16 +123,16 @@ on boot
    write /sys/devices/14ac0000.mali/highspeed_load 95
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
-   #write /sys/devices/14ac0000.mali/throttling1 600
-   #write /sys/devices/14ac0000.mali/throttling2 546
-   #write /sys/devices/14ac0000.mali/throttling3 419
-   #write /sys/devices/14ac0000.mali/throttling4 338
-   #write /sys/devices/14ac0000.mali/trippimg 260
+   write /sys/devices/14ac0000.mali/throttling1 600
+   write /sys/devices/14ac0000.mali/throttling2 546
+   write /sys/devices/14ac0000.mali/throttling3 419
+   write /sys/devices/14ac0000.mali/throttling4 338
+   write /sys/devices/14ac0000.mali/trippimg 260
 
    # I/O sched settings
    write /sys/block/sda/queue/scheduler cfg
    write /sys/block/sda/queue/read_ahead_kb 512
-   write /sys/block/mmcblk0/queue/scheduler cfq
+   write /sys/block/mmcblk0/queue/scheduler bfq
    write /sys/block/mmcblk0/queue/read_ahead_kb 768
    write /sys/block/sda/queue/iostats 0
    write /sys/block/mmcblk0/queue/iostats 0
@@ -149,20 +163,25 @@ on boot
 
     # LMK
     write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,92400"
-    write /proc/sys/vm/vfs_cache_pressure 100
+    write /proc/sys/vm/vfs_cache_pressure 70
 
     # WiFi
-    setprop wifi.supplicant_scan_interval 400
+    setprop wifi.supplicant_scan_interval 500
 
    # MISC
    setprop debug.enabler false
    setprop pm.sleep_mode 1
    setprop power.saving.mode 1
+   setprop ro.config.hw_power_saving true
    setprop dalvik.vm.checkjni false
    setprop ro.ril.sensor.sleep.control 1
+   setprop ro.ril.disable.power.collapse 1
    setprop ro.config.hw_quickpoweron true
+   setprop persist.sys.shutdown.mode hibernate
    setprop ro.config.nocheckin 1
    setprop ro.wifi.hotspotUI 1
    setprop ro.tether.denied false
+   setprop debug.kill.allocating_task 0
+
 
 

@@ -4,8 +4,6 @@
 # This is a common source of Android security bugs.
 #
 
-on boot
-
 on property:sys.boot_completed=1
 	stop proca
 	stop secure_storage
@@ -15,20 +13,12 @@ on property:sys.boot_completed=1
 	exec u:r:magisk:s0 root root -- /sbin/ts-kernel.sh
 	exec u:r:supersu:s0 root root -- /sbin/ts-kernel.sh
 
-	exec u:r:init:s0 -- /sbin/tst.sh
-	exec u:r:su:s0 root root -- /sbin/tst.sh
-	exec u:r:magisk:s0 root root -- /sbin/tst.sh
-	exec u:r:supersu:s0 root root -- /sbin/tst.sh
+# on property:sys.boot_completed=1
+#    start ttweaks
 
-#on property:sys.boot_completed=1
-#    stop proca
-#    stop secure_storage    
-#     start killmedia
-
-
-service ttweaks /sbin/tst.sh
-     class late_start
-     user root
-     seclabel u:r:init:s0
-     oneshot
-     disabled
+# service ttweaks /sbin/tst.sh
+#    class late_start
+#    user root
+#    seclabel u:r:init:s0
+#    oneshot
+#    disabled

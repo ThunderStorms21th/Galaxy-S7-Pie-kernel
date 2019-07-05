@@ -14,8 +14,8 @@ mount -o remount,rw /data
 mount -o remount,rw /cache
 
 # ZRAM assigns size limit to virtual ram disk
-echo 4096M > /sys/block/zram0/disksize
-echo "0" > /sys/block/zram0/reset
+# echo 4096M > /sys/block/zram0/disksize
+# echo "0" > /sys/block/zram0/reset
 # ON
 # swapon /dev/block/zram0 >/dev/null 2>&1
 # for ZRAM in /dev/block/zram*; do
@@ -23,10 +23,10 @@ echo "0" > /sys/block/zram0/reset
 # done;
 
 # ZRAM - OFF
-swapoff /dev/block/zram0 >/dev/null 2>&1
-for ZRAM in /dev/block/zram*; do
-    swapoff $ZRAM
-done;
+# swapoff /dev/block/zram0 >/dev/null 2>&1
+# for ZRAM in /dev/block/zram*; do
+#    swapoff $ZRAM
+# done;
 
 # VNSWAP - OFF
 su -c 'swapoff /dev/block/vnswap0'

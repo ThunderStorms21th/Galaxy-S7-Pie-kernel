@@ -67,8 +67,18 @@
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
-   write /sys/module/autosmp/parameters/enabled 0
+   write /sys/module/autosmp/parameters/enabled N
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 1
+   write /sys/module/workqueue/parameters/power_efficient N
+
+   # Samsung Hotplug settings
+   chmod 0664 /sys/power/cpuhotplug/max_online_cpu
+   write /sys/power/cpuhotplug/max_online_cpu 8
+   chmod 0664 /sys/power/cpuhotplug/min_online_cpu
+   write /sys/power/cpuhotplug/min_online_cpu 1
+
+   # FINGERPRINT BOOST
+   write /sys/kernel/fp_boost/enabled 1
 
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
@@ -129,10 +139,11 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   # write /proc/sys/vm/swappiness 170
+   write /proc/sys/vm/swappiness 150
    write /proc/sys/vm/vfs_cache_pressure 100
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "20432,26040,32648,42256,59064,101152"
+
 
 

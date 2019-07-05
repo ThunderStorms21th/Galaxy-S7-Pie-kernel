@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-Pie</#></b>	
-	VERSION	: <b><#selectbg_g>v1.7</#></b>
-	DATE	: <b><#selectbg_g>18/06/2019</#></b>
+	VERSION	: <b><#selectbg_g>v1.8</#></b>
+	DATE	: <b><#selectbg_g>2/07/2019</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> ONLY FOR Galaxy S7/S7Edge | stock odex/deodex roms |</b></#>
@@ -12,6 +12,38 @@
 <b>CHANGELOG:</b>
 
 ---------------------------------------------------------------------------
+<u><b><#selectbg_g>FBT-Kernel-P-v1.8 : 2.07.2019</#></b></u>
+<*>Samsung sources G930FXXU4CSC4</*>
+<*>Samsung ramdisk G930FXXS4CSC4</*>
+<*>Support odexed / deodexed roms NFE/N8</*>
+<*>ThunderTweaks v1.0.1</*>
+<*>Added GPU libs and drivers from OREO and PIE</*>
+<*>Flat and Edge versions</*>
+<*>Fixed Private Mode (Stock ROMS) by MoRoGoKu</*>
+<*>Added Archpower support - default is off</*>
+<*>Added Dynamic Fsync and Powersuspend</*>
+<*>Magisk 19.3 official</*>
+<*>Knox 0x0 & SafetyNet with SuperSU and Magisk</*>
+<*>Linux 3.18.91 Samsung</*>
+<*>CPU big : 2600/208 MHZ</*>
+<*>CPU little : 1586/130 MHZ</*>
+<*>Moro Sound Driver v2.1.1</*>
+<*>Added CPU Input Boost</*>
+<*>Added Google and Camera Google stop task in source code</*>
+<*>BlueTooth Drivers from OREO</*>
+<*>Thunderstorm CPU governor</*>
+<*>Selectable libs to install for Oreo and PIE</*>
+<*>Now default settings are like Samsung stock's</*>
+<*>Boeffla wakelocks - some changes</*>
+<*>SELinux : permissive</*>
+<*>Added support for NEW ThundeRStormS Spectrum profiles</*>
+  GAME OVER, Franz, rtakak, Shariq, Default, ThundeRStormS
+<*>compiler : aarch64-linux-android-4.9</*>
+<*>Fix: No heat and no lags and more stability</*>
+<*>Fix for SCSI drivers and maybe deepsleep drain</*>
+<*>Rest like in TS-PIE v1.7</*>
+----------------------------------------------------------------------------
+----------------------------------------------------------------------------
 <u><b><#selectbg_g>FBT-Kernel-P-v1.7 : 18.06.2019</#></b></u>
 <*>Samsung sources G930FXXU4CSC4</*>
 <*>Samsung ramdisk G930FXXS4CSC4</*>
