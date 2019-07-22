@@ -155,10 +155,10 @@ smb2_reconnect(__le16 smb2_command, struct cifs_tcon *tcon)
 	 * for those three - in the calling routine.
 	 */
 	if (tcon == NULL)
-		return rc;
+		return 0;
 
-	if (smb2_command == SMB2_TREE_CONNECT)
-		return rc;
+	if (smb2_command == SMB2_TREE_CONNECT || smb2_command == SMB2_IOCTL)
+		return 0;
 
 	if (tcon->tidStatus == CifsExiting) {
 		/*
