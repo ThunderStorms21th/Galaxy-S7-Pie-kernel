@@ -40,6 +40,8 @@
 #include <linux/state_notifier.h>
 #endif
 
+#include <linux/devfreq_boost.h>
+
 #include <media/exynos_mc.h>
 #include <video/mipi_display.h>
 #include <media/v4l2-subdev.h>
@@ -3895,6 +3897,10 @@ windows_config:
 		if (regs->need_update)
 			decon_win_update_rect_reset(decon);
 #endif
+
+		// Boost devfreq before loop
+		devfreq_boost_kick(DEVFREQ_EXYNOS_MIF);
+
 		for (i = 0; i < decon->pdata->max_win; i++) {
 			decon->windows[i]->fbinfo->fix = decon->windows[i]->prev_fix;
 			decon->windows[i]->fbinfo->var = decon->windows[i]->prev_var;
