@@ -22,6 +22,28 @@
 #include <linux/slab.h>
 #include <linux/input.h>
 #include <linux/cpufreq.h>
+// added
+#include <linux/kernel.h>
+#include <linux/clk.h>
+#include <linux/suspend.h>
+#include <linux/pm_qos.h>
+#include <linux/cpumask.h>
+#include <linux/exynos-ss.h>
+#include <linux/platform_device.h>
+#include <linux/of.h>
+#include <linux/apm-exynos.h>
+
+#include <asm/smp_plat.h>
+#include <asm/cputype.h>
+
+#include <soc/samsung/cpufreq.h>
+#include <soc/samsung/exynos-powermode.h>
+#include <soc/samsung/asv-exynos.h>
+#include <soc/samsung/tmu.h>
+#include <soc/samsung/ect_parser.h>
+#include <soc/samsung/exynos-pmu.h>
+
+// end
 
 #define CLUSTER_PLUG_MAJOR_VERSION	2
 #define CLUSTER_PLUG_MINOR_VERSION	0
@@ -76,10 +98,23 @@ static bool is_big_cpu(unsigned int cpu)
 	return cpu < N_BIG_CPUS;
 }
 
+/*
+static bool is_big_cpu(unsigned int CL_ONE)
+{
+	return CL_ONE < N_BIG_CPUS;
+} */
+
+
 static bool is_little_cpu(unsigned int cpu)
 {
 	return !is_big_cpu(cpu);
 }
+
+/*
+static bool is_little_cpu(unsigned int CL_ZERO)
+{
+	return !is_big_cpu(CL_ZERO);
+} */
 
 static unsigned int get_delta_cpu_load_and_update(unsigned int cpu)
 {

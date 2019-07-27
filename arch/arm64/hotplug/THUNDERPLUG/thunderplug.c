@@ -38,16 +38,16 @@
 #define HOTPLUG_ENABLED			(0)
 #define STARTDELAY			1000
 
-#define DEF_SAMPLING_MS			(20)
+#define DEF_SAMPLING_MS			(150)		// 50
 #define MIN_SAMLING_MS			(10)
 #define MIN_CPU_UP_TIME			(300)
 
 #define DEFAULT_BOOST_LOCK_DUR		500 * 1000L
-#define DEFAULT_NR_CPUS_BOOSTED		8		// 2
+#define DEFAULT_NR_CPUS_BOOSTED		3		// 2
 #define MIN_INPUT_INTERVAL		150 * 1000L
 
 static bool isSuspended = false;
-
+ 
 static int now[8], last_time[8];
 struct cpufreq_policy old_policy[NR_CPUS];
 static struct workqueue_struct *tplug_wq;

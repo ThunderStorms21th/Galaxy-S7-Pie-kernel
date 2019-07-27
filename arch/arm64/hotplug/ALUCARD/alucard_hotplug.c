@@ -179,7 +179,10 @@ static void __ref hotplug_work_fn(struct work_struct *work)
 	defined(CONFIG_HAS_EARLYSUSPEND)
 	bool force_up = hotplug_tuners_ins.force_cpu_up;
 #endif
-	HOTPLUG_STATUS hotplug_onoff[NR_CPUS] = {IDLE, IDLE, IDLE, IDLE};
+//	HOTPLUG_STATUS hotplug_onoff[NR_CPUS] = {IDLE, IDLE, IDLE, IDLE};
+// added
+	HOTPLUG_STATUS hotplug_onoff[NR_CPUS] = {IDLE, IDLE, IDLE, IDLE, IDLE, IDLE, IDLE, IDLE};
+// end
 	int delay;
 	int io_busy = hotplug_tuners_ins.hp_io_is_busy;
 
@@ -845,33 +848,34 @@ static int __init alucard_hotplug_init(void)
 {
 	int ret;
 	unsigned int cpu;
+	// unsigned int hotplug_freq[NR_CPUS][2] = {
 	unsigned int hotplug_freq[NR_CPUS][2] = {
 #ifdef CONFIG_MACH_LGE
-		{0, 1497600},
-		{652800, 1190400},
-		{652800, 1190400},
-		{652800, 0}
+		{0, 1586000},
+		{650000, 1170000},
+		{650000, 1170000},
+		{650000, 0}
 #else
-		{0, 1242000},
-		{810000, 1566000},
-		{918000, 1674000},
-		{1026000, 0}
+		{0, 1274000},
+		{858000, 1560000},
+		{932000, 1664000},
+		{1040000, 0}
 #endif
-	};
+	}; // was [2]
 	unsigned int hotplug_load[NR_CPUS][2] = {
-		{0, 60},
+		{10, 60}, // 0,60
 		{30, 65},
 		{30, 65},
-		{30, 0}
-	};
+		{30, 10}  // 30,0
+	}; // was [2]
 	unsigned int hotplug_rq[NR_CPUS][2] = {
-		{0, 100},
+		{50, 100}, // 0,100
 		{100, 200},
 		{200, 300},
-		{300, 0}
-	};
+		{300, 50} // 300,0
+	}; // was [2]
 	unsigned int hotplug_rate[NR_CPUS][2] = {
-		{1, 1},
+		{1, 1}, // 1,1
 		{4, 1},
 		{4, 1},
 		{4, 1}

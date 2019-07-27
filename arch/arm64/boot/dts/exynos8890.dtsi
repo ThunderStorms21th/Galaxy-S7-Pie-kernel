@@ -424,7 +424,7 @@
 		/* For CPUFREQ table */
 		/* APO */
 		cl0_idx_num = <19>;
-		cl0_max_support_idx = <4>;
+		cl0_max_support_idx = <2>;
 		cl0_min_support_idx = <18>;
 		cl0_boot_max_qos = <1586000>;
 //		cl0_boot_min_qos = <1586000>;
@@ -434,7 +434,7 @@
 
 		/* MNGS */
 		cl1_idx_num = <28>;
-		cl1_max_support_idx = <7>;
+		cl1_max_support_idx = <2>;
 		cl1_min_support_idx = <27>;
 		cl1_boot_max_qos = <2288000>;
 //		cl1_boot_min_qos = <2288000>;
@@ -452,11 +452,11 @@
 					      7    /* Number of online core is 3 */
 					      7 >; /* Number of online core is 4 */
 
-		cl1_full_max_support_idx_table = < 4	/* Number of online core is 0 */
-					           4    /* Number of online core is 1 */
-					           4    /* Number of online core is 2 */
-					           4    /* Number of online core is 3 */
-					           4 >; /* Number of online core is 4 */
+		cl1_full_max_support_idx_table = < 2	/* Number of online core is 0 */
+					           2    /* Number of online core is 1 */
+					           2    /* Number of online core is 2 */
+					           2    /* Number of online core is 3 */
+					           2 >; /* Number of online core is 4 */
 
 
 		/* Boost freq*/
@@ -464,10 +464,10 @@
 
 		/*APO table ->	 idx   freq    volt   bus_lock */
 		cl0_dvfs_domain_name = "dvfs_little";
-		cl0_dvfs_table = < 0  1976000 1100000        0   /* ARM L0: 2.0GHz   */
-				   1  1898000 1100000        0   /* ARM L1: 1.9GMHz  */
-				   2  1794000 1100000        0   /* ARM L2: 1.8GMHz  */
-				   3  1690000 1100000        0   /* ARM L3: 1.7GHz   */
+		cl0_dvfs_table = < 0  1976000 1212500  1539000   /* ARM L0: 2.0GHz   */
+				   1  1898000 1143750  1539000   /* ARM L1: 1.9GMHz  */
+				   2  1794000 1100000  1352000   /* ARM L2: 1.8GMHz  */
+				   3  1690000 1062500  1144000   /* ARM L3: 1.7GHz   */
 				   4  1586000 1018750  1014000   /* ARM L4: 1.6GHz   */
 				   5  1482000  975000  1014000   /* ARM L5: 1.5GMHz  */
 				   6  1378000  931250  1014000   /* ARM L6: 1.4GMHz  */
@@ -486,10 +486,10 @@
 
 		/*MNGS table ->	 idx  freq    volt   bus_lock */
 		cl1_dvfs_domain_name = "dvfs_big";
-		cl1_dvfs_table = < 0 3000000 1137500   1794000 /* ARM L0: 3.0GHz  */
-				   1 2900000 1137500   1794000 /* ARM L1: 2.9GMHz */
-				   2 2800000 1137500   1794000 /* ARM L2: 2.8GMHz */
-				   3 2700000 1137500   1794000 /* ARM L3: 2.7GHz  */
+		cl1_dvfs_table = < 0 3000000 1325000   1794000 /* ARM L0: 3.0GHz  */
+				   1 2900000 1262500   1794000 /* ARM L1: 2.9GMHz */
+				   2 2800000 1212500   1794000 /* ARM L2: 2.8GMHz */
+				   3 2700000 1143750   1794000 /* ARM L3: 2.7GHz  */
 				   4 2600000 1100000   1794000 /* ARM L4: 2.6GHz  */
 				   5 2496000 1068750   1716000 /* ARM L5: 2.5GHz  */
 				   6 2392000 1043750   1716000 /* ARM L6: 2.4GHz  */
