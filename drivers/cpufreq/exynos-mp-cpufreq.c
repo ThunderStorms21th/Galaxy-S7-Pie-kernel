@@ -70,6 +70,17 @@
 #endif
 /* end of adds */
 
+/* added abilities for OC big and LITTLE cluster */
+#ifdef CONFIG_SOC_EXYNOS8890
+#define CL0_MIN_FREQ		130000
+#define CL0_MAX_FREQ		1690000
+#define CL1_MIN_FREQ		208000
+#define CL1_MAX_FREQ		2800000
+#else
+#error "Please define core frequency ranges for current SoC."
+#endif
+/* end */
+
 #define VOLT_RANGE_STEP		25000
 #define CLUSTER_ID(cl)		(cl ? ID_CL1 : ID_CL0)
 

@@ -43,7 +43,7 @@
 #include <linux/workqueue.h>
 #include <linux/slab.h>
 
-#define DEF_FREQUENCY_UP_THRESHOLD		(99)
+#define DEF_FREQUENCY_UP_THRESHOLD		(90)
 #define DEF_FREQUENCY_DOWN_THRESHOLD		(40)
 #define MIN_SAMPLING_RATE_RATIO			(2)
 
