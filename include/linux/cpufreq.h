@@ -80,7 +80,6 @@ struct cpufreq_policy {
 	unsigned int            util;  /* CPU utilization at max frequency BLU HOTPLUG */
 	unsigned int		restore_freq; /* = policy->cur before transition */
 	unsigned int		suspend_freq; /* freq to set during suspend */
-//	unsigned int		util;	/* CPU utilization at max frequency */
 	unsigned int		load_at_max;  /* CPU utilization at max frequency */
 
 	unsigned int		policy; /* see above */
@@ -331,6 +330,11 @@ int cpufreq_unregister_driver(struct cpufreq_driver *driver_data);
 
 const char *cpufreq_get_current_driver(void);
 void *cpufreq_get_driver_data(void);
+
+/* added CPU Touch boost */
+// void cpufreq_notify_utilization(struct cpufreq_policy *policy,
+//		unsigned int load);
+/* END */
 
 static inline void cpufreq_verify_within_limits(struct cpufreq_policy *policy,
 		unsigned int min, unsigned int max)
@@ -613,6 +617,9 @@ extern struct cpufreq_governor cpufreq_gov_lionfish;
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_LIONHEART)
 extern struct cpufreq_governor cpufreq_gov_lionheart;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_lionheart)
+#elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_NEBULA)
+extern struct cpufreq_governor cpufreq_gov_nebula;
+#define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_nebula)
 #elif defined(CONFIG_CPU_FREQ_DEFAULT_GOV_NEXUS)
 extern struct cpufreq_governor cpufreq_gov_nexus;
 #define CPUFREQ_DEFAULT_GOVERNOR	(&cpufreq_gov_nexus)
