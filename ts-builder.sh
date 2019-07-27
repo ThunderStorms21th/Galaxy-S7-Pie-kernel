@@ -3,7 +3,7 @@
 # Thanks to Tkkg1994 and djb77 for the script
 #
 # Thanks to MoRoGoku for the script
-# Kernel Build Script v1.8, modified by ThunderStorms Team
+# Kernel Build Script v1.9, modified by ThunderStorms Team
 #
 
 # SETUP
@@ -30,6 +30,7 @@ export BUILD_JOB_NUMBER=`grep processor /proc/cpuinfo|wc -l`
 
 export ANDROID_MAJOR_VERSION=p
 export PLATFORM_VERSION=9.0.0
+export ANDROID_VERSION=90000
 
 RDIR=$(pwd)
 OUTDIR=$RDIR/arch/$ARCH/boot
@@ -44,7 +45,8 @@ DEFCONFIG=ts-kernel_defconfig
 DEFCONFIG_S7EDGE=hero2lte_defconfig
 DEFCONFIG_S7FLAT=herolte_defconfig
 
-export K_VERSION="v1.8"
+# export K_VERSION="v1.9-WasEdition"
+export K_VERSION="v1.9"
 export K_BASE="U4CSC4"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
