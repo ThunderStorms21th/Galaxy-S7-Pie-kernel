@@ -19,68 +19,20 @@ ui_print("@Mounting partitions...");
 
 ifelse(is_mounted("/system"), unmount("/system"));
 ifelse(is_mounted("/data"), unmount("/data"));
-run_program("/sbin/busybox", "mount", "/system");
-run_program("/sbin/busybox", "mount", "/data");
+run_program("/sbin/mount", "/system");
+run_program("/sbin/mount", "/data");
 
+# Run delete older ThunderTweaks apps script
 ui_print(" ");
-ui_print("@Flashing kernel...");
-if is_substring("G935", getprop("ro.boot.bootloader")) then
-	ui_print("-- G935 S7 Edge...");
-	run_program("/tmp/ts/flash_kernel.sh", "G935");
-	ui_print("-- Done.");
-endif;
-	
-if is_substring("G930", getprop("ro.boot.bootloader")) then
-	ui_print("-- G930 S7 Flat...");
-	run_program("/tmp/ts/flash_kernel.sh", "G930");
-	ui_print("-- Done.");
-endif;
+ui_print("@ThundeRStormS - Deleting older ThunderTweaks app in folder...");
+run_program("/tmp/ts/delttweaks.sh");
+
+# Run install script
+run_program("/tmp/ts/install_script.sh");
 
 ui_print(" ");
 ui_print("@ThundeRStormS - System Patching...");
-package_extract_dir("/tmp/ts/system", "/system");
 package_extract_dir("ts/system", "/system");
-run_program("/tmp/ts/del_wakelock.sh"); 
-
-####################################################
-# OTHER OPTIONS
-####################################################
-
-# GPU libs R28P0
-if file_getprop("/tmp/aroma/menu.prop", "chk9") == "1" then
-	ui_print(" ");
-	ui_print("@Installing GPU libs r28p0 for PIE...");
-	package_extract_dir("ts/r28", "/system");
-endif;
-
-# GPU libs R22P0
-if file_getprop("/tmp/aroma/menu.prop", "chk11") == "1" then
-	ui_print(" ");
-	ui_print("@Installing GPU libs r22p0 for OREO...");
-	package_extract_dir("ts/r22", "/system");
-endif;
-
-# TS kernel Profiles
-if file_getprop("/tmp/aroma/menu.prop", "chk6") == "1" then
-	ui_print(" ");
-	ui_print("@Installing ThundeRStormS kernel Profiles...");
-	run_program("/tmp/ts/tskernel2.sh");
-	run_program("/ts/tskernel2.sh");
-	package_extract_dir("ts/profiles", "/data/media/0/Spectrum/profiles/");
-	package_extract_dir("ts/profiles", "/storage/emulated/0/Spectrum/profiles/");
-	package_extract_dir("ts/profiles", "/sdcard/Spectrum/profiles/");
-endif;
-
-# ThunderTweaks
-if file_getprop("/tmp/aroma/menu.prop", "chk3") == "1" then
-	ui_print(" ");
-	ui_print("@Installing ThunderTweaks App...");
-	run_program("/tmp/ts/ts_clean.sh", "com.moro.mtweaks", "-ads");
-	run_program("/tmp/ts/ts_clean.sh", "com.thunder.thundertweaks", "-ads");
-        run_program("/tmp/ts/ttweaks.sh");
-	package_extract_dir("ts/ttweaks", "/data/.tskernel");
-        # run_program("/tmp/ts/ttweaksfix.sh:);
-endif;
 
 # TS swap off
 if file_getprop("/tmp/aroma/menu.prop", "chk4") == "1" then
@@ -105,10 +57,25 @@ if file_getprop("/tmp/aroma/menu.prop", "chk10") == "1" then
 	delete_recursive("/tmp/tsk");
 endif;
 
-####################################################
+run_program("/tmp/ts/tskernel.sh");
+
+ui_print(" ");
+ui_print("@Setting Permissions...");
+set_metadata("/system/vendor/lib/libsecure_storage.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
+set_metadata("/system/vendor/lib64/libsecure_storage.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
+set_metadata_recursive("/system/priv-app/PersonalPageService", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
+set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabilities", 0x440000040, "selabel", "u:object_r:logd_exec:s0");
+
+#--PERMISSION
+ui_print("-- Fixing permission...");
+package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
+set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
+run_program("/tmp/ts/fix_permissions.sh");
+
+#################################################
 # ROOT
 ####################################################
-set_progress(0.10);
+set_progress(0.65);
 
 ui_print(" ");
 ui_print("@Root");
@@ -129,7 +96,7 @@ endif;
 
 # Magisk Root
 if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt2" then
-show_progress(0.85, "-19000");
+show_progress(0.85, "-8000");
 	
 	# Clean opposite kernel
 	run_program("/tmp/ts/clean_supersu.sh");
@@ -150,32 +117,15 @@ show_progress(0.85, "-19000");
 	delete_recursive("/tmp/magisk");
 endif;
 
-run_program("/tmp/ts/tskernel.sh");
-
-ui_print(" ");
-ui_print("@Setting Permissions...");
-set_metadata("/system/vendor/lib/libsecure_storage.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-set_metadata("/system/vendor/lib64/libsecure_storage.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-set_metadata("/system/vendor/lib/egl/libGLES_mali.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-set_metadata("/system/vendor/lib64/egl/libGLES_mali.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-set_metadata_recursive("/system/priv-app/PersonalPageService", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-# set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabilities", 0x440000040, "selabel", "u:object_r:logd_exec:s0");
-
-#--PERMISSION
-ui_print("-- Fixing permission...");
-package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
-set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
-run_program("/tmp/ts/fix_permissions.sh");
-
 #####################################################
 
 # ui_print(" ");
 # ui_print("-- Unmounting Partition...");
 delete_recursive("/tmp");
 ifelse(is_mounted("/system"), unmount("/system"));
-ifelse(is_mounted("/data"), unmount("/data"));
 
 set_progress(1.00);
+show_progress(1.00, "-3000");
 ui_print(" ");
 ui_print("*******************************************************************");
 ui_print("***  The ThundeRStormS kernel and mods are installed  ***");

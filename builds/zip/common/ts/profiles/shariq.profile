@@ -7,7 +7,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 98
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 99
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "19000 1274000:39000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate
@@ -31,7 +31,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration 40000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 8
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 10
 
    # Big CPU
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
@@ -39,10 +39,9 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 208000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2288000
-   chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2080000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 98
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 99
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "59000 1248000:79000 1664000:19000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate
@@ -66,7 +65,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration 40000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 8
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 10
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
@@ -85,9 +84,9 @@
 
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
-   write /sys/kernel/hmp/up_threshold 750
+   write /sys/kernel/hmp/up_threshold 810
    chmod 0664 /sys/kernel/hmp/down_threshold
-   write /sys/kernel/hmp/down_threshold 275
+   write /sys/kernel/hmp/down_threshold 300
    chmod 0664 /sys/kernel/hmp/down_compensation_high_freq
    write /sys/kernel/hmp/down_compensation_high_freq 962000
    chmod 0664 /sys/kernel/hmp/down_compensation_mid_freq
@@ -98,11 +97,11 @@
    write /sys/devices/14ac0000.mali/throttling2 419
    write /sys/devices/14ac0000.mali/throttling3 338
    write /sys/devices/14ac0000.mali/throttling4 260
-   write /sys/devices/14ac0000.mali/trippimg 260
-   write /proc/sys/kernel/random/write_wakeup_threshold 384
+   write /sys/devices/14ac0000.mali/trippimg 112
+   write /proc/sys/kernel/random/write_wakeup_threshold 576
    write /proc/sys/kernel/random/read_wakeup_threshold 64
-   write /proc/sys/vm/dirty_expire_centisecs 1500
-   write /proc/sys/vm/dirty_writeback_centisecs 3000
+   write /proc/sys/vm/dirty_expire_centisecs 700
+   write /proc/sys/vm/dirty_writeback_centisecs 2200
 
    # GPU
    chmod 0664 /sys/devices/14ac0000.mali/max_clock
@@ -136,7 +135,7 @@
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 1
-   write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
+   write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
    write /sys/module/sec_battery/parameters/wl_polling 2
    write /sys/module/sec_nfc/parameters/wl_nfc 1
@@ -155,7 +154,7 @@
    write /proc/sys/vm/vfs_cache_pressure 50
 
    # WiFi
-   setprop wifi.supplicant_scan_interval 430
+   setprop wifi.supplicant_scan_interval 550
 
    # Boeffla wakelocks
    write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;mmc0_detect;nfc_wake_lock;13960000.decon_f;rmnet0;GPSD;umts_ipc0;NETLINK'

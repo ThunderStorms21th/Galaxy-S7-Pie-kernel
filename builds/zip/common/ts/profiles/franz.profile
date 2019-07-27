@@ -9,7 +9,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 95
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "19000 1274000:39000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "60000 650000:30000 754000:30000 962000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate 20000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/hispeed_freq
@@ -31,7 +31,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration 40000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 8
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 12
 
    # Big CPU
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
@@ -40,15 +40,14 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 208000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1560000
-   chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 95
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "59000 1248000:79000 1664000:19000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "80000 624000:50000 1040000:30000 1248000:30000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate 20000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/hispeed_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/hispeed_freq 1248000
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/hispeed_freq 624000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_slack
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_slack 20000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/target_loads
@@ -66,7 +65,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration 80000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 8
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 20
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 0
@@ -115,9 +114,9 @@
    write /sys/devices/14ac0000.mali/highspeed_delay 1
 
    # IO Scheduler
-   write /sys/block/sda/queue/scheduler deadline
+   write /sys/block/sda/queue/scheduler noop
    write /sys/block/sda/queue/read_ahead_kb 1024
-   write /sys/block/mmcblk0/queue/scheduler deadline
+   write /sys/block/mmcblk0/queue/scheduler noop
    write /sys/block/mmcblk0/queue/read_ahead_kb 2048
    write /sys/block/sda/queue/iostats 0
    write /sys/block/mmcblk0/queue/iostats 0
@@ -130,16 +129,16 @@
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 1
-   write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
+   write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 0
    write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
    write /sys/module/sec_battery/parameters/wl_polling 5
    write /sys/module/sec_nfc/parameters/wl_nfc 2
 
    # Misc
    write /sys/module/sync/parameters/fsync_enabled 1
-   write /sys/kernel/dyn_fsync/Dyn_fsync_active 0
+   write /sys/kernel/dyn_fsync/Dyn_fsync_active 1
    write /sys/kernel/sched/gentle_fair_sleepers 0
-   write /sys/kernel/sched/arch_power 0
+   write /sys/kernel/sched/arch_power 1
    write /sys/kernel/power_suspend/power_suspend_mode 3
 
    write /proc/sys/net/ipv4/tcp_congestion_control bic
@@ -158,17 +157,17 @@
    # range 0 to 100
    echo 30 > /sys/kernel/autosmp/conf/cpufreq_down_lc;
    # range 0 to 100
-   echo 80 > /sys/kernel/autosmp/conf/cpufreq_up_bc;
+   echo 90 > /sys/kernel/autosmp/conf/cpufreq_up_bc;
    # range 0 to 100
    echo 80 > /sys/kernel/autosmp/conf/cpufreq_up_lc;
    # range 0 to 100
    echo 1 > /sys/kernel/autosmp/conf/cycle_down;
    # max cycles 0 to 8
-   echo 1 > /sys/kernel/autosmp/conf/cycle_up;
+   echo 2 > /sys/kernel/autosmp/conf/cycle_up;
    # max cycyles 0 to 8
-   echo 40 > /sys/kernel/autosmp/conf/delay;
+   echo 100 > /sys/kernel/autosmp/conf/delay;
    # range 0 to 500ms
-   echo 4 > /sys/kernel/autosmp/conf/max_cpus_bc;
+   echo 2 > /sys/kernel/autosmp/conf/max_cpus_bc;
    # max cores ON  - 1 to 4
    echo 4 > /sys/kernel/autosmp/conf/max_cpus_lc;
    # max cores ON  - 1 to 4

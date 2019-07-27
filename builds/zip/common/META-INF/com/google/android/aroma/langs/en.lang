@@ -31,7 +31,7 @@ text_no=No
 text_about=About 
 text_calibrating=Calibrating Tools
 text_quit=Quit Installation
-text_quit_msg=Are you sure to quit the installer?
+text_quit_msg=Are you sure you want to quit the installer?
 text_finish=Finish
 
 #
@@ -55,7 +55,7 @@ themes.desc=Please select installer theme that you want to use in this installat
 
 # Welcome
 welcome.title=Welcome
-welcome.text1=You are about to Installing
+welcome.text1=You are about to Install
 welcome.text2=KERNEL INFORMATION
 welcome.text3=ONLY FOR
 welcome.text4=Installation of the <b>ThundeRStormS kernel</b> for <b>Galaxy S7.</b>.
@@ -82,10 +82,10 @@ The marked options are recommended.
 menu.group1=Root Options
 menu.1=Without root
 menu.1desc=Recommended if you are installing another type of root on your own.
-menu.2=Magisk 19.3 Offical
+menu.2=Magisk 19.4 Offical
 menu.2desc=Magisk Manager with Root integrated.
 #menu.5=Install GPU libs for Nougat - r12p0
-#menu.5desc=Install Nougat libs into teh system.
+#menu.5desc=Install Nougat libs into the system.
 menu.12=Kernel for ported or deodexed rom
 menu.12desc=Select this if You have ported or deodexed rom
 menu.group2=Other options
@@ -95,17 +95,17 @@ menu.4=VNSWAP OFF
 menu.4desc=Copy ts_swapoff script to init.d folder for turn it OFF. Default VNSWAP is ON - so use it only for desable it.
 Necessary. Uncheck only if you have a higher version.
 menu.6=Spectrum (TS) Profiles
-menu.6desc=Simple way for the management of 4 predefined profiles, Balanced, Battery, Performance and Gaming. Copied to sdcard/Spectrum/profiles.
+menu.6desc=Simple way for the management predefined profiles copied to sdcard/Spectrum/profiles.
 menu.7=Delete root data
 menu.7desc=Data and app will be deleted from the previous root. Recommended for clean installation.
 # menu.8=Recovery TWRP 3.3.0-0 Fixed by AJ's
 # menu.8desc=Updated by AJ's. Necessary for the kernel.
-menu.9=Install GPU libs for PIE - r28p0
-menu.9desc=Install Pie libs into teh system
+# menu.9=Install GPU libs for PIE - r28p0
+# menu.9desc=Install Pie libs into the system
 menu.10=Patch for deodexed PIE roms
 menu.10desc=This will patch deodexed PIE roms
-menu.11=Install GPU libs for OREO - r22p0
-menu.11desc=Install Oreo libs into teh system
+# menu.11=Install GPU libs for OREO - r22p0
+# menu.11desc=Install Oreo libs into the system
 
 # Root
 stock.title=Without root
@@ -132,15 +132,15 @@ confirm.3=PRESS <b>Next</b> TO CONTINUE AND START THE INSTALLATION
 
 # Installation
 inst.1=INSTALLATION
-inst.2=Please wait while the installation is complete 
+inst.2=Please wait for installation to complete 
 inst.3=INSTALLATION COMPLETED
 inst.4=PRESS <b>Next</b> TO CONTINUE
 
 # Final
 final.1=INSTALLATION COMPLETED
-final.2=<b>ThundeRStormS KERNEL FOR S7 FLAT/EDGE</b> IS INSTALLED IN YOUR PHONE
+final.2=<b>ThundeRStormS KERNEL FOR S7 FLAT/EDGE</b> HAS BEEN SUCCESFULLY INSTALLED IN YOUR PHONE
 final.3=REBOOT DEVICE
-final.4=TAP FINISH, AND REBOOT YOUR DEVICE.\
+final.4=PRESS FINISH, AND REBOOT YOUR DEVICE.\
 \
 THANKS
 

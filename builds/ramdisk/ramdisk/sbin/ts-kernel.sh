@@ -9,6 +9,11 @@ RESETPROP="/sbin/magisk resetprop -v -n"
 TS_DIR="/data/.tskernel"
 LOG="$TS_DIR/tskernel.log"
 
+# Create ThundeRSTormS kernel folder
+if [ ! -d $TS_DIR ]; then
+	mkdir -p $TS_DIR;
+fi
+
 rm -f $LOG
 
 echo $(date) "ThundeRSTormS-Kernel LOG" >> $LOG;
@@ -38,6 +43,7 @@ $RESETPROP ro.boot.ddrinfo "00000001"
 # Stop services
 su -c "stop secure_storage"
 su -c "stop irisd"
+su -c "stop proca"
 
 # SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
 echo "## -- Selinux permissive" >> $LOG;
@@ -80,21 +86,21 @@ echo "0" > /proc/sys/kernel/panic
 # Stock CPU Settings
 # echo 'interactive' > /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
 echo "2288000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
-echo "416000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
+echo "312000" > /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
 echo "1586000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
 echo "234000" > /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
 echo "858000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
 echo "1248000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-echo "19000 1274000:39000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-echo "59000 1248000:79000 1664000:19000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
+echo "19000 1274000:40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
+echo "65000 1248000:79000 1664000:19000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
 echo "75 1170000:85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
 echo "80 1040000:81 1352000:87 1664000:90" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
-echo "90" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-echo "93" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
+echo "85" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
+echo "89" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
 echo "40000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
 echo "40000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-echo "20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-echo "20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
+echo "30000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
+echo "30000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
 echo "20000" > /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
 echo "20000" > /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
 
@@ -107,38 +113,40 @@ echo "754000" > /sys/kernel/hmp/down_compensation_low_freq
 
 # Stock GPU Settings
 echo "650" > /sys/devices/14ac0000.mali/max_clock
-echo "260" > /sys/devices/14ac0000.mali/min_clock
+echo "112" > /sys/devices/14ac0000.mali/min_clock
 echo "419" /sys/devices/14ac0000.mali/highspeed_clock
 echo "1" /sys/devices/14ac0000.mali/highspeed_delay
 echo "93" /sys/devices/14ac0000.mali/highspeed_load
 
 # I/O sched settings
-echo 'deadline' > /sys/block/sda/queue/scheduler
+echo 'cfq' > /sys/block/sda/queue/scheduler
 echo "512" > /sys/block/sda/queue/read_ahead_kb
-echo 'cfq' > /sys/block/mmcblk0/queue/scheduler
+echo 'bfq' > /sys/block/mmcblk0/queue/scheduler
 echo "768" > /sys/block/mmcblk0/queue/read_ahead_kb
 echo "0" > /sys/block/sda/queue/iostats
 echo "0" > /sys/block/mmcblk0/queue/iostats
 echo "1" > /sys/block/sda/queue/rq_affinity
 echo "1" > /sys/block/mmcblk0/queue/rq_affinity
-echo "128" > /sys/block/sda/queue/nr_requests
+echo "256" > /sys/block/sda/queue/nr_requests
 echo "256" > /sys/block/mmcblk0/queue/nr_requests
 
 # LMK
-echo "18432,23040,27648,32256,56064,91152" > /sys/module/lowmemorykiller/parameters/minfree
+echo "18432,23040,27648,32256,56064,81152" > /sys/module/lowmemorykiller/parameters/minfree
 # echo "18920,23552,32256,42472,65536,102400" > /sys/module/lowmemorykiller/parameters/minfree
 
 # SSWAP and Entropy
-echo "140" > /proc/sys/vm/swappiness
+echo "100" > /proc/sys/vm/swappiness
 echo "640" > /proc/sys/kernel/random/write_wakeup_threshold
 echo "64" > /proc/sys/kernel/random/read_wakeup_threshold
 echo "1000" > /proc/sys/vm/dirty_expire_centisecs
 echo "2000" > /proc/sys/vm/dirty_writeback_centisecs
-echo "70" > /proc/sys/vm/vfs_cache_pressure
+echo "60" > /proc/sys/vm/vfs_cache_pressure
 
 # ZRAM assigns size limit to virtual ram disk
-# echo 4096M > /sys/block/zram0/disksize
-# echo "0" > /sys/block/zram0/reset
+echo "4096M" > /sys/block/zram0/disksize
+# echo "1" > /sys/block/zram0/reset
+echo "0" > /sys/block/zram0/reset
+
 # ON
 # swapon /dev/block/zram0 >/dev/null 2>&1
 # for ZRAM in /dev/block/zram*; do
@@ -146,10 +154,10 @@ echo "70" > /proc/sys/vm/vfs_cache_pressure
 # done;
 
 # OFF
-#swapoff /dev/block/zram0 >/dev/null 2>&1
-#for ZRAM in /dev/block/zram*; do
+# swapoff /dev/block/zram0 >/dev/null 2>&1
+# for ZRAM in /dev/block/zram*; do
 #    swapoff $ZRAM
-#done;
+# done;
 
 # FINGERPRINT BOOST - OFF
 echo "0" > /sys/kernel/fp_boost/enabled

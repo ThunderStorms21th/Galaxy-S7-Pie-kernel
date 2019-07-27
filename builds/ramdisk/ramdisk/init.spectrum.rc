@@ -67,11 +67,18 @@ on property:persist.spectrum.profile=8
    exec u:r:su:s0 root root -- /sbin/spa franz
    exec u:r:magisk:s0 root root -- /sbin/spa franz
 
-# Default (default profile)
+# Thunderstorms - II
 on property:persist.spectrum.profile=9
-   exec u:r:init:s0 root root -- /sbin/spa default
-   exec u:r:su:s0 root root -- /sbin/spa default
-   exec u:r:magisk:s0 root root -- /sbin/spa default
+   exec u:r:init:s0 root root -- /sbin/spa thunder2
+   exec u:r:su:s0 root root -- /sbin/spa thunder2
+   exec u:r:magisk:s0 root root -- /sbin/spa thunder2
+
+# Ankit
+on property:persist.spectrum.profile=10
+   exec u:r:init:s0 root root -- /sbin/spa ankit
+   exec u:r:su:s0 root root -- /sbin/spa ankit
+   exec u:r:magisk:s0 root root -- /sbin/spa ankit
+
 
 
 

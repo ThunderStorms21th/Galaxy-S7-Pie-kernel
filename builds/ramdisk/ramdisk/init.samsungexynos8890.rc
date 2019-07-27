@@ -21,6 +21,11 @@ on init
     # Support legacy paths
     symlink /sdcard /mnt/sdcard
 
+    symlink /sdcard1 /storage/sdcard1
+    symlink /sdcard1 /mnt/extSdCard
+    symlink /sdcard1 /mnt/sdcard1
+    symlink /sdcard1 /external_sd
+
     export EXTERNAL_STORAGE /sdcard
 
     #export SECONDARY_STORAGE /storage/extSdCard
@@ -995,6 +1000,7 @@ on property:ro.debuggable=1
 # LPM
 on property:ro.bootmode=charger
     mount ext4 /dev/block/platform/155a0000.ufs/by-name/SYSTEM /system wait ro
+    mount f2fs /dev/block/platform/155a0000.ufs/by-name/SYSTEM /system wait ro
 
 on property:ro.bootmode=charger
     wait /dev/block/platform/155a0000.ufs/by-name/EFS

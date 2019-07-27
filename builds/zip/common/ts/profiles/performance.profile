@@ -39,7 +39,6 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 416000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2600000
-   chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 85
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay

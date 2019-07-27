@@ -10,9 +10,9 @@
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 85
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "19000 1274000:39000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "19000 1274000:40000"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 20000
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 30000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 858000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
@@ -38,14 +38,13 @@
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 312000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2280000
-   chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
+   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2288000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 89
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "59000 1248000:79000 1664000:19000"
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 20000
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 30000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 1248000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
@@ -90,7 +89,7 @@
    chmod 0644 /sys/devices/14ac0000.mali/max_clock
    write /sys/devices/14ac0000.mali/max_clock 650
    chmod 0644 /sys/devices/14ac0000.mali/min_clock
-   write /sys/devices/14ac0000.mali/min_clock 260
+   write /sys/devices/14ac0000.mali/min_clock 112
    chmod 0644 /sys/devices/14ac0000.mali/power_policy
    write /sys/devices/14ac0000.mali/power_policy coarse_demand
    chmod 0644 /sys/devices/14ac0000.mali/dvfs_governor
@@ -98,7 +97,7 @@
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 419
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 95
+   write /sys/devices/14ac0000.mali/highspeed_load 93
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
    write /sys/devices/14ac0000.mali/throttling1 600
@@ -112,23 +111,23 @@
    write /sys/kernel/hmp/down_compensation_mid_freq 858000
    chmod 0664 /sys/kernel/hmp/down_compensation_low_freq
    write /sys/kernel/hmp/down_compensation_low_freq 754000
-   write /proc/sys/kernel/random/write_wakeup_threshold 896
+   write /proc/sys/kernel/random/write_wakeup_threshold 640
    write /proc/sys/kernel/random/read_wakeup_threshold 64
 
    # IO Scheduler
    write /sys/block/sda/queue/scheduler cfq
    write /sys/block/sda/queue/read_ahead_kb 512
-   write /sys/block/mmcblk0/queue/scheduler cfq
+   write /sys/block/mmcblk0/queue/scheduler bfq
    write /sys/block/mmcblk0/queue/read_ahead_kb 768
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
-   write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 1
+   write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
    write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
    write /sys/module/sec_battery/parameters/wl_polling 5
-   write /sys/module/sec_nfc/parameters/wl_nfc 2
+   write /sys/module/sec_nfc/parameters/wl_nfc 1
 
    # Misc
    write /sys/module/sync/parameters/fsync_enabled 1
@@ -140,8 +139,8 @@
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"
-   write /proc/sys/vm/vfs_cache_pressure 50
-   write /proc/sys/vm/swappiness 120
+   write /proc/sys/vm/vfs_cache_pressure 60
+   write /proc/sys/vm/swappiness 100
 
 
 
