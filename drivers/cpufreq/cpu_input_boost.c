@@ -19,6 +19,8 @@
 #include <linux/state_notifier.h>
 #include <linux/input.h>
 #include <linux/slab.h>
+#include <linux/kthread.h>
+#include <linux/sched/prio.h>
 
 #define CPU_MASK(cpu) (1U << (cpu))
 
