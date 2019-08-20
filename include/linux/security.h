@@ -109,6 +109,17 @@ extern int security_integrity_current(void);
  * These functions are in security/capability.c and are used
  * as the default capabilities functions
  */
+enum lockdown_reason {
+	LOCKDOWN_NONE,
+	LOCKDOWN_MODULE_SIGNATURE,
+	LOCKDOWN_DEV_MEM,
+	LOCKDOWN_KEXEC,
+	LOCKDOWN_HIBERNATION,
+	LOCKDOWN_INTEGRITY_MAX,
+	LOCKDOWN_CONFIDENTIALITY_MAX,
+};
+
+/* These functions are in security/commoncap.c */
 extern int cap_capable(const struct cred *cred, struct user_namespace *ns,
 		       int cap, int audit);
 extern int cap_settime(const struct timespec *ts, const struct timezone *tz);
