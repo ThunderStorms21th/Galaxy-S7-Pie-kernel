@@ -761,7 +761,7 @@ static int alc_init(struct hda_codec *codec)
 	alc_auto_init_amp(codec, spec->init_amp);
 	snd_hda_apply_verbs(codec); /* apply verbs here after own init */
 
-	snd_hda_gen_init(codec);
+	// snd_hda_gen_init(codec);
 
 	snd_hda_apply_fixup(codec, HDA_FIXUP_ACT_INIT);
 
