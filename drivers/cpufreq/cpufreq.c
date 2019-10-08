@@ -2637,7 +2637,7 @@ int cpufreq_register_driver(struct cpufreq_driver *driver_data)
 		/* check for at least one working CPU */
 		for (i = 0; i < nr_cpu_ids; i++)
 			if (cpu_possible(i) && per_cpu(cpufreq_cpu_data, i)) {
-				ret = 0;
+				ret = -ENODEV;
 				break;
 			}
 
