@@ -152,6 +152,4 @@ config DEVFREQ_EXYNOS_MIF_BOOST_FREQ
 
 endif
 
-source "drivers/devfreq/event/Kconfig"
-
 endif # PM_DEVFREQ
