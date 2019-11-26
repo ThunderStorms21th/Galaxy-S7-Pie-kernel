@@ -23,6 +23,22 @@ config INPUT
 	  To compile this driver as a module, choose M here: the
 	  module will be called input.
 
+config INPUT_BOOSTER
+	tristate "Generic input HMP booster" if EXPERT
+	default n
+	help
+	  Say Y here if you want booster (mouse, keyboard, tablet,
+	  joystick, steering wheel ...) connected to your system and want
+	  it to be available to applications.
+
+	  Say N here if you don't want the booster.
+
+	  If unsure, say Y.
+
+	  To compile this driver as a module, choose M here: the
+	  module will be called input.
+
+
 if INPUT
 
 config INPUT_FF_MEMLESS
