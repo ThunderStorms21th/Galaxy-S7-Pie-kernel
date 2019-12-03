@@ -1,4 +1,5 @@
-# ThundeRStormS "Galaxy S7 (SM-G930F/FD) Pie kernel"
+# ThundeRStormS "Galaxy S7 (SM-G930F/FD) All in One"
+# for TW Pie & Oreo, AOSP LOS16 & LOS17 and Treble kernel.
 
 # Kernel for Samsung Galaxy S7
 Helping you compile kernels
@@ -9,8 +10,10 @@ Kernel Project by Team ThunderStorms
 
 - The Linux Kernel Archive for the Linux Patches <https://www.kernel.org/>
 - Samsung Open Source Release Center for the Source code <http://opensource.samsung.com/>
-- @Arianoxx for a kernel source
+- @ananjaser1211 @Kill-Switch for a Treble kernel source
+- @Arianoxx for a PIE kernel source
 - @morogoku, @Tkkg1994, @Noxxxious, @farovitus, and @mwilky for help, codes and commits
+- @Tetsuo_Osaka for ideas and kernel commits
 - Project: Exynos-Linux-Stable for updated ELS Linux source codes <https://github.com/exynos-linux-stable>
 - @osm0sis for Android Image Kitchen and anykernel2 <https://forum.xda-developers.com/showthread.php?t=2073775>
 
