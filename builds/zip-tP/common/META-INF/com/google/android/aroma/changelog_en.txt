@@ -1,0 +1,57 @@
+	
+<b>KERNEL INFORMATION:</b>
+
+	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-Treble</#></b>	
+	VERSION	: <b><#selectbg_g>v1.2</#></b>
+	DATE	: <b><#selectbg_g>20/11/2019</#></b>
+	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
+
+<#53a6f4><b> Only For Galaxy S7/S7Edge </b></#>
+
+
+<b>CHANGELOG:</b>
+
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThundeRStormS-Kernel-T-v1.2 : 20.11.2019</#></b></u>
+<*>Spectrum Profiles Updated </*>
+<*>Improvements and updates in Linux source </*>
+   -crypto, drivers, f2fs, arm64,lib and kernel,
+   -block: cfq, deadline, bfq,
+   -ramdisk: initial settings, abd, mtp,
+   -mm, fs, linux, i/o
+<*>Added EAS and new gov SCHED by @Tetsuo Osaka </*>
+<*>ThunderTweaks v1.0.4.0 </*>
+<*>Magisk 20.1 Offcial</*>
+<*>Better Stability and RAM Management </*>
+--------------------------------------------------------------------------
+-------------------------------------------------------------------------
+<u><b><#selectbg_g>ThundeRStormS-Kernel-T-v1.1 : 01.10.2019</#></b></u>
+<*>Spectrum Profiles Updated </*>
+<*>Fixed load spectrum profile at boot - thx to Moro </*>
+<*>Improvements and updates in Linux source </*>
+   -crypto, drivers, f2fs, arm64,lib and kernel,
+   -block: cfq, deadline, bfq,
+   -ramdisk: initial settings, abd, mtp,
+   -mm, fs, RCU, HZ, linux
+<*>ThunderTweaks v1.0.3.4 </*>
+<*>Magisk 19.4 Offcial</*>
+<*>Better Stability and RAM Management </*>
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThundeRStormS-Kernel-T-v1.0 : 06.09.2019</#></b></u>
+<*>Full Treble Support </*>
+<*>F2FS ,NFS ,CIFS Support</*>
+<*>SdCard Fixed</*>
+<*>Offline Charging</*>
+<*>Added CPU Boost for each core </*>
+<*>Two New CPU gov
+    1) MiniMax
+    2) UserSpace
+<*>Some Changes in Aroma by @MissACCA
+<*>Spectrum Profiles Updated </*>
+<*>ThunderTweaks v1.0.3.3</*>
+<*>Magisk 19.4 </*>
+<*>Fixed some wrong codes and Links </*>
+<*>Initial Release </*>
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------

@@ -1,0 +1,29 @@
+	
+<b>KERNEL INFORMATION:</b>
+
+	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-TrebleQ</#></b>	
+	VERSION	: <b><#selectbg_g>v1.0</#></b>
+	DATE	: <b><#selectbg_g>20/11/2019</#></b>
+	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
+
+<#53a6f4><b> Only For Galaxy S7/S7Edge </b></#>
+
+
+<b>CHANGELOG:</b>
+
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThundeRStormS-Kernel-TQ-v1.0 : 20.11.2019</#></b></u>
+<*>Spectrum Profiles Updated </*>
+<*>Improvements and updates in Linux source </*>
+   -crypto, drivers, f2fs, arm64,lib and kernel,
+   -block: cfq, deadline, bfq,
+   -ramdisk: initial settings, abd, mtp,
+   -mm, fs, linux, i/o
+<*>Added EAS and new gov SCHED by @Tetsuo Osaka </*>
+<*>ThunderTweaks v1.0.4.0 </*>
+<*>Magisk 20.1 Offcial for Treble Pie</*>
+<*>Magisk 20.2 phh Offcial for Treble Q</*>
+<*>Better Stability and RAM Management </*>
+<*>Initial Release </*>
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
