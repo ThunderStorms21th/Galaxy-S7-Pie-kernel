@@ -108,19 +108,22 @@ on boot
    chmod 0644 /sys/power/cpuhotplug/governor/enabled
    write /sys/power/cpuhotplug/governor/enabled 1
    chmod 0664 /sys/power/cpuhotplug/governor/dual_change_ms
-   write /sys/power/cpuhotplug/governor/dual_change_ms 50
+   write /sys/power/cpuhotplug/governor/dual_change_ms 70
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
    write /sys/power/cpuhotplug/governor/lit_multi_ratio 100
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
-   write /sys/power/cpuhotplug/governor/to_dual_ratio 70
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 66
    chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
-   write /sys/power/cpuhotplug/governor/to_quad_ratio 80
+   write /sys/power/cpuhotplug/governor/to_quad_ratio 98
 
    # FINGERPRINT BOOST
    write /sys/kernel/fp_boost/enabled 0
 
    # INPUT BOOST CPU
    write /sys/module/cpu_boost/parameters/input_boost_enabled 0
+   write /sys/kernel/cpu_input_boost/enabled 0
+   write /sys/kernel/cpu_input_boost/ib_duration_ms 70
+   write /sys/kernel/cpu_input_boost/ib_freqs "546000 728000"
 
    # GPU set at max/min freq
    chmod 0664 /sys/devices/14ac0000.mali/max_clock
