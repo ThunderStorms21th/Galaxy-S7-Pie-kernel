@@ -4579,8 +4579,7 @@ out:
 }
 
 static int binder_ioctl_get_node_debug_info(struct binder_proc *proc,
-				struct binder_node_debug_info *info)
-{
+				struct binder_node_debug_info *info) {
 	struct rb_node *n;
 	binder_uintptr_t ptr = info->ptr;
 
