@@ -20,7 +20,7 @@ on boot
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 87
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 90
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "50000 1066000:30000"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate
@@ -55,7 +55,7 @@ on boot
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 92
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "50000 1560000:49000 1664000:49000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "70000 1560000:49000 1664000:49000"
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate 30000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/hispeed_freq
@@ -76,7 +76,7 @@ on boot
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 5
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 8
 
    #HMP settings
    chmod 0664 /sys/kernel/hmp/up_threshold
@@ -89,7 +89,7 @@ on boot
    write /sys/kernel/hmp/down_compensation_mid_freq 962000
    chmod 0664 /sys/kernel/hmp/down_compensation_low_freq
    write /sys/kernel/hmp/down_compensation_low_freq 858000
-   write /proc/sys/kernel/random/write_wakeup_threshold 384
+   write /proc/sys/kernel/random/write_wakeup_threshold 128
    write /proc/sys/kernel/random/read_wakeup_threshold 64
    write /proc/sys/vm/dirty_expire_centisecs 1000
    write /proc/sys/vm/dirty_writeback_centisecs 2000
@@ -112,9 +112,9 @@ on boot
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
    write /sys/power/cpuhotplug/governor/lit_multi_ratio 100
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
-   write /sys/power/cpuhotplug/governor/to_dual_ratio 66
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 98
    chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
-   write /sys/power/cpuhotplug/governor/to_quad_ratio 98
+   write /sys/power/cpuhotplug/governor/to_quad_ratio 55
 
    # FINGERPRINT BOOST
    write /sys/kernel/fp_boost/enabled 0
@@ -137,7 +137,7 @@ on boot
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 419
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 92
+   write /sys/devices/14ac0000.mali/highspeed_load 91
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
    write /sys/devices/14ac0000.mali/throttling1 600
@@ -157,12 +157,12 @@ on boot
    write /sys/block/mmcblk0/queue/rq_affinity 1
 
     # Wakelock settigs
-    write /sys/module/wakeup/parameters/enable_sensorhub_wl 1
-    write /sys/module/wakeup/parameters/enable_ssp_wl 1
+    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
+    write /sys/module/wakeup/parameters/enable_ssp_wl 0
     write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
     write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
     write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
-    write /sys/module/sec_battery/parameters/wl_polling 4
+    write /sys/module/sec_battery/parameters/wl_polling 3
     write /sys/module/sec_nfc/parameters/wl_nfc 1
 
     # Misc settings
