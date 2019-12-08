@@ -28,28 +28,28 @@
  *
  * v1.7.2 - Clean up
  *
- * v1.8.0 Changed "userspace" mode to disabled, and removed the ability to store
- *        to the syfs. Now The driver is autonomous, without any userspace
- *        interaction required/allowed. Also a little bit of sysfs
+ * v1.8.0 - Changed "userspace" mode to disabled, and removed the ability to store
+ *          to the syfs. Now The driver is autonomous, without any userspace
+ *          interaction required/allowed. Also a little bit of sysfs
  *		  ordering cleanup.
  *
- * v1.8.1 Replaced deprecated singlethread workqueue with updated schedule_work.
+ * v1.8.1 - Replaced deprecated singlethread workqueue with updated schedule_work.
  *
- * v1.9.1 Updated the depecrated method of declaring work but simply declaring
- *		  the two work structs.  Also actually INITialized the work on init, and
- *        flushed it on exit.
+ * v1.9.1 - Updated the depecrated method of declaring work but simply declaring
+ *	    the two work structs.  Also actually INITialized the work on init, and
+ *          flushed it on exit.
  *
- * v1.9.2 Remove unneccessary "MODE" variable as we only have one mechanism of
- *		  action remaining. Also removed the useless state sysfs entry.  Like
- *		  state notifier, we can only see "state" when the screen is on, so
- *		  it is pointless to expose to userspace. Topped off with some cleanup.
+ * v1.9.2 - Remove unneccessary "MODE" variable as we only have one mechanism of
+ *	    action remaining. Also removed the useless state sysfs entry.  Like
+ *	    state notifier, we can only see "state" when the screen is on, so
+ *	    it is pointless to expose to userspace. Topped off with some cleanup.
  *
- * v2.0   Final cleanup to functionality.  For faster response to screen on/off events,
- *		  ensure that the previous work is cancelled upon a valid requested state change.
- *		  Switched back to a single thread workqueue but allocated properly. Topped off
- *		  with some driver cleanup and a config option for using the SUB_MINOR_VERISON.
+ * v2.0.0 - Final cleanup to functionality.  For faster response to screen on/off events,
+ *	    ensure that the previous work is cancelled upon a valid requested state change.
+ *	    Switched back to a single thread workqueue but allocated properly. Topped off
+ *	    with some driver cleanup and a config option for using the SUB_MINOR_VERISON.
  *
- * v2.1   Provide a user-configurable option to sync the system on powersuspend.
+ * v2.1.0 - Provide a user-configurable option to sync the system on powersuspend.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and

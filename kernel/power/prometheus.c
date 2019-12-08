@@ -1,63 +1,18 @@
-/* kernel/power/powersuspend.c
+/* kernel/power/prometheus.c
  *
  * Copyright (C) 2005-2008 Google, Inc.
  * Copyright (C) 2013 Paul Reioux
+ * Copyright (C) 2017 Rob Patershuk
  *
  * Modified by Jean-Pierre Rasquin <yank555.lu@gmail.com>
+ * Further modified by Rob Patershuk <robpatershuk@gmail.com>
  *
- *  v1.1 - make powersuspend not depend on a userspace initiator anymore,
- *         but use a hook in autosleep instead.
+ * See include/linux/prometheus.h for legacy (powersuspend) changelog.
  *
- *  v1.2 - make kernel / userspace mode switchable
- *
- *  v1.3 - add a hook in display panel driver as alternative kernel trigger
- *
- *  v1.4 - add a hybrid-kernel mode, accepting both kernel hooks (first wins)
- *
- *  v1.5 - fix hybrid-kernel mode cannot be set through sysfs
- *
- *  v1.6 - remove autosleep and hybrid modes (autosleep not working on shamu)
- *
- *  v1.6.1 - add autosleep and hybrid modes and hybrid default (UpInTheAir@XDA)
- *
- *  v1.7 - do only run state change if change actually requests a new state
- *
- *  v1.7.1 - replaced deprecated singlethread workqueue with updated schedule_work
- *
- *  v1.8 - add debug sysfs trigger to see how driver work
- *
- *  v1.8.1 - Replaced deprecated singlethread workqueue with updated schedule_work.
- *
- *  v1.9.0 - updated our outdated method of workqueue declaration
+ * Prometheus was punished by the gods for giving the gift of knowledge to man.
+ * He was cast into the bowels of the earth and pecked by birds.
  *
  *
- *  v1.9.1 - Updated the depecrated method of declaring work but simply declaring
- *           the two work structs.  Also actually INITialized the work on init, and
- *           flushed it on exit.
- *
- *  v1.9.2 - Remove unneccessary "MODE" variable as we only have one mechanism of
- *		  action remaining. Also removed the useless state sysfs entry.  Like
- *		  state notifier, we can only see "state" when the screen is on, so
- *		  it is pointless to expose to userspace. Topped off with some cleanup.
- *
- *  v2.0.0 - Final cleanup to functionality.  For faster response to screen on/off events,
- *		  ensure that the previous work is cancelled upon a valid requested state change.
- *		  Switched back to a single thread workqueue but allocated properly. Topped off
- *		  with some driver cleanup and a config option for using the SUB_MINOR_VERISON.
- *
- *  v2.1.0 - Provide a user-configurable option to sync the system on powersuspend.
- *
- *  v2.2.0 - Remove the mutex unlock mistakingly added during system sync setup.
- *
- *  v2.3.0 - Move cancelling previous state's work to the current state change work item.
- *
- *  v2.4.0 - Back out of suspend if the device is in the process of rebooting, powering
- *		  off, or poweroff_charging. Additionally, refactor abort handling so that
- *		  sys_sync isnt called within a mutex-locked region.  Additionally, set sysfs
- *		  up in a way that doesn't allow for failure. No functional change
- *		  to actual suspend/resume handling other than the fixes mentioned.
- *
- *  v2.5.0 - Added a big, scary hook to call pm_suspend.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -74,20 +29,9 @@
 
 #define MAJOR_VERSION	2
 #define MINOR_VERSION	5
-
-/*
- * debug = 1 will print all
- */
-static unsigned int debug = 0;
-module_param_named(debug_mask, debug, uint, 0644);
-
-#define dprintk(msg...)		\
-do { 				\
-	if (debug)		\
-		pr_info(msg);	\
-} while (0)
-
-struct workqueue_struct *suspend_work_queue;
+#ifdef  CONFIG_POWERSUSPEND_BETA_VERSION
+#define SUB_MINOR_VERSION
+#endif
 
 static DEFINE_MUTEX(power_suspend_lock);
 static DEFINE_SPINLOCK(ps_state_lock);
@@ -211,8 +155,6 @@ abort:
 
 }
 
-bool power_suspended = false;
-
 void set_power_suspend_state(int new_state)
 {
 	unsigned long irqflags;
@@ -233,16 +175,6 @@ void set_power_suspend_state(int new_state)
 		pr_info("[POWERSUSPEND] Ignoring State Request.\n");
 	}
 }
-
-void set_power_suspend_state_autosleep_hook(int new_state)
-{
-	dprintk("[POWERSUSPEND] autosleep resquests %s.\n", new_state == POWER_SUSPEND_ACTIVE ? "sleep" : "wakeup");
-	// Only allow autosleep hook changes in autosleep & hybrid mode
-	if (mode == POWER_SUSPEND_AUTOSLEEP || mode == POWER_SUSPEND_HYBRID)
-		set_power_suspend_state(new_state);
-}
-
-EXPORT_SYMBOL(set_power_suspend_state_autosleep_hook);
 
 void set_power_suspend_state_panel_hook(int new_state)
 {
@@ -311,7 +243,11 @@ static struct kobj_attribute power_suspend_use_global_suspend_attribute =
 static ssize_t power_suspend_version_show(struct kobject *kobj,
 		struct kobj_attribute *attr, char *buf)
 {
+#ifdef CONFIG_POWERSUSPEND_BETA_VERSION
+	return sprintf(buf, "Powersuspend Version: %d.%d.%d\n", MAJOR_VERSION, MINOR_VERSION, SUB_MINOR_VERSION);
+#else
 	return sprintf(buf, "Powersuspend Version: %d.%d\n", MAJOR_VERSION, MINOR_VERSION);
+#endif
 }
 
 static struct kobj_attribute power_suspend_version_attribute =
@@ -380,8 +316,8 @@ static void power_suspend_exit(void)
 subsys_initcall(power_suspend_init);
 module_exit(power_suspend_exit);
 
-MODULE_AUTHOR("Paul Reioux <reioux@gmail.com> / Jean-Pierre Rasquin <yank555.lu@gmail.com>");
-MODULE_DESCRIPTION("power_suspend - A replacement kernel PM driver for"
-        "Android's deprecated early_suspend/late_resume PM driver!");
+MODULE_AUTHOR("Paul Reioux <reioux@gmail.com> / Jean-Pierre Rasquin <yank555.lu@gmail.com> \
+				Rob Patershuk <robpatershuk@gmail.com>");
+MODULE_DESCRIPTION("Prometheus was punished by the gods for giving the gift of knowledge to man." \
+			  "He was cast into the bowels of the earth and pecked by birds.");
 MODULE_LICENSE("GPL v2");
-
