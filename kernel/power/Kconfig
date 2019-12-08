@@ -395,7 +395,6 @@ config SUSPEND_TIME
 	  keeps statistics on the time spent in suspend in
 	  /sys/kernel/debug/suspend_time
 
-<<<<<<< HEAD
 config FOTA_LIMIT
 	bool "Fota limit information node"
 	default n
@@ -407,7 +406,7 @@ config	BOEFFLA_WL_BLOCKER
 	bool "Boeffla generic wakelock blocker driver"
 	depends on PM
 	default N
-=======
+
 config PARTIALRESUME
 	bool "Partial-resume framework"
 	default y
@@ -446,4 +445,4 @@ config QUICK_WAKEUP
 	---help---
 	  Allow kernel driver to do periodic jobs without resuming the full system
 	  This option can increase battery life on android powered smartphone.
->>>>>>> 8f4361f67d... Make SYNC_BEFORE_SUSPEND defunct by adding in a ksysfs interface to toggle it. Also POWERSUSPEND V2.2 - > remove stupid mutex unlock in sys_sync() function
+
