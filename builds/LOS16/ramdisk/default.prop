@@ -4,7 +4,7 @@
 
 # Import original default.prop
 import /system/etc/prop.default
-# import /system/etc/default.prop
+import /system/etc/default.prop
 
 ro.secure=0
 security.perf_harden=1
@@ -42,13 +42,13 @@ ro.config.hw_power_saving=1
 ring.delay=0
 fingerprint.unlock=1
 persist.sys.purgeable_assets=1
-persist.sys.ui.hw=true
+# persist.sys.ui.hw=true
 
 # Early SF configuration
-debug.sf.early_phase_offset_ns=500000
-debug.sf.early_app_phase_offset_ns=500000
-debug.sf.early_gl_phase_offset_ns=3000000
-debug.sf.early_gl_app_phase_offset_ns=15000000
+# debug.sf.early_phase_offset_ns=500000
+# debug.sf.early_app_phase_offset_ns=500000
+# debug.sf.early_gl_phase_offset_ns=3000000
+# debug.sf.early_gl_app_phase_offset_ns=15000000
 
 #
 # BOOTIMAGE_BUILD_PROPERTIES

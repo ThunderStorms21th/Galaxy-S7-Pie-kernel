@@ -8,19 +8,19 @@
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 90
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 80
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "50000 1066000:30000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "40000 1066000:30000"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate 30000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/hispeed_freq
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/hispeed_freq 754000
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/hispeed_freq 650000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_slack
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_slack 20000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/target_loads
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/target_loads "75 1066000:85"
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/target_loads "65 1066000:70"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/min_sample_time
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/min_sample_time 40000
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/min_sample_time 50000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/mode
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/mode 0
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boost
@@ -31,7 +31,7 @@
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 10
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 5
 
    # Big CPU
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
@@ -41,9 +41,9 @@
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2288000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 92
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 90
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "70000 1560000:49000 1664000:49000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "40000 1560000:49000 1664000:49000"
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate 30000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/hispeed_freq
@@ -51,7 +51,7 @@
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_slack
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_slack 20000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/target_loads
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/target_loads "80 1040000:81 1352000:87 1664000:90"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/target_loads "70 1040000:75 1352000:78 1664000:80"
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/min_sample_time
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/min_sample_time 40000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/mode
@@ -64,7 +64,7 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 8
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 5
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
@@ -80,13 +80,13 @@
    chmod 0644 /sys/power/cpuhotplug/governor/enabled
    write /sys/power/cpuhotplug/governor/enabled 1
    chmod 0664 /sys/power/cpuhotplug/governor/dual_change_ms
-   write /sys/power/cpuhotplug/governor/dual_change_ms 70
+   write /sys/power/cpuhotplug/governor/dual_change_ms 150
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
    write /sys/power/cpuhotplug/governor/lit_multi_ratio 100
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
-   write /sys/power/cpuhotplug/governor/to_dual_ratio 98
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 80
    chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
-   write /sys/power/cpuhotplug/governor/to_quad_ratio 55
+   write /sys/power/cpuhotplug/governor/to_quad_ratio 99
 
    # FINGERPRINT BOOST
    write /sys/kernel/fp_boost/enabled 0
@@ -112,7 +112,7 @@
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 419
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 91
+   write /sys/devices/14ac0000.mali/highspeed_load 93
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
    write /sys/devices/14ac0000.mali/throttling1 600
@@ -154,6 +154,6 @@
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,76152"
-   write /proc/sys/vm/vfs_cache_pressure 70
+   write /proc/sys/vm/vfs_cache_pressure 85
    write /proc/sys/vm/swappiness 160
 
