@@ -96,9 +96,9 @@
 		freq_clip_max_1 = <1040000>;
 		freq_clip_max_2 = <728000>; */
 
-		freq_clip_max_0 = <1768000>;
-		freq_clip_max_1 = <1040000>;
-		freq_clip_max_2 = <728000>;
+		freq_clip_max_0 = <1872000>;
+		freq_clip_max_1 = <1352000>;
+		freq_clip_max_2 = <936000>;
 
 		cooling_level_0 = <66>;
 		cooling_level_1 = <71>;
@@ -151,9 +151,9 @@
 		freq_clip_max_2 = <962000>;
 		freq_clip_max_3 = <442000>; */
 
-		freq_clip_max_0 = <1378000>;
-		freq_clip_max_1 = <1274000>;
-		freq_clip_max_2 = <1066000>;
+		freq_clip_max_0 = <1274000>;
+		freq_clip_max_1 = <1066000>;
+		freq_clip_max_2 = <858000>;
 		freq_clip_max_3 = <442000>;
 
 		cooling_level_0 = <66>;

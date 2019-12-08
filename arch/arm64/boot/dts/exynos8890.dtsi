@@ -138,7 +138,7 @@
 		cpu@100 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
-			clock-frequency = <1586000000>;
+			// clock-frequency = <1586000000>;
 			reg = <0x0 0x100>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
@@ -146,7 +146,7 @@
 		cpu@101 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
-			clock-frequency = <1586000000>;
+			// clock-frequency = <1586000000>;
 			reg = <0x0 0x101>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
@@ -154,7 +154,7 @@
 		cpu@102 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
-			clock-frequency = <1586000000>;
+			// clock-frequency = <1586000000>;
 			reg = <0x0 0x102>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
@@ -162,7 +162,7 @@
 		cpu@103 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
-			clock-frequency = <1586000000>;
+			// clock-frequency = <1586000000>;
 			reg = <0x0 0x103>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
@@ -170,7 +170,7 @@
 		cpu@0 {
 			device_type = "cpu";
 			compatible = "arm,mongoose", "arm,armv8";
-			clock-frequency = <2600000000>;
+			// clock-frequency = <2288000000>;
 			reg = <0x0 0x0>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
@@ -178,7 +178,7 @@
 		cpu@1 {
 			device_type = "cpu";
 			compatible = "arm,mongoose", "arm,armv8";
-			clock-frequency = <2600000000>;
+			// clock-frequency = <2288000000>;
 			reg = <0x0 0x1>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
@@ -186,7 +186,7 @@
 		cpu@2 {
 			device_type = "cpu";
 			compatible = "arm,mongoose", "arm,armv8";
-			clock-frequency = <2600000000>;
+			// clock-frequency = <2288000000>;
 			reg = <0x0 0x2>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
@@ -194,7 +194,7 @@
 		cpu@3 {
 			device_type = "cpu";
 			compatible = "arm,mongoose", "arm,armv8";
-			clock-frequency = <2600000000>;
+			// clock-frequency = <2288000000>;
 			reg = <0x0 0x3>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
@@ -209,7 +209,7 @@
 				arm,psci-suspend-param = <0x0010000>;
 				entry-latency-us = <35>;
 				exit-latency-us = <90>;
-				min-residency-us = <750>;
+				min-residency-us = <350>;	/* org 750 */
 				status = "okay";
 			};
 
@@ -219,7 +219,7 @@
 				arm,psci-suspend-param = <0x0010000>;
 				entry-latency-us = <30>;
 				exit-latency-us = <75>;
-				min-residency-us = <2000>;
+				min-residency-us = <1000>;	/* org 2000 */
 				status = "okay";
 			};
 		};
@@ -435,9 +435,9 @@
 		cl0_max_support_idx = <4>;
 		cl0_min_support_idx = <18>;
 		cl0_boot_max_qos = <1586000>;
-		cl0_boot_min_qos = <962000>;
+		cl0_boot_min_qos = <1040000>;
 		cl0_en_ema = <1>;
-		cl0_min_qos_freq = <858000>;
+		cl0_min_qos_freq = <754000>;
 
 		/* MNGS */
 		cl1_idx_num = <28>;
@@ -450,7 +450,7 @@
 		cl1_jig_boot_max_qos = <1456000>;
 		cl1_reboot_limit_freq = <728000>;
 		cl1_min_qos_freq = <728000>;
-		cl1_boost_freq = <2288000>;
+		cl1_boost_freq = <1872000>;	/* org 2288000 */
 		cl1_max_support_idx_table = < 7	   /* Number of online core is 0 */
 					      4    /* Number of online core is 1 */
 					      4    /* Number of online core is 2 */
@@ -464,7 +464,7 @@
 					           4 >; /* Number of online core is 4 */
 
 		/* Boost freq*/
-		cl0_boost_freq = <754000>;
+		cl0_boost_freq = <650000>;	/* org 754000 */
 
 		/*APO table ->	 idx   freq    volt   bus_lock */
 		cl0_dvfs_domain_name = "dvfs_little";
@@ -514,10 +514,10 @@
 				  21  832000  662500    421000 /* ARM L21: 800MHz */
 				  22  728000  662500    421000 /* ARM L22: 700MHz */
 				  23  624000  662500    421000 /* ARM L23: 600MHz */
-				  24  520000  662500    421000 /* ARM L23: 500MHz */
-				  25  416000  662500    421000 /* ARM L23: 400MHz */
-				  26  312000  662500    421000 /* ARM L23: 300MHz */
-				  27  208000  662500    421000 >;/* ARM L23: 200MHz */	};
+				  24  520000  643750    421000 /* ARM L23: 500MHz */
+				  25  416000  643750    421000 /* ARM L23: 400MHz */
+				  26  312000  643750    421000 /* ARM L23: 300MHz */
+				  27  208000  643750    421000 >;/* ARM L23: 200MHz */	};
 
 
 	memory_comp: mcomp@11170000 {
@@ -3127,8 +3127,8 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head */
-			input_booster,cpu_freqs = <936000>;			/* org <1040000> */
-			input_booster,hmp_boost = <1>;				/* was 1 */
+			input_booster,cpu_freqs = <858000>;			/* org <1040000> */
+			input_booster,hmp_boost = <0>;				/* was 1 */
 			input_booster,kfc_freqs = <0>;
 			input_booster,mif_freqs = <0>;
 			input_booster,int_freqs = <0>;
@@ -3146,8 +3146,8 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head */
-			input_booster,cpu_freqs = <936000>;			/* org <1040000> */
-			input_booster,hmp_boost = <1>;				/* was 1 */
+			input_booster,cpu_freqs = <858000>;			/* org <1040000> */
+			input_booster,hmp_boost = <0>;				/* was 1 */
 			input_booster,kfc_freqs = <0>;
 			input_booster,mif_freqs = <0>;
 			input_booster,int_freqs = <0>;
@@ -3165,7 +3165,7 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head, 2_Head, 2_Tail */
-			input_booster,cpu_freqs = <936000 936000 0>;		/* org <1040000 1040000 0> */
+			input_booster,cpu_freqs = <858000 936000 1040000>;	/* org <1040000 1040000 0> */
 			input_booster,hmp_boost = <1 1 0>;			/* org <1 1 0> */
 			input_booster,kfc_freqs = <650000 754000 1066000>;	/* org <754000 754000 1274000> */
 			input_booster,mif_freqs = <0 0 0>;
@@ -3184,7 +3184,7 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <936000 0>;			/* org <1040000 0> */
+			input_booster,cpu_freqs = <858000 936000>;		/* org <1040000 0> */
 			input_booster,hmp_boost = <1 1>;			/* org <1 1> */
 			input_booster,kfc_freqs = <650000 754000>;
 			input_booster,mif_freqs = <0 0>;
@@ -3203,8 +3203,8 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1040000 1040000>;
-			input_booster,hmp_boost = <1 1>;
+			input_booster,cpu_freqs = <858000 858000>;		/* org <1040000 1040000> */
+			input_booster,hmp_boost = <1 1>;			/* org <1 1> */
 			input_booster,kfc_freqs = <754000 754000>;
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
@@ -3222,9 +3222,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1040000 0>;
-			input_booster,hmp_boost = <1 0>;
-			input_booster,kfc_freqs = <754000 1274000>;
+			input_booster,cpu_freqs = <858000 1040000>;		/* org <1040000 0> */
+			input_booster,hmp_boost = <1 1>;			/* org <1 0> */
+			input_booster,kfc_freqs = <754000 1040000>;		/* org <754000 1274000> */
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
@@ -3260,9 +3260,9 @@
 
 			/* Frequency table */
 			/* for level	:	1_Head 2_Tail*/
-			input_booster,cpu_freqs = <1040000 0>;
+			input_booster,cpu_freqs = <858000 1040000>;		/* org <1040000 0> */
 			input_booster,hmp_boost = <1 1>;
-			input_booster,kfc_freqs = <754000 1274000>;
+			input_booster,kfc_freqs = <754000 1274000>;		/* org <754000 1274000> */
 			input_booster,mif_freqs = <0 0>;
 			input_booster,int_freqs = <0 0>;
 
