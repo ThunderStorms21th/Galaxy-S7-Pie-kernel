@@ -26,6 +26,9 @@
  *
  *  v1.8 - add debug sysfs trigger to see how driver work
  *
+ *  v1.8.1 - Replaced deprecated singlethread workqueue with updated schedule_work.
+ *
+ *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
  * may be copied, distributed, and modified under those terms.
@@ -44,6 +47,7 @@
 
 #define MAJOR_VERSION	1
 #define MINOR_VERSION	8
+#define SUB_MINOR_VERSION 1
 
 /*
  * debug = 1 will print all
