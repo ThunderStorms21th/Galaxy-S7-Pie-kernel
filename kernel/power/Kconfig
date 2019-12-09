@@ -79,20 +79,11 @@ config POWERSUSPEND
 	  Call early suspend handlers when the user requested sleep state
 	  changes.
 
-<<<<<<< HEAD
 config POWERSUSPEND_DEBUG
 	bool "Powersuspend driver debugging code"
 	depends on POWERSUSPEND
 	help
 	  Output debugging info in dmesg [POWERSUSPEND] (Yank555.lu)
-=======
-config POWERSUSPEND_BETA_VERSION
-	bool "Powersuspend Beta"
-	depends on POWERSUSPEND
-	default n
-	---help---
-	  Indicate if this is a WIP version of the driver or not.
->>>>>>> 384be72599... POWERSUSPEND 2.0! Final cleanup to functionality.  For faster response to screen on/off events, ensure that the previous work is cancelled upon a valid requested state change. Switched back to a single thread workqueue but allocated properly. Topped off with some driver cleanup and a config option for using the SUB_MINOR_VERISON.
 
 config HIBERNATE_CALLBACKS
 	bool
