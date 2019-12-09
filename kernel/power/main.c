@@ -16,6 +16,11 @@
 #include <linux/debugfs.h>
 #include <linux/seq_file.h>
 
+#include <linux/suspend.h>
+#include <linux/sysfs_helpers.h>
+#include <linux/display_state.h>
+#include <linux/powersuspend.h>
+
 #include "power.h"
 
 DEFINE_MUTEX(pm_mutex);

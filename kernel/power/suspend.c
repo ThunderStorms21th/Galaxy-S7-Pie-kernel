@@ -31,23 +31,19 @@
 #include <linux/compiler.h>
 #include <linux/wakeup_reason.h>
 
-#include "power.h"
-
-const char *pm_labels[] = { "mem", "standby", "freeze", NULL };
-const char *pm_states[PM_SUSPEND_MAX];
-
 #include <linux/module.h>
 
 #include "power.h"
 static int suspendsync;
 
+// const char *pm_labels[] = { "mem", "standby", "freeze", NULL };
+const char *pm_states[PM_SUSPEND_MAX];
 
-struct pm_sleep_state pm_states[PM_SUSPEND_MAX] = {
-	[PM_SUSPEND_FREEZE] = { .label = "freeze", .state = PM_SUSPEND_FREEZE },
-	[PM_SUSPEND_STANDBY] = { .label = "standby", },
-	[PM_SUSPEND_MEM] = { .label = "mem", },
-};
->>>>>>> 8f4361f67d... Make SYNC_BEFORE_SUSPEND defunct by adding in a ksysfs interface to toggle it. Also POWERSUSPEND V2.2 - > remove stupid mutex unlock in sys_sync() function
+unsigned int pm_suspend_global_flags;
+EXPORT_SYMBOL_GPL(pm_suspend_global_flags);
+
+const char *mem_sleep_states[PM_SUSPEND_MAX];
+
 
 static const struct platform_suspend_ops *suspend_ops;
 static const struct platform_freeze_ops *freeze_ops;
@@ -634,4 +630,4 @@ module_exit(suspend_exit);
 MODULE_AUTHOR("Smart People");
 MODULE_DESCRIPTION("suspend");
 MODULE_LICENSE("GPL v2");
->>>>>>> 8f4361f67d... Make SYNC_BEFORE_SUSPEND defunct by adding in a ksysfs interface to toggle it. Also POWERSUSPEND V2.2 - > remove stupid mutex unlock in sys_sync() function
+
