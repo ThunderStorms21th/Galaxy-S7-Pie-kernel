@@ -91,15 +91,15 @@ do { 				\
 struct workqueue_struct *suspend_work_queue;
 
 static DEFINE_MUTEX(power_suspend_lock);
-static DEFINE_SPINLOCK(ps_state_lock);
+static DEFINE_SPINLOCK(state_lock);
 static LIST_HEAD(power_suspend_handlers);
 static struct workqueue_struct *pwrsup_wq;
 struct work_struct power_suspend_work;
 struct work_struct power_resume_work;
 static void power_suspend(struct work_struct *work);
 static void power_resume(struct work_struct *work);
-/* Yank555.lu : Current powersuspend ps_state (screen on / off) */
-static int ps_state;
+/* Yank555.lu : Current powersuspend state (screen on / off) */
+static int state;
 /* Robcore: Provide an option to sync the system on powersuspend */
 static int sync_on_powersuspend;
 extern int poweroff_charging;
@@ -143,10 +143,10 @@ static void power_suspend(struct work_struct *work)
 
 	pr_info("[POWERSUSPEND] Entering Suspend...\n");
 	mutex_lock(&power_suspend_lock);
-	spin_lock_irqsave(&ps_state_lock, irqflags);
-	if (ps_state == POWER_SUSPEND_INACTIVE)
+	spin_lock_irqsave(&state_lock, irqflags);
+	if (state == POWER_SUSPEND_INACTIVE)
 		abort = 1;
-	spin_unlock_irqrestore(&ps_state_lock, irqflags);
+	spin_unlock_irqrestore(&state_lock, irqflags);
 
 	if (abort) {
 		mutex_unlock(&power_suspend_lock);
@@ -179,10 +179,10 @@ static void power_resume(struct work_struct *work)
 	cancel_work_sync(&power_suspend_work);
 	pr_info("[POWERSUSPEND] Entering Resume...\n");
 	mutex_lock(&power_suspend_lock);
-	spin_lock_irqsave(&ps_state_lock, irqflags);
-	if (ps_state == POWER_SUSPEND_ACTIVE)
+	spin_lock_irqsave(&state_lock, irqflags);
+	if (state == POWER_SUSPEND_ACTIVE)
 		abort = 1;
-	spin_unlock_irqrestore(&ps_state_lock, irqflags);
+	spin_unlock_irqrestore(&state_lock, irqflags);
 
 	if (abort)
 		goto abort;
@@ -206,18 +206,18 @@ void set_power_suspend_state(int new_state)
 {
 	unsigned long irqflags;
 
-	if (ps_state != new_state) {
-		spin_lock_irqsave(&ps_state_lock, irqflags);
-		if (ps_state == POWER_SUSPEND_INACTIVE && new_state == POWER_SUSPEND_ACTIVE) {
+	if (state != new_state) {
+		spin_lock_irqsave(&state_lock, irqflags);
+		if (state == POWER_SUSPEND_INACTIVE && new_state == POWER_SUSPEND_ACTIVE) {
 			pr_info("[POWERSUSPEND] Suspend State Activated.\n");
-			ps_state = new_state;
+			state = new_state;
 			queue_work(pwrsup_wq, &power_suspend_work);
-		} else if (ps_state == POWER_SUSPEND_ACTIVE && new_state == POWER_SUSPEND_INACTIVE) {
+		} else if (state == POWER_SUSPEND_ACTIVE && new_state == POWER_SUSPEND_INACTIVE) {
 			pr_info("[POWERSUSPEND] Resume State Activated.\n");
-			ps_state = new_state;
+			state = new_state;
 			queue_work(pwrsup_wq, &power_resume_work);
 		}
-		spin_unlock_irqrestore(&ps_state_lock, irqflags);
+		spin_unlock_irqrestore(&state_lock, irqflags);
 	} else {
 		pr_info("[POWERSUSPEND] Ignoring State Request.\n");
 	}
