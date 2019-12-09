@@ -35,21 +35,20 @@
  *           the two work structs.  Also actually INITialized the work on init, and
  *           flushed it on exit.
  *
- *  v1.9.2 - Remove unneccessary "MODE" variable as we only have one mechanism of
+ * v1.9.2 Remove unneccessary "MODE" variable as we only have one mechanism of
  *		  action remaining. Also removed the useless state sysfs entry.  Like
  *		  state notifier, we can only see "state" when the screen is on, so
  *		  it is pointless to expose to userspace. Topped off with some cleanup.
  *
- *  v2.0.0 - Final cleanup to functionality.  For faster response to screen on/off events,
+ * v2.0   Final cleanup to functionality.  For faster response to screen on/off events,
  *		  ensure that the previous work is cancelled upon a valid requested state change.
  *		  Switched back to a single thread workqueue but allocated properly. Topped off
  *		  with some driver cleanup and a config option for using the SUB_MINOR_VERISON.
  *
- *  v2.1.0 - Provide a user-configurable option to sync the system on powersuspend.
+ * v2.1   Provide a user-configurable option to sync the system on powersuspend.
  *
- *  v2.2.0 - Remove the mutex unlock mistakingly added during system sync setup.
+ * v2.2   Remove the mutex unlock mistakingly added during system sync setup.
  *
- *  v2.3.0 - Move cancelling previous state's work to the current state change work item.
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -65,7 +64,7 @@
 #include <linux/powersuspend.h>
 
 #define MAJOR_VERSION	2
-#define MINOR_VERSION	3
+#define MINOR_VERSION	2
 #ifdef  CONFIG_POWERSUSPEND_BETA_VERSION
 #define SUB_MINOR_VERSION
 #endif
