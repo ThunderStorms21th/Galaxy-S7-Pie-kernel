@@ -65,7 +65,7 @@
 #include <linux/powersuspend.h>
 
 #define MAJOR_VERSION	2
-#define MINOR_VERSION	4
+#define MINOR_VERSION	3
 #ifdef  CONFIG_POWERSUSPEND_BETA_VERSION
 #define SUB_MINOR_VERSION
 #endif
@@ -126,7 +126,6 @@ static void power_suspend(struct work_struct *work)
 	int abort = 0;
 
 	cancel_work_sync(&power_resume_work);
-	__pm_relax(pos->ws);
 	pr_info("[POWERSUSPEND] Entering Suspend...\n");
 	mutex_lock(&power_suspend_lock);
 	spin_lock_irqsave(&state_lock, irqflags);
@@ -152,7 +151,6 @@ static void power_suspend(struct work_struct *work)
 
 abort_suspend:
 	mutex_unlock(&power_suspend_lock);
-	__pm_stay_awake(pos->ws);
 }
 
 static void power_resume(struct work_struct *work)
@@ -162,7 +160,6 @@ static void power_resume(struct work_struct *work)
 	int abort = 0;
 
 	cancel_work_sync(&power_suspend_work);
-	__pm_stay_awake(pos->ws);
 	pr_info("[POWERSUSPEND] Entering Resume...\n");
 	mutex_lock(&power_suspend_lock);
 	spin_lock_irqsave(&state_lock, irqflags);
@@ -182,7 +179,6 @@ static void power_resume(struct work_struct *work)
 	pr_info("[POWERSUSPEND] Resume Completed.\n");
 abort_resume:
 	mutex_unlock(&power_suspend_lock);
-	__pm_relax(pos->ws);
 }
 
 bool power_suspended = false;
@@ -284,7 +280,6 @@ static struct kobject *power_suspend_kobj;
 
 static int power_suspend_init(void)
 {
-	struct power_suspend *pos;
 	int sysfs_result;
 
 	power_suspend_kobj = kobject_create_and_add("power_suspend",
@@ -308,14 +303,10 @@ static int power_suspend_init(void)
 	if (!pwrsup_wq)
 		pr_err("[POWERSUSPEND] Failed to allocate workqueue\n");
 
-	pos->ws = wakeup_source_register(mx_powersuspend);
-
 	INIT_WORK(&power_suspend_work, power_suspend);
 	INIT_WORK(&power_resume_work, power_resume);
-	__pm_stay_awake(pos->ws);
 
 	sync_on_powersuspend = 0; //Robcore: Preserve original functionality by default.
-	__pm_stay_awake(pos->ws);
 
 	return 0;
 }
@@ -323,15 +314,13 @@ static int power_suspend_init(void)
 /* This should never have to be used except on shutdown */
 static void power_suspend_exit(void)
 {
-	struct power_suspend *pos;
+		flush_work(&power_suspend_work);
+		flush_work(&power_resume_work);
+		destroy_workqueue(pwrsup_wq);
 
-	flush_work(&power_suspend_work);
-	flush_work(&power_resume_work);
-	wakeup_source_trash(pos->ws);
-	destroy_workqueue(pwrsup_wq);
-
-	if (power_suspend_kobj != NULL)
+	if (power_suspend_kobj != NULL) {
 		kobject_put(power_suspend_kobj);
+	}
 }
 
 subsys_initcall(power_suspend_init);
