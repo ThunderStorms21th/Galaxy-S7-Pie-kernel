@@ -74,6 +74,9 @@
 
 #define MAJOR_VERSION	2
 #define MINOR_VERSION	5
+#ifdef  CONFIG_POWERSUSPEND_BETA_VERSION
+#define SUB_MINOR_VERSION
+#endif
 
 /*
  * debug = 1 will print all
@@ -311,7 +314,11 @@ static struct kobj_attribute power_suspend_use_global_suspend_attribute =
 static ssize_t power_suspend_version_show(struct kobject *kobj,
 		struct kobj_attribute *attr, char *buf)
 {
+#ifdef CONFIG_POWERSUSPEND_BETA_VERSION
+	return sprintf(buf, "Powersuspend Version: %d.%d.%d\n", MAJOR_VERSION, MINOR_VERSION, SUB_MINOR_VERSION);
+#else
 	return sprintf(buf, "Powersuspend Version: %d.%d\n", MAJOR_VERSION, MINOR_VERSION);
+#endif
 }
 
 static struct kobj_attribute power_suspend_version_attribute =
