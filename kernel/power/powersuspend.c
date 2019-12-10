@@ -52,7 +52,7 @@
 
 #define MAJOR_VERSION	1
 #define MINOR_VERSION	9
-#define SUB_MINOR_VERSION 0
+// #define SUB_MINOR_VERSION 0
 
 /*
  * debug = 1 will print all
