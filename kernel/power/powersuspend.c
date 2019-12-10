@@ -28,6 +28,11 @@
  *
  *  v1.8.1 - Replaced deprecated singlethread workqueue with updated schedule_work.
  *
+ *  v1.9.0 - Syncronized suspend/resume driver printing of ignored errors, and turned on state notifier debugger..
+ *         - subsys_incall changed to module_init,
+ *         - state notifier - going back to scheduled work, and subsys initcall,
+ *         - initializing work in module init.
+ *
  *
  * This software is licensed under the terms of the GNU General Public
  * License version 2, as published by the Free Software Foundation, and
@@ -46,8 +51,8 @@
 #include <linux/workqueue.h>
 
 #define MAJOR_VERSION	1
-#define MINOR_VERSION	8
-#define SUB_MINOR_VERSION 1
+#define MINOR_VERSION	9
+#define SUB_MINOR_VERSION 0
 
 /*
  * debug = 1 will print all
