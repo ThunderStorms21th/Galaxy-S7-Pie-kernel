@@ -138,7 +138,7 @@
 		cpu@100 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
-			// clock-frequency = <1586000000>;
+			clock-frequency = <1586000000>;
 			reg = <0x0 0x100>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
@@ -146,7 +146,7 @@
 		cpu@101 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
-			// clock-frequency = <1586000000>;
+			clock-frequency = <1586000000>;
 			reg = <0x0 0x101>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
@@ -154,7 +154,7 @@
 		cpu@102 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
-			// clock-frequency = <1586000000>;
+			clock-frequency = <1586000000>;
 			reg = <0x0 0x102>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
@@ -162,7 +162,7 @@
 		cpu@103 {
 			device_type = "cpu";
 			compatible = "arm,cortex-a53", "arm,armv8";
-			// clock-frequency = <1586000000>;
+			clock-frequency = <1586000000>;
 			reg = <0x0 0x103>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
@@ -170,7 +170,7 @@
 		cpu@0 {
 			device_type = "cpu";
 			compatible = "arm,mongoose", "arm,armv8";
-			// clock-frequency = <2288000000>;
+			clock-frequency = <2288000000>;
 			reg = <0x0 0x0>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
@@ -178,7 +178,7 @@
 		cpu@1 {
 			device_type = "cpu";
 			compatible = "arm,mongoose", "arm,armv8";
-			// clock-frequency = <2288000000>;
+			clock-frequency = <2288000000>;
 			reg = <0x0 0x1>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
@@ -186,7 +186,7 @@
 		cpu@2 {
 			device_type = "cpu";
 			compatible = "arm,mongoose", "arm,armv8";
-			// clock-frequency = <2288000000>;
+			clock-frequency = <2288000000>;
 			reg = <0x0 0x2>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
@@ -194,7 +194,7 @@
 		cpu@3 {
 			device_type = "cpu";
 			compatible = "arm,mongoose", "arm,armv8";
-			// clock-frequency = <2288000000>;
+			clock-frequency = <2288000000>;
 			reg = <0x0 0x3>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
