@@ -13,18 +13,30 @@
 #include <linux/module.h>
 #include <linux/state_notifier.h>
 
-#define STATE_NOTIFIER			"state_notifier"
+#define DEFAULT_SUSPEND_DEFER_TIME 	10
+#define STATE_NOTIFIER			"STATE_NOTIFIER"
 
+/*
+ * debug = 1 will print all
+ */
+static unsigned int debug = 1;
 module_param_named(debug_mask, debug, uint, 0644);
+
+#define dprintk(msg...)		\
+do {				\
+	if (debug)		\
+		pr_info(msg);	\
+} while (0)
 
 static bool enabled = true;
 module_param_named(enabled, enabled, bool, 0664);
-static struct work_struct suspend_work;
-static struct work_struct resume_work;
+static unsigned int suspend_defer_time = DEFAULT_SUSPEND_DEFER_TIME;
+module_param_named(suspend_defer_time, suspend_defer_time, uint, 0664);
+static struct delayed_work suspend_work;
+struct work_struct resume_work;
 bool state_suspended;
 module_param_named(state_suspended, state_suspended, bool, 0444);
 static bool suspend_in_progress;
-static int first_boot = 0;
 
 static BLOCKING_NOTIFIER_HEAD(state_notifier_list);
 
@@ -65,22 +77,26 @@ static void _suspend_work(struct work_struct *work)
 	state_suspended = true;
 	state_notifier_call_chain(STATE_NOTIFIER_SUSPEND, NULL);
 	suspend_in_progress = false;
+	dprintk("%s: suspend completed.\n", STATE_NOTIFIER);
 }
 
 static void _resume_work(struct work_struct *work)
 {
 	state_suspended = false;
 	state_notifier_call_chain(STATE_NOTIFIER_ACTIVE, NULL);
+	dprintk("%s: resume completed.\n", STATE_NOTIFIER);
 }
 
 void state_suspend(void)
 {
-	if (!enabled || state_suspended || suspend_in_progress)
+	dprintk("%s: suspend called.\n", STATE_NOTIFIER);
+	if (state_suspended || suspend_in_progress || !enabled)
 		return;
 
 	suspend_in_progress = true;
 
-	schedule_work(&suspend_work);
+	schedule_delayed_work(&suspend_work,
+		msecs_to_jiffies(suspend_defer_time * 1000));
 }
 
 /* Rob Note: I am still adding the condition that the state should only be changed
@@ -94,16 +110,17 @@ void state_resume(void)
 		return;
 	}
 
-	if (state_suspended) {
-		cancel_delayed_work_sync(&suspend_work);
-		suspend_in_progress = false;
+	dprintk("%s: resume called.\n", STATE_NOTIFIER);
+	cancel_delayed_work_sync(&suspend_work);
+	suspend_in_progress = false;
+
+	if (state_suspended)
 		schedule_work(&resume_work);
-	}
 }
 
-static int state_notifier_init(void)
+static int __init state_notifier_init(void)
 {
-	INIT_WORK(&suspend_work, _suspend_work);
+	INIT_DELAYED_WORK(&suspend_work, _suspend_work);
 	INIT_WORK(&resume_work, _resume_work);
 
 	return 0;
