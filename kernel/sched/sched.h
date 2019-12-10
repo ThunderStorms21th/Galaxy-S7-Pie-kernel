@@ -1642,26 +1642,6 @@ DECLARE_PER_CPU(u64, cpu_softirq_time);
 #ifndef CONFIG_64BIT
 DECLARE_PER_CPU(seqcount_t, irq_time_seq);
 
-unsigned long schedutil_freq_util(int cpu, unsigned long util_cfs,
-				  unsigned long max, enum schedutil_type type);
-
-static inline unsigned long schedutil_energy_util(int cpu, unsigned long cfs)
-{
-	unsigned long max = arch_scale_cpu_capacity(cpu);
-
-	return schedutil_freq_util(cpu, cfs, max, ENERGY_UTIL);
-}
-
-static inline unsigned long cpu_bw_dl(struct rq *rq)
-{
-	return (rq->dl.running_bw * SCHED_CAPACITY_SCALE) >> BW_SHIFT;
-}
-
-static inline unsigned long cpu_util_dl(struct rq *rq)
-{
-	return READ_ONCE(rq->avg_dl.util_avg);
-}
-
 static inline void irq_time_write_begin(void)
 {
 	__this_cpu_inc(irq_time_seq.sequence);
