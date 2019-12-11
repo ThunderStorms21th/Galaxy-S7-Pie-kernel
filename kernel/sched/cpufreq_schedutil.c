@@ -72,6 +72,22 @@ static bool sugov_should_update_freq(struct sugov_policy *sg_policy, u64 time)
 	s64 delta_ns;
 
 	if (sg_policy->work_in_progress)
+	/*
+	 * Since cpufreq_update_util() is called with rq->lock held for
+	 * the @target_cpu, our per-CPU data is fully serialized.
+	 *
+	 * However, drivers cannot in general deal with cross-CPU
+	 * requests, so while get_next_freq() will work, our
+	 * sugov_update_commit() call may not for the fast switching platforms.
+	 *
+	 * Hence stop here for remote requests if they aren't supported
+	 * by the hardware, as calculating the frequency is pointless if
+	 * we cannot in fact act on it.
+	 *
+	 * This is needed on the slow switching platforms too to prevent CPUs
+	 * going offline from leaving stale IRQ work items behind.
+	 */
+	if (!cpufreq_this_cpu_can_update(sg_policy->policy))
 		return false;
 
 	if (unlikely(sg_policy->need_freq_update)) {
