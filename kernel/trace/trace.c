@@ -4021,10 +4021,10 @@ tracing_saved_tgids_read(struct file *file, char __user *ubuf,
 	 * where the head holds the module and length of array, and the
 	 * tail holds a pointer to the next list.
 	 */
-	map_array = kmalloc(sizeof(*map_array) * (len + 2), GFP_KERNEL);
+	/* map_array = kmalloc(sizeof(*map_array) * (len + 2), GFP_KERNEL);
 	if (!map_array) {
 		pr_warn("Unable to allocate trace enum mapping\n");
-		return;
+		return; */
 
 	}
 	arch_spin_unlock(&trace_cmdline_lock);

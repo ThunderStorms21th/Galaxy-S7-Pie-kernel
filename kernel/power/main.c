@@ -702,7 +702,8 @@ pm_trace_dev_match_store(struct kobject *kobj, struct kobj_attribute *attr,
 	return -EINVAL;
 }
 
-power_attr(pm_trace_dev_match);
+// power_attr(pm_trace_dev_match);
+power_attr_ro(pm_trace_dev_match);
 
 #endif /* CONFIG_PM_TRACE */
 
