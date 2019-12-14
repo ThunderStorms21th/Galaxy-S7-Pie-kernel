@@ -111,32 +111,19 @@ static void s2idle_loop(void)
 {
 	pm_pr_dbg("suspend-to-idle\n");
 
-	for (;;) {
-		int error;
-
-		dpm_noirq_begin();
-
+	while (!dpm_suspend_noirq(PMSG_SUSPEND)) {
 		/*
 		 * Suspend-to-idle equals
 		 * frozen processes + suspended devices + idle processors.
 		 * Thus freeze_enter() should be called right after
 		 * all devices have been suspended.
 		 */
-		error = dpm_noirq_suspend_devices(PMSG_SUSPEND);
-		if (!error)
-			freeze_enter();
-
-		dpm_noirq_resume_devices(PMSG_RESUME);
-		if (error && (error != -EBUSY || !pm_wakeup_pending())) {
-			dpm_noirq_end();
-			break;
-		}
+		freeze_enter();
 
 		if (freeze_ops && freeze_ops->wake)
 			freeze_ops->wake();
 
-		dpm_noirq_end();
-
+		dpm_resume_noirq(PMSG_RESUME);
 		if (freeze_ops && freeze_ops->sync)
 			freeze_ops->sync();
 
