@@ -63,6 +63,9 @@ on init
     # Link /vendor to /system/vendor for devices without a vendor partition.
     symlink /system/vendor /vendor
 
+    # Link /product to /system/product for devices without a product partition.
+    symlink /system/product /product
+
     # MirrorLink permission
     mkdir /dev/socket/mlaudio 0770 audioserver system
 
