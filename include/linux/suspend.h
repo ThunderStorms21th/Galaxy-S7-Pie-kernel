@@ -413,6 +413,7 @@ static inline bool hibernation_available(void) { return false; }
 #define PM_POST_RESTORE		0x0006 /* Restore failed */
 
 extern struct mutex system_transition_mutex;
+extern struct mutex pm_mutex;
 
 #ifdef CONFIG_PM_SLEEP
 void save_processor_state(void);
@@ -470,6 +471,7 @@ static inline void unlock_system_sleep(void)
 	current->flags &= ~PF_FREEZER_SKIP;
 	mutex_unlock(&pm_mutex);
 }
+EXPORT_SYMBOL_GPL(unlock_system_sleep);
 
 #else /* !CONFIG_PM_SLEEP */
 
