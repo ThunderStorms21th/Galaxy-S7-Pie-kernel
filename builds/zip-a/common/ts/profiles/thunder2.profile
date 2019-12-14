@@ -7,7 +7,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 95
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 92
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "50000 650000:20000 754000:25000 962000:30000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate
@@ -31,7 +31,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration 20000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 15
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 5
 
    # Big CPU
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
@@ -65,7 +65,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration 20000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 15
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 5
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
@@ -85,7 +85,7 @@
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
    write /sys/power/cpuhotplug/governor/lit_multi_ratio 80
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
-   write /sys/power/cpuhotplug/governor/to_dual_ratio 70
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 80
    chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
    write /sys/power/cpuhotplug/governor/to_quad_ratio 98
 
@@ -111,8 +111,8 @@
    write /sys/devices/14ac0000.mali/throttling3 338
    write /sys/devices/14ac0000.mali/throttling4 260
    write /sys/devices/14ac0000.mali/trippimg 260
-   write /proc/sys/kernel/random/write_wakeup_threshold 256
-   write /proc/sys/kernel/random/read_wakeup_threshold 128
+   write /proc/sys/kernel/random/write_wakeup_threshold 128
+   write /proc/sys/kernel/random/read_wakeup_threshold 64
    write /proc/sys/vm/dirty_expire_centisecs 1500
    write /proc/sys/vm/dirty_writeback_centisecs 3000
 
@@ -134,9 +134,9 @@
 
    # IO Scheduler
    write /sys/block/sda/queue/scheduler row
-   write /sys/block/sda/queue/read_ahead_kb 384
+   write /sys/block/sda/queue/read_ahead_kb 512
    write /sys/block/mmcblk0/queue/scheduler row
-   write /sys/block/mmcblk0/queue/read_ahead_kb 512
+   write /sys/block/mmcblk0/queue/read_ahead_kb 1024
    write /sys/block/sda/queue/iostats 0
    write /sys/block/mmcblk0/queue/iostats 0
    write /sys/block/sda/queue/rq_affinity 1
@@ -149,7 +149,7 @@
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
-   write /sys/module/wakeup/parameters/enable_wlan_wake_wl 0
+   write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
    write /sys/module/sec_battery/parameters/wl_polling 3
    write /sys/module/sec_nfc/parameters/wl_nfc 1
 
@@ -165,14 +165,14 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   write /proc/sys/vm/swappiness 100
-   write /proc/sys/vm/vfs_cache_pressure 90
+   write /proc/sys/vm/swappiness 150
+   write /proc/sys/vm/vfs_cache_pressure 80
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,82400"
 
    # WiFi
-   setprop wifi.supplicant_scan_interval 500
+   setprop wifi.supplicant_scan_interval 200
 
    # Boeffla wakelocks
    write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;mmc0_detect;nfc_wake_lock;13960000.decon_f;rmnet0;GPSD;umts_ipc0;NETLINK'

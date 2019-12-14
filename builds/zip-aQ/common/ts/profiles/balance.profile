@@ -8,11 +8,11 @@
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 80
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 90
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "40000 1066000:30000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "40000 1066000:50000"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate 30000
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate 40000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/hispeed_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/hispeed_freq 650000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_slack
@@ -20,7 +20,7 @@
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/target_loads
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/target_loads "65 1066000:70"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/min_sample_time
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/min_sample_time 50000
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/min_sample_time 40000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/mode
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/mode 0
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boost
@@ -31,7 +31,7 @@
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 5
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/down_low_load_threshold 15
 
    # Big CPU
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
@@ -41,11 +41,11 @@
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2288000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 90
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 95
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "40000 1560000:49000 1664000:49000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "40000 1560000:49000 1664000:59000"
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate 30000
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate 40000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/hispeed_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/hispeed_freq 1352000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_slack
@@ -64,7 +64,7 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 5
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/down_low_load_threshold 8
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
@@ -80,7 +80,7 @@
    chmod 0644 /sys/power/cpuhotplug/governor/enabled
    write /sys/power/cpuhotplug/governor/enabled 1
    chmod 0664 /sys/power/cpuhotplug/governor/dual_change_ms
-   write /sys/power/cpuhotplug/governor/dual_change_ms 150
+   write /sys/power/cpuhotplug/governor/dual_change_ms 100
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
    write /sys/power/cpuhotplug/governor/lit_multi_ratio 100
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
@@ -112,7 +112,7 @@
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 419
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 93
+   write /sys/devices/14ac0000.mali/highspeed_load 91
    chmod 0644 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
    write /sys/devices/14ac0000.mali/throttling1 600
@@ -126,21 +126,21 @@
    write /sys/kernel/hmp/down_compensation_mid_freq 962000
    chmod 0664 /sys/kernel/hmp/down_compensation_low_freq
    write /sys/kernel/hmp/down_compensation_low_freq 858000
-   write /proc/sys/kernel/random/write_wakeup_threshold 128
+   write /proc/sys/kernel/random/write_wakeup_threshold 64
    write /proc/sys/kernel/random/read_wakeup_threshold 64
 
    # IO Scheduler
    write /sys/block/sda/queue/scheduler cfq
    write /sys/block/sda/queue/read_ahead_kb 512
    write /sys/block/mmcblk0/queue/scheduler cfq
-   write /sys/block/mmcblk0/queue/read_ahead_kb 512
+   write /sys/block/mmcblk0/queue/read_ahead_kb 768
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
    write /sys/module/wakeup/parameters/enable_ssp_wl 0
    write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
-   write /sys/module/wakeup/parameters/enable_wlan_wake_wl 1
+   write /sys/module/wakeup/parameters/enable_wlan_wake_wl 0
    write /sys/module/sec_battery/parameters/wl_polling 3
    write /sys/module/sec_nfc/parameters/wl_nfc 1
 
@@ -155,5 +155,5 @@
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,76152"
    write /proc/sys/vm/vfs_cache_pressure 85
-   write /proc/sys/vm/swappiness 160
+   write /proc/sys/vm/swappiness 170
 
