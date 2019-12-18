@@ -1,11 +1,7 @@
 #
 # ADDITIONAL_DEFAULT_PROPERTIES
 #
-
-# Import original default.prop
-import /system/etc/prop.default
-import /system/etc/default.prop
-
+ro.actionable_compatible_property.enabled=false
 ro.secure=0
 security.perf_harden=1
 ro.adb.secure=1
@@ -16,6 +12,40 @@ persist.sys.usb.config=mtp,adb
 persist.service.adb.enable=1
 persist.service.debuggable=1
 persist.sys.usb.config=none
+
+tombstoned.max_tombstone_count=50
+dalvik.vm.image-dex2oat-Xms=64m
+dalvik.vm.image-dex2oat-Xmx=64m
+dalvik.vm.dex2oat-Xms=64m
+dalvik.vm.dex2oat-Xmx=512m
+dalvik.vm.usejit=true
+dalvik.vm.usejitprofiles=true
+dalvik.vm.dexopt.secondary=true
+dalvik.vm.appimageformat=lz4
+pm.dexopt.first-boot=quicken
+pm.dexopt.boot=verify
+pm.dexopt.install=speed-profile
+pm.dexopt.bg-dexopt=speed-profile
+pm.dexopt.ab-ota=speed-profile
+pm.dexopt.inactive=verify
+pm.dexopt.shared=speed
+dalvik.vm.dex2oat-minidebuginfo=true
+debug.atrace.tags.enableflags=0
+ro.com.google.clientidbase=android-samsung
+keyguard.no_require_sim=true
+ro.build.selinux=1
+ro.config.notification_sound=Argon.ogg
+ro.config.alarm_alert=Hassium.ogg
+persist.sys.dun.override=0
+ro.storage_manager.enabled=true
+media.recorder.show_manufacturer_and_model=true
+ro.config.ringtone=Orion.ogg
+net.tethering.noprovisioning=true
+ro.vndk.version=28
+ro.vndk.lite=true
+ro.zygote=zygote64_32
+ro.logd.size.stats=64K
+log.tag.stats_log=I
 
 # MISC
 debug.enabler=false

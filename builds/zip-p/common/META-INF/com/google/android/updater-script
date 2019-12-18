@@ -66,6 +66,13 @@ package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
 set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
 run_program("/tmp/ts/fix_permissions.sh");
 
+#--Remove GameOptimizing Services
+if file_getprop("/tmp/aroma/menu.prop", "chk11") == "1" then
+	ui_print("-- Removing GameOptimizer");
+	delete_recursive("/system/app/GameOptimizer");
+	delete_recursive("/system/app/GameOptimizingService");
+endif;
+
 #################################################
 # ROOT
 ####################################################

@@ -13,13 +13,14 @@
 
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-P-v1.2 : 20.11.2019</#></b></u>
+<*>Samsung source : N935KKKU4CSK1 </*>
+<*>Linux source : 3.18.91 </*>
 <*>Spectrum Profiles Updated </*>
 <*>Improvements and updates in Linux source </*>
    -crypto, drivers, f2fs, arm64,lib and kernel,
    -block: cfq, deadline, bfq,
    -ramdisk: initial settings, abd, mtp,
    -mm, fs, linux, i/o
-<*>Added EAS and new gov SCHED by @Tetsuo Osaka </*>
 <*>ThunderTweaks v1.0.4.0 </*>
 <*>Magisk 20.1 Offcial</*>
 <*>Better Stability and RAM Management </*>

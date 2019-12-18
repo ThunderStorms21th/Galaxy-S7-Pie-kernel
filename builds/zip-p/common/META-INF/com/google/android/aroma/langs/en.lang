@@ -105,8 +105,8 @@ menu.7desc=Data and app will be deleted from the previous root. Recommended for 
 # menu.9desc=Install Pie libs into the system
 menu.10=Patch for deodexed PIE roms
 menu.10desc=This will patch deodexed PIE roms
-# menu.11=Install GPU libs for OREO - r22p0
-# menu.11desc=Install Oreo libs into the system
+menu.11=Remove Game Optimizing Services from ROM
+menu.11desc=This removes optimialization for games in PIE roms - case of lags in some games.
 
 # Root
 stock.title=Without root

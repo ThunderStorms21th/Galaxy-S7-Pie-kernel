@@ -106,7 +106,7 @@ set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabi
 ####################################################
 # ROOT
 ####################################################
-set_progress(0.60);
+set_progress(0.55);
 
 
 ui_print(" ");
@@ -128,7 +128,7 @@ endif;
 
 # Magisk Root
 if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt2" then
-show_progress(0.85, "-30000");
+show_progress(0.60, "-30000");
 	
 	# Clean opposite kernel
 	run_program("/tmp/ts/clean_supersu.sh");
@@ -151,7 +151,7 @@ endif;
 
 # SuperSU Root
 if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt3" then
-show_progress(0.85, "-34000");
+show_progress(0.60, "-30000");
 	
 	# Clean opposite kernel
 	run_program("/tmp/ts/clean_magisk.sh");
