@@ -86,6 +86,7 @@ echo "" > $PWD/builds/TREBLE-Q/ramdisk/keydata/.placeholder
 echo "" > $PWD/builds/TREBLE-Q/ramdisk/keyrefuge/.placeholder
 echo "" > $PWD/builds/TREBLE-Q/ramdisk/lib/modules/.placeholder
 echo "" > $PWD/builds/TREBLE-Q/ramdisk/mnt/.placeholder
+# echo "" > $PWD/builds/TREBLE-Q/ramdisk/odm/.placeholder
 echo "" > $PWD/builds/TREBLE-Q/ramdisk/oem/.placeholder
 echo "" > $PWD/builds/TREBLE-Q/ramdisk/omr/.placeholder
 echo "" > $PWD/builds/TREBLE-Q/ramdisk/proc/.placeholder
@@ -114,4 +115,9 @@ echo "" > $PWD/builds/TREBLE-P/ramdisk/sys/.placeholder
 echo "" > $PWD/builds/TREBLE-P/ramdisk/system/.placeholder
 echo "" > $PWD/builds/TREBLE-P/ramdisk/vendor/.placeholder
 
-
+echo "" > $PWD/builds/OneUIQ/ramdisk/apex/.placeholder
+echo "" > $PWD/builds/OneUIQ/ramdisk/debug_ramdisk/.placeholder
+echo "" > $PWD/builds/OneUIQ/ramdisk/dev/.placeholder
+echo "" > $PWD/builds/OneUIQ/ramdisk/mnt/.placeholder
+echo "" > $PWD/builds/OneUIQ/ramdisk/proc/.placeholder
+echo "" > $PWD/builds/OneUIQ/ramdisk/sys/.placeholder
