@@ -40,7 +40,10 @@ ro.config.hw_power_saving=1
 ring.delay=0
 fingerprint.unlock=1
 persist.sys.purgeable_assets=1
-persist.sys.ui.hw=true
+# persist.sys.ui.hw=true
+
+ro.securestorage.support=false
+ro.securestorage.knox=false
 
 # Early SF configuration
 # debug.sf.early_phase_offset_ns=500000
@@ -49,3 +52,6 @@ persist.sys.ui.hw=true
 # debug.sf.early_gl_app_phase_offset_ns=15000000
 
 persist.sys.usb.config=none
+
+# import original default.prop
+import /system/etc/prop.default
