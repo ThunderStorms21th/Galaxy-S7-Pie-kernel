@@ -962,55 +962,6 @@ static void dwc3_prepare_trbs(struct dwc3_ep *dep, bool starting)
 		if (usb_endpoint_xfer_isoc(dep->endpoint.desc)) {
 			dep->busy_slot = 1;
 			dep->free_slot = 1;
-	if (dep->trb_enqueue == dep->trb_dequeue) {
-		tmp = dwc3_ep_prev_trb(dep, dep->trb_enqueue);
-		if (tmp->ctrl & DWC3_TRB_CTRL_HWO)
-			return 0;
-
-		return DWC3_TRB_NUM - 1;
-	}
-
-	trbs_left = dep->trb_dequeue - dep->trb_enqueue;
-	trbs_left &= (DWC3_TRB_NUM - 1);
-
-	if (dep->trb_dequeue < dep->trb_enqueue)
-		trbs_left--;
-
-	return trbs_left;
-}
-
-static void dwc3_prepare_one_trb_sg(struct dwc3_ep *dep,
-		struct dwc3_request *req)
-{
-	struct scatterlist *sg = req->sg;
-	struct scatterlist *s;
-	int		i;
-
-	for_each_sg(sg, s, req->num_pending_sgs, i) {
-		unsigned int length = req->request.length;
-		unsigned int maxp = usb_endpoint_maxp(dep->endpoint.desc);
-		unsigned int rem = length % maxp;
-		unsigned chain = true;
-
-		if (sg_is_last(s))
-			chain = false;
-
-		if (rem && usb_endpoint_dir_out(dep->endpoint.desc) && !chain) {
-			struct dwc3	*dwc = dep->dwc;
-			struct dwc3_trb	*trb;
-
-			req->unaligned = true;
-
-			/* prepare normal TRB */
-			dwc3_prepare_one_trb(dep, req, true, i);
-
-			/* Now prepare one extra TRB to align transfer size */
-			trb = &dep->trb_pool[dep->trb_enqueue];
-			__dwc3_prepare_one_trb(dep, trb, dwc->bounce_addr,
-					maxp - rem, false, 1,
-					req->request.stream_id,
-					req->request.short_not_ok,
-					req->request.no_interrupt);
 		} else {
 			dep->busy_slot = 0;
 			dep->free_slot = 0;
@@ -1025,16 +976,6 @@ static void dwc3_prepare_one_trb_sg(struct dwc3_ep *dep,
 		unsigned	length;
 		dma_addr_t	dma;
 		last_one = false;
-		/* Now prepare one extra TRB to align transfer size */
-		trb = &dep->trb_pool[dep->trb_enqueue];
-		__dwc3_prepare_one_trb(dep, trb, dwc->bounce_addr, maxp - rem,
-				false, 1, req->request.stream_id,
-				req->request.short_not_ok,
-				req->request.no_interrupt);
-	} else if (req->request.zero && req->request.length &&
-		   (IS_ALIGNED(req->request.length,dep->endpoint.maxpacket))) {
-		struct dwc3	*dwc = dep->dwc;
-		struct dwc3_trb	*trb;
 
 		if (req->request.num_mapped_sgs > 0) {
 			struct usb_request *request = &req->request;
@@ -1047,16 +988,6 @@ static void dwc3_prepare_one_trb_sg(struct dwc3_ep *dep,
 
 				length = sg_dma_len(s);
 				dma = sg_dma_address(s);
-		/* Now prepare one extra TRB to handle ZLP */
-		trb = &dep->trb_pool[dep->trb_enqueue];
-		__dwc3_prepare_one_trb(dep, trb, dwc->bounce_addr, 0,
-				false, 1, req->request.stream_id,
-				req->request.short_not_ok,
-				req->request.no_interrupt);
-	} else {
-		dwc3_prepare_one_trb(dep, req, false, 0);
-	}
-}
 
 				if (i == (request->num_mapped_sgs - 1) ||
 						sg_is_last(s)) {
