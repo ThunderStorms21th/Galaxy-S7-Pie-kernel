@@ -1090,7 +1090,7 @@ static int str_read(char **strp, gfp_t flags, void *fp, u32 len)
 	int rc;
 	char *str;
 
-	str = kmalloc(len + 1, flags);
+	str = kmalloc(len + 1, flags | __GFP_NOWARN);
 	if (!str)
 		return -ENOMEM;
 
