@@ -48,6 +48,8 @@
 #define CONFIG_DYNAMIC_MODE_SUPPORT
 //#define CONFIG_DYNAMIC_MODE_SUPPORT_DEBUG
 
+bool screen_on;
+
 struct cpufreq_thunderstorm_cpuinfo {
 	struct timer_list cpu_timer;
 	struct timer_list cpu_slack_timer;
@@ -3254,6 +3256,7 @@ static int __init cpufreq_thunderstorm_init(void)
 {
 	unsigned int i;
 	struct cpufreq_thunderstorm_cpuinfo *pcpu;
+	screen_on = true;
 
 	/* Initalize per-cpu timers */
 	for_each_possible_cpu(i) {
