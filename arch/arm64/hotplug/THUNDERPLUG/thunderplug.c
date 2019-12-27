@@ -424,7 +424,6 @@ static void __cpuinit tplug_work_fn(struct work_struct *work)
 //					if ((now[i + 1] - last_time[i + 1]) >
 // added
 					if (i != 3 && (now[i + 1] - last_time[i + 1]) >
-// end
 							MIN_CPU_UP_TIME)
 						cpu_down(i + 1);
 				}
