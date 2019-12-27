@@ -28,17 +28,6 @@
 #include <linux/slab.h>
 #include <trace/events/ext4.h>
 
-#include <linux/fs.h>
-#include <linux/f2fs_fs.h>
-#include <linux/bio.h>
-#include <linux/blkdev.h>
-#include <linux/prefetch.h>
-#include <linux/kthread.h>
-#include <linux/swap.h>
-#include <linux/timer.h>
-#include <linux/freezer.h>
-#include <linux/sched.h>
-
 #ifdef CONFIG_EXT4_DEBUG
 ushort ext4_mballoc_debug __read_mostly;
 
