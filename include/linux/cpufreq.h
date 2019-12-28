@@ -332,8 +332,8 @@ const char *cpufreq_get_current_driver(void);
 void *cpufreq_get_driver_data(void);
 
 /* added CPU Touch boost */
-// void cpufreq_notify_utilization(struct cpufreq_policy *policy,
-//		unsigned int load);
+void cpufreq_notify_utilization(struct cpufreq_policy *policy,
+		unsigned int load);
 /* END */
 
 static inline void cpufreq_verify_within_limits(struct cpufreq_policy *policy,
