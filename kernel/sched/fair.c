@@ -8315,9 +8315,11 @@ more_balance:
 		}
 
 		/*
-		 * We failed to reach balance because of affinity.
+		 * We failed to reach balance because of affinity
+	 	 * constraints. Clear the imbalance flag only if other tasks got
+	 	 * a chance to move and fix the imbalance.
 		 */
-		if (sd_parent) {
+		if (sd_parent && !(env.flags & LBF_ALL_PINNED)) {
 			int *group_imbalance = &sd_parent->groups->sgc->imbalance;
 
 			if ((env.flags & LBF_SOME_PINNED) && env.imbalance > 0)
