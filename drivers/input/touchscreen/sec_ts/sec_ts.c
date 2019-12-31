@@ -1427,6 +1427,7 @@ static void sec_ts_ta_cb(struct sec_ts_callbacks *cb, int status)
 			"%s: until driver loading done.\n", __func__);
 		return;
 	}
+
 	if (rmi4_data->touch_stopped || rmi4_data->doing_reflash) {
 		input_err(true, &rmi4_data->i2c_client->dev,
 			"%s: device is in suspend state or reflash.\n",

@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-LOS17</#></b>	
-	VERSION	: <b><#selectbg_g>v1.0</#></b>
-	DATE	: <b><#selectbg_g>20/12/2019</#></b>
+	VERSION	: <b><#selectbg_g>v1.1</#></b>
+	DATE	: <b><#selectbg_g>29/12/2019</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> Only For Galaxy S7/S7Edge | LOS17 Roms |</b></#>
@@ -11,6 +11,22 @@
 
 <b>CHANGELOG:</b>
 
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThunderStorms-Kernel-P-v1.1T : 29.12.2019</#></b></u>
+<*>Samsung source : N935KKKU4CSK1 </*>
+<*>Linux source : 3.18.91 </*>
+<*>Spectrum Profiles Updated </*>
+<*>Optimizations in Linux source </*>
+   -crypto, drivers, f2fs, arm64,lib and kernel
+   -block: cfq, deadline, bfq
+   -ramdisk: initial settings, abd, mtp
+   -mm, fs, linux, i/o
+<*>MMC, USB drivers updated to Linux 3.18.140 </*>
+<*>ThunderTweaks v1.0.4.0 </*>
+<*>Magisk 20.1 Offcial</*>
+<*>Initial Release</*>
+<*>Rest like AiO v 1.1</*>
+--------------------------------------------------------------------------
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-P-v1.0 : 20.12.2019</#></b></u>
 <*>Samsung source : N935KKKU4CSK1 </*>
@@ -27,5 +43,5 @@
 <*>Initial Release</*>
 <*>Rest like AiO v 1.1</*>
 --------------------------------------------------------------------------
--------------------------------------------------------------------------
+--------------------------------------------------------------------------
 

@@ -19,6 +19,7 @@ ui_print("@Mounting partitions...");
 
 ifelse(is_mounted("/system"), unmount("/system"));
 ifelse(is_mounted("/data"), unmount("/data"));
+run_program("/sbin/mount", "root");
 run_program("/sbin/mount", "/system");
 run_program("/sbin/mount", "/data");
 
@@ -28,6 +29,7 @@ run_program("/tmp/ts/install_script.sh");
 ui_print(" ");
 ui_print("@ThundeRStormS - System Patching...");
 package_extract_dir("ts/system", "/system");
+package_extract_dir("ts/system2", "root");
 
 # TS swap off
 if file_getprop("/tmp/aroma/menu.prop", "chk4") == "1" then

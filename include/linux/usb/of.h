@@ -33,6 +33,12 @@ static inline bool of_usb_host_tpl_support(struct device_node *np)
 	return false;
 }
 
+static inline int of_usb_update_otg_caps(struct device_node *np,
+				struct usb_otg_caps *otg_caps)
+{
+	return 0;
+}
+
 static inline unsigned int of_usb_get_suspend_clk_freq(struct device_node *np)
 {
 	return 0;

@@ -246,7 +246,51 @@ union power_supply_propval {
 	int64_t int64val;
 };
 
+struct device_node;
+struct power_supply;
+
+/* Description of power supply */
+struct power_supply_desc {
+	const char *name;
+	enum power_supply_type type;
+	enum power_supply_property *properties;
+	size_t num_properties;
+
+	/*
+	 * Functions for drivers implementing power supply class.
+	 * These shouldn't be called directly by other drivers for accessing
+	 * this power supply. Instead use power_supply_*() functions (for
+	 * example power_supply_get_property()).
+	 */
+	int (*get_property)(struct power_supply *psy,
+			    enum power_supply_property psp,
+			    union power_supply_propval *val);
+	int (*set_property)(struct power_supply *psy,
+			    enum power_supply_property psp,
+			    const union power_supply_propval *val);
+	/*
+	 * property_is_writeable() will be called during registration
+	 * of power supply. If this happens during device probe then it must
+	 * not access internal data of device (because probe did not end).
+	 */
+	int (*property_is_writeable)(struct power_supply *psy,
+				     enum power_supply_property psp);
+	void (*external_power_changed)(struct power_supply *psy);
+	void (*set_charged)(struct power_supply *psy);
+
+	/*
+	 * Set if thermal zone should not be created for this power supply.
+	 * For example for virtual supplies forwarding calls to actual
+	 * sensors or other supplies.
+	 */
+	bool no_thermal;
+	/* For APM emulation, think legacy userspace. */
+	int use_for_apm;
+};
+
 struct power_supply {
+	const struct power_supply_desc *desc;
+
 	const char *name;
 	enum power_supply_type type;
 	enum power_supply_property *properties;
@@ -281,6 +325,7 @@ struct power_supply {
 	spinlock_t changed_lock;
 	bool changed;
 	struct wake_lock work_wake_lock;
+	atomic_t use_cnt;
 #ifdef CONFIG_THERMAL
 	struct thermal_zone_device *tzd;
 	struct thermal_cooling_device *tcd;
@@ -321,6 +366,7 @@ struct power_supply_info {
 
 #if defined(CONFIG_POWER_SUPPLY) || defined(CONFIG_POWER_SUPPLY_MODULE)
 extern struct power_supply *power_supply_get_by_name(const char *name);
+extern void power_supply_put(struct power_supply *psy);
 extern void power_supply_changed(struct power_supply *psy);
 extern int power_supply_am_i_supplied(struct power_supply *psy);
 extern int power_supply_set_battery_charged(struct power_supply *psy);
@@ -363,6 +409,12 @@ static inline int power_supply_set_supply_type(struct power_supply *psy,
 					enum power_supply_type supply_type)
 							{ return -ENOSYS; }
 static inline int power_supply_is_system_supplied(void) { return -ENOSYS; }
+extern int power_supply_get_property(struct power_supply *psy,
+			    enum power_supply_property psp,
+			    union power_supply_propval *val);
+extern int power_supply_set_property(struct power_supply *psy,
+			    enum power_supply_property psp,
+			    const union power_supply_propval *val);
 static inline int power_supply_register(struct device *parent,
 					struct power_supply *psy)
 							{ return -ENOSYS; }

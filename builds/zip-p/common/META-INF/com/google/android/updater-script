@@ -53,25 +53,26 @@ if file_getprop("/tmp/aroma/menu.prop", "chk10") == "1" then
 	delete_recursive("/tmp/tsk");
 endif;
 
+# Remove GameOptimizing Services
+if file_getprop("/tmp/aroma/menu.prop", "chk11") == "1" then
+	ui_print(" ");
+	ui_print("@Removing GameOptimizer...");
+	delete_recursive("/system/app/GameOptimizer");
+	delete_recursive("/system/app/GameOptimizingService");
+endif;
+
 ui_print(" ");
 ui_print("@Setting Permissions...");
 set_metadata("/system/vendor/lib/libsecure_storage.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 set_metadata("/system/vendor/lib64/libsecure_storage.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-set_metadata_recursive("/system/priv-app/PersonalPageService", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabilities", 0x440000040, "selabel", "u:object_r:logd_exec:s0");
+# set_metadata_recursive("/system/priv-app/PersonalPageService", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
+# set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabilities", 0x440000040, "selabel", "u:object_r:logd_exec:s0");
 
-#--PERMISSION
+# PERMISSION
 ui_print("-- Fixing permission...");
 package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
 set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
 run_program("/tmp/ts/fix_permissions.sh");
-
-#--Remove GameOptimizing Services
-if file_getprop("/tmp/aroma/menu.prop", "chk11") == "1" then
-	ui_print("-- Removing GameOptimizer");
-	delete_recursive("/system/app/GameOptimizer");
-	delete_recursive("/system/app/GameOptimizingService");
-endif;
 
 #################################################
 # ROOT

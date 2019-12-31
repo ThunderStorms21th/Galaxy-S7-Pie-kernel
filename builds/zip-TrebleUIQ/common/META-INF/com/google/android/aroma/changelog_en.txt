@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-TrebleUI-Q</#></b>	
-	VERSION	: <b><#selectbg_g>v1.0</#></b>
-	DATE	: <b><#selectbg_g>20/12/2019</#></b>
+	VERSION	: <b><#selectbg_g>v1.1</#></b>
+	DATE	: <b><#selectbg_g>29/12/2019</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> Only For Galaxy S7/S7Edge </b></#>
@@ -12,6 +12,22 @@
 <b>CHANGELOG:</b>
 
 --------------------------------------------------------------------------
+<u><b><#selectbg_g>ThundeRStormS-Kernel-TrebleUI-Q-v1.1T : 29.12.2019</#></b></u>
+<*>Samsung source : N935KKKU4CSK1 </*>
+<*>Linux source : 3.18.91 </*>
+<*>Spectrum Profiles Updated </*>
+<*>Optimizations in Linux source </*>
+   -crypto, drivers, f2fs, arm64,lib and kernel
+   -block: cfq, deadline, bfq
+   -ramdisk: initial settings, abd, mtp
+   -mm, fs, linux, i/o
+<*>MMC, USB drivers updated to Linux 3.18.140 </*>
+<*>ThunderTweaks v1.0.4.0 </*>
+<*>Magisk 20.1 Offcial</*>
+<*>Magisk 20.2 phh Offcial for Treble and TrebleUI Q</*>
+<*>Initial Release </*>
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
 <u><b><#selectbg_g>ThundeRStormS-Kernel-TrebleUI-Q-v1.0 : 20.12.2019</#></b></u>
 <*>Samsung source : N935KKKU4CSK1 </*>
 <*>Linux source : 3.18.91 </*>
@@ -21,7 +37,7 @@
    -block: cfq, deadline, bfq
    -ramdisk: initial settings, abd, mtp
    -mm, fs, linux, i/o
-<*>Samsung Hotplug : added 3 cores offline on Big CPU </*>
+<*>Samsung Hotplug : added 4, 3 and 2 cores ON in big CPU </*>
 <*>ThunderTweaks v1.0.4.0 </*>
 <*>Magisk 20.1 Offcial</*>
 <*>Magisk 20.2 phh Offcial for Treble and TrebleUI Q</*>

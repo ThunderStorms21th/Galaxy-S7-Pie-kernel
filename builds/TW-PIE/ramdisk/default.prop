@@ -10,7 +10,9 @@ ro.adb.secure=1
 ro.allow.mock.location=0
 ro.adb.debug_secure=0
 ro.debuggable=1
-persist.sys.usb.config=mtp,adb
+# persist.sys.usb.config=mtp,adb
+persist.sys.usb.config=mtp,mass_storage,adb
+persist.service.mount.umsauto=1
 persist.service.adb.enable=1
 persist.service.debuggable=1
 # persist.adb.notify=0
@@ -43,7 +45,7 @@ setupwizard.feature.predeferred_enabled=false
 setupwizard.theme=glif_v3_light
 ro.setupwizard.wifi_on_exit=false
 ro.setupwizard.mode=OPTIONAL
-ro.com.google.gmsversion=9_201902
+ro.com.google.gmsversion=9_201907
 ro.vndk.version=28
 ro.vndk.lite=true
 ro.zygote=zygote64_32
@@ -97,6 +99,6 @@ persist.sys.ui.hw=true
 #
 # BOOTIMAGE_BUILD_PROPERTIES
 #
-ro.bootimage.build.date=Fri Mar 15 18:41:29 KST 2019
-ro.bootimage.build.date.utc=1552642889
-ro.bootimage.build.fingerprint=samsung/gracerltexx/gracerlte:9/PPR1.180610.011/N935FXXU4CSC4:user/test-keys
+ro.bootimage.build.date=Tue Nov 12 18:12:01 KST 2019
+ro.bootimage.build.date.utc=1573549921
+ro.bootimage.build.fingerprint=samsung/gracerlteskt/gracerlteskt:9/PPR1.180610.011/N935SKSU4CSK1:user/test-keys
