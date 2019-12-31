@@ -34,7 +34,7 @@ SCHED_FEAT(CACHE_HOT_BUDDY, true)
 /*
  * Allow wakeup-time preemption of the current task:
  */
-SCHED_FEAT(WAKEUP_PREEMPTION, true)
+SCHED_FEAT(WAKEUP_PREEMPTION, false)
 
 /*
  * Use arch dependent cpu capacity functions
@@ -59,7 +59,7 @@ SCHED_FEAT(TTWU_QUEUE, true)
 
 SCHED_FEAT(FORCE_SD_OVERLAP, false)
 SCHED_FEAT(RT_RUNTIME_SHARE, true)
-SCHED_FEAT(LB_MIN, false)
+SCHED_FEAT(LB_MIN, true)
 
 /*
  * Apply the automatic NUMA scheduling policy. Enabled automatically
