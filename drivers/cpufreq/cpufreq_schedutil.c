@@ -15,7 +15,8 @@
 #include <linux/slab.h>
 #include <trace/events/power.h>
 
-#include "sched.h"
+#include <linux/sched.h>
+#include <linux/sched/cpufreq.h>
 
 /* Stub out fast switch routines present on mainline to reduce the backport
  * overhead. */
@@ -154,6 +155,8 @@ static unsigned int get_next_freq(struct sugov_cpu *sg_cpu, unsigned long util,
 
 static void sugov_get_util(unsigned long *util, unsigned long *max)
 {
+	struct runqueues;
+	#define this_rq()		this_cpu_ptr(&runqueues)
 	struct rq *rq = this_rq();
 	unsigned long cfs_max;
 

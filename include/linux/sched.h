@@ -3174,3 +3174,12 @@ extern int hp_little_multiplier_ratio;
 extern void save_pcpu_tick(int cpu);
 extern void restore_pcpu_tick(int cpu);
 #endif
+
+#ifdef arch_scale_freq_capacity
+#ifndef arch_scale_freq_invariant
+#define arch_scale_freq_invariant()     (true)
+#endif
+#else /* arch_scale_freq_capacity */
+#define arch_scale_freq_invariant()     (false)
+#endif
+
