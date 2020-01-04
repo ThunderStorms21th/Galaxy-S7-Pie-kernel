@@ -1,4 +1,4 @@
-# Thunderstorms Battery Optimizer by Game Over
+# Thunderstorms Battery Optimizer
 
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor thunderstorm
@@ -9,7 +9,7 @@
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/go_hispeed_load 95
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "40000 650000:30000 754000:20000 962000:20000"
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/above_hispeed_delay "40000 650000:30000 754000:30000 962000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/timer_rate 40000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm/hispeed_freq
@@ -38,10 +38,11 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 208000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 2288000
+   chmod 0444 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/go_hispeed_load 98
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "50000 728000:30000 1040000:20000 1248000:20000"
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/above_hispeed_delay "50000 728000:30000 1040000:30000 1248000:20000"
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/timer_rate 30000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm/hispeed_freq
@@ -65,15 +66,8 @@
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 0
-   write /sys/module/autosmp/parameters/enabled Y
+   write /sys/module/autosmp/parameters/enabled 1
    write /sys/devices/system/cpu/cpufreq/mp-cpufreq/cluster1_all_cores_max_freq 0
-   write /sys/module/workqueue/parameters/power_efficient Y
-
-   # FINGERPRINT BOOST
-   write /sys/kernel/fp_boost/enabled 0
-
-   # INPUT BOOST CPU
-   write /sys/module/cpu_boost/parameters/input_boost_enabled 0
 
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
@@ -92,9 +86,9 @@
    write /sys/devices/14ac0000.mali/throttling4 260
    write /sys/devices/14ac0000.mali/trippimg 260
    write /proc/sys/kernel/random/write_wakeup_threshold 512
-   write /proc/sys/kernel/random/read_wakeup_threshold 64
+   write /proc/sys/kernel/random/read_wakeup_threshold 128
    write /proc/sys/vm/dirty_expire_centisecs 500
-   write /proc/sys/vm/dirty_writeback_centisecs 2000
+   write /proc/sys/vm/dirty_writeback_centisecs 1000
 
    # GPU
    chmod 0664 /sys/devices/14ac0000.mali/max_clock
@@ -116,7 +110,7 @@
    write /sys/block/sda/queue/scheduler row
    write /sys/block/sda/queue/read_ahead_kb 512
    write /sys/block/mmcblk0/queue/scheduler row
-   write /sys/block/mmcblk0/queue/read_ahead_kb 2048
+   write /sys/block/mmcblk0/queue/read_ahead_kb 768
    write /sys/block/sda/queue/iostats 0
    write /sys/block/mmcblk0/queue/iostats 0
    write /sys/block/sda/queue/rq_affinity 1
@@ -145,8 +139,8 @@
    write /proc/sys/net/ipv4/tcp_congestion_control bic
 
    # SWAP
-   write /proc/sys/vm/swappiness 130
-   write /proc/sys/vm/vfs_cache_pressure 80
+   write /proc/sys/vm/swappiness 150
+   write /proc/sys/vm/vfs_cache_pressure 120
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,81152"
@@ -154,37 +148,5 @@
    # WiFi
    setprop wifi.supplicant_scan_interval 400
 
-## AutoSMP Hotplug settings | bc - big core , lc - little core
-#echo "Y" > /sys/module/autosmp/parameters/enabled;
- # Y - enable, N - disable
-echo 10 > /sys/kernel/autosmp/conf/cpufreq_down_bc;
- # range 0 to 100
-echo 15 > /sys/kernel/autosmp/conf/cpufreq_down_lc;
- # range 0 to 100
-echo 95 > /sys/kernel/autosmp/conf/cpufreq_up_bc;
- # range 0 to 100
-echo 90 > /sys/kernel/autosmp/conf/cpufreq_up_lc;
- # range 0 to 100
-echo 2 > /sys/kernel/autosmp/conf/cycle_down;
- # max cycles 0 to 8
-echo 1 > /sys/kernel/autosmp/conf/cycle_up;
- # max cycyles 0 to 8
-echo 60 > /sys/kernel/autosmp/conf/delay;
-# range 0 to 500ms
-echo 4 > /sys/kernel/autosmp/conf/max_cpus_bc;
- # max cores ON  - 1 to 4
-echo 4 > /sys/kernel/autosmp/conf/max_cpus_lc;
- # max cores ON  - 1 to 4
-echo 1 > /sys/kernel/autosmp/conf/min_cpus_bc;
- # min cores OFF - 1 to 4
-echo 1 > /sys/kernel/autosmp/conf/min_cpus_lc;
- # min cores OFF - 1 to 4
-echo 1 > /sys/kernel/autosmp/conf/scroff_single_core;
- # 1- enable, 0 - disable
-
-   # Boeffla wakelocks
-   write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;mmc0_detect;nfc_wake_lock;rmnet0;GPSD;umts_ipc0'
-
-## END
 
 

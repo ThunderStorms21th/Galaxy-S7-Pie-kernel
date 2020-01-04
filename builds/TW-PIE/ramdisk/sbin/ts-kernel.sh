@@ -78,15 +78,6 @@ for i in `ls /sys/class/scsi_disk/`; do
 done
 echo " " >> $LOG;
 
-# Google play services wakelock fix
-echo "## -- GooglePlay wakelock fix" >> $LOG;
-pm enable com.google.android.gms/.update.SystemUpdateActivity;
-pm enable com.google.android.gms/.update.SystemUpdateService;
-pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver;
-pm enable com.google.android.gms/.update.SystemUpdateService$Receiver;
-pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver;
-echo " " >> $LOG;
-
 # Disabling unauthorized changes warnings...
 echo "## -- Remove SecurityLogAgent" >> $LOG;
 if [ -d /system/app/SecurityLogAgent ]; then
@@ -157,6 +148,14 @@ echo "4096,16384,404480" > /proc/sys/net/ipv4/tcp_wmem
 echo "4096,87380,404480" > /proc/sys/net/ipv4/tcp_rmem
 
 # init.d
+echo "## -- Remove old Init.d scripts" >> $LOG
+# remove scripts
+rm -f /system/etc/init.d/ts_swapoff.sh 2>/dev/null;
+rm -f /system/etc/init.d/feravolt_gms.sh 2>/dev/null;
+rm -f /system/etc/init.d/tskillgooogle.sh 2>/dev/null;
+rm -f /system/etc/init.d/*detach* 2>/dev/null;
+rm -f /system/su.d/*detach* 2>/dev/null;
+
 echo "## -- Start Init.d support" >> $LOG
 if [ ! -d /system/etc/init.d ]; then
 	mkdir -p /system/etc/init.d

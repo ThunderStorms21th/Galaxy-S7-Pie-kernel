@@ -28,12 +28,14 @@ $RESETPROP ro.warranty_bit "0"
 # Fix Samsung Related Flags
 $RESETPROP ro.fmp_config "1"
 $RESETPROP ro.boot.fmp_config "1"
+$RESETPROP sys.oem_unlock_allowed "0"
 
 # Fix safetynet flags
 $RESETPROP ro.boot.veritymode "enforcing"
 $RESETPROP ro.boot.verifiedbootstate "green"
 $RESETPROP ro.boot.flash.locked "1"
 $RESETPROP ro.boot.ddrinfo "00000001"
+$RESETPROP ro.build.selinux "1"
 
 # Stop services
 su -c "stop secure_storage"
@@ -53,6 +55,12 @@ echo " " >> $LOG;
 
 # Deepsleep fix (@Chainfire)
 echo "## -- DeepSleep Fix" >> $LOG;
+
+dmesg -n 1 -C
+echo "N" > /sys/kernel/debug/debug_enabled
+echo "N" > /sys/kernel/debug/seclog/seclog_debug
+echo "0" > /sys/kernel/debug/tracing/tracing_on
+
 if [ -f /data/adb/su/su.d/000000deepsleep ]; then
 	rm -f /data/adb/su/su.d/000000deepsleep
 fi
@@ -65,20 +73,23 @@ for i in `ls /sys/class/scsi_disk/`; do
 done
 echo " " >> $LOG;
 
-# Google play services wakelock fix
-echo "## -- GooglePlay wakelock fix" >> $LOG;
-pm enable com.google.android.gms/.update.SystemUpdateActivity;
-pm enable com.google.android.gms/.update.SystemUpdateService;
-pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver;
-pm enable com.google.android.gms/.update.SystemUpdateService$Receiver;
-pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver;
-echo " " >> $LOG;
+# Disabling unauthorized changes warnings...
+echo "## -- Remove SecurityLogAgent" >> $LOG;
+if [ -d /system/app/SecurityLogAgent ]; then
+	rm -rf /system/app/SecurityLogAgent
+fi
 
 # Fix personalist.xml
 if [ ! -f /data/system/users/0/personalist.xml ]; then
 	touch /data/system/users/0/personalist.xml
 	chmod 600 /data/system/users/0/personalist.xml
 	chown system:system /data/system/users/0/personalist.xml
+fi
+
+# RMM patch (part)
+echo "## -- Removing RMM" >> $LOG;
+if [ -d /system/priv-app/Rlc ]; then
+	rm -rf /system/priv-app/Rlc
 fi
 
 # PWMFix (0 = Disabled, 1 = Enabled)
@@ -122,6 +133,14 @@ echo "4096,16384,404480" > /proc/sys/net/ipv4/tcp_wmem
 echo "4096,87380,404480" > /proc/sys/net/ipv4/tcp_rmem
 
 # init.d
+echo "## -- Remove old Init.d scripts" >> $LOG
+# remove scripts
+rm -f /system/etc/init.d/ts_swapoff.sh 2>/dev/null;
+rm -f /system/etc/init.d/feravolt_gms.sh 2>/dev/null;
+rm -f /system/etc/init.d/tskillgooogle.sh 2>/dev/null;
+rm -f /system/etc/init.d/*detach* 2>/dev/null;
+rm -f /system/su.d/*detach* 2>/dev/null;
+
 echo "## -- Start Init.d support" >> $LOG
 if [ ! -d /system/etc/init.d ]; then
 	mkdir -p /system/etc/init.d
@@ -147,4 +166,43 @@ mount -t rootfs -o remount,ro rootfs
 mount -o remount,ro -t auto /system
 mount -o remount,rw /data
 mount -o remount,rw /cache
+
+## ThunderStormS kill Google and Media servers script
+sleep 5
+# START LOOP 7200sec = 2h
+RUN_EVERY=7200
+(
+while : ; do
+# Google play services wakelock fix
+echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
+# KILL MEDIA
+if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
+# busybox killall -9 android.process.media
+# busybox killall -9 mediaserver
+busybox killall -9 com.google.android.gms
+busybox killall -9 com.google.android.gms.persistent
+busybox killall -9 com.google.process.gapps
+busybox killall -9 com.google.android.gsf
+busybox killall -9 com.google.android.gsf.persistent
+fi
+
+sleep 2
+# FIX GOOGLE PLAY SERVICE
+pm enable com.google.android.gms/.update.SystemUpdateActivity
+pm enable com.google.android.gms/.update.SystemUpdateService
+pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver
+pm enable com.google.android.gms/.update.SystemUpdateService$Receiver
+pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver
+pm enable com.google.android.gsf/.update.SystemUpdateActivity
+pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
+pm enable com.google.android.gsf/.update.SystemUpdateService
+pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
+pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
+echo " " >> $LOG;
+
+sleep 7200
+
+done;
+)&
+# END OF LOOP
 

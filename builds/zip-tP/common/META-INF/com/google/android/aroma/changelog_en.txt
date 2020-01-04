@@ -2,8 +2,8 @@
 <b>KERNEL INFORMATION:</b>
 
 	NAME	: <b><#selectbg_g>ThundeRStormS-Kernel-Treble</#></b>	
-	VERSION	: <b><#selectbg_g>v1.2</#></b>
-	DATE	: <b><#selectbg_g>20/12/2019</#></b>
+	VERSION	: <b><#selectbg_g>v1.3T</#></b>
+	DATE	: <b><#selectbg_g>29/12/2019</#></b>
 	AUTHOR	: <b><#selectbg_g>ThundeRStormS Team</#></b>
 
 <#53a6f4><b> Only For Galaxy S7/S7Edge </b></#>
@@ -11,6 +11,23 @@
 
 <b>CHANGELOG:</b>
 
+--------------------------------------------------------------------------
+<u><b><#selectbg_g>ThundeRStormS-Kernel-T-v1.3T : 29.12.2019</#></b></u>
+<*>Samsung source : N935KKKU4CSK1 </*>
+<*>Linux source : 3.18.91 </*>
+<*>Spectrum Profiles Updated </*>
+<*>Optimizations in Linux source </*>
+   -crypto, drivers, f2fs, arm64,lib and kernel
+   -block: cfq, deadline, bfq
+   -ramdisk: initial settings, abd, mtp
+   -mm, fs, linux, i/o
+<*>MMC, USB drivers updated to Linux 3.18.140 </*>
+<*>Backported Interactive governor from Galaxy S9 </*>
+<*>Added Thunderstorm governor based on new Interactive </*>
+<*>ThunderTweaks v1.0.4.0 </*>
+<*>Magisk 20.1 Offcial</*>
+<*>Initial Release </*>
+--------------------------------------------------------------------------
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThundeRStormS-Kernel-T-v1.2 : 20.12.2019</#></b></u>
 <*>Samsung source : N935KKKU4CSK1 </*>
@@ -25,7 +42,7 @@
 <*>ThunderTweaks v1.0.4.0 </*>
 <*>Magisk 20.1 Offcial</*>
 --------------------------------------------------------------------------
--------------------------------------------------------------------------
+--------------------------------------------------------------------------
 <u><b><#selectbg_g>ThundeRStormS-Kernel-T-v1.1 : 01.10.2019</#></b></u>
 <*>Spectrum Profiles Updated </*>
 <*>Fixed load spectrum profile at boot - thx to Moro </*>

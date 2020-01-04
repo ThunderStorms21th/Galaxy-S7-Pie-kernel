@@ -1,67 +1,67 @@
 # Battery Franz v2
 
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor
-   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactive
+   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_governor interactiveS9
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 130000
    chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq
    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_max_freq 1586000
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/go_hispeed_load 97
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/above_hispeed_delay "50000 546000:40000 754000:40000 962000:40000"
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_rate 40000
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/hispeed_freq 546000
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/timer_slack 20000
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/target_loads "80 858000:85 1066000:90"
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/min_sample_time 40000
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/mode
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/mode 0
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boost 0
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/io_is_busy 0
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/param_index
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/param_index 0
-   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration
-   write /sys/devices/system/cpu/cpu0/cpufreq/interactive/boostpulse_duration 20000
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/go_hispeed_load
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/go_hispeed_load 97
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/above_hispeed_delay
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/above_hispeed_delay "40000 546000:35000 754000:30000 962000:20000"
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/timer_rate
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/timer_rate 40000
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/hispeed_freq
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/hispeed_freq 754000       
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/timer_slack
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/timer_slack 20000
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/target_loads
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/target_loads "80 858000:85 1066000:90"
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/min_sample_time
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/min_sample_time 40000
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/mode
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/mode 0
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/boost
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/boost 0
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/io_is_busy
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/io_is_busy 0
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/param_index
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/param_index 0
+   chmod 0664 /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/boostpulse_duration
+   write /sys/devices/system/cpu/cpu0/cpufreq/interactiveS9/boostpulse_duration 20000
 
    # Big CPU
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
-   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactive
+   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor interactiveS9
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 416000
+   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 208000
    chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1872000
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/go_hispeed_load 98
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/above_hispeed_delay "80000 624000:30000 1040000:40000 1248000:40000"
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_rate 40000
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/hispeed_freq 624000
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/timer_slack 20000
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/target_loads "75 832000:78 1040000:80 1352000:85"
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/min_sample_time 40000
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/mode
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/mode 0
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boost 0
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/io_is_busy 0
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/param_index 0
-   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration
-   write /sys/devices/system/cpu/cpu4/cpufreq/interactive/boostpulse_duration 20000
+   write /sys/devices/system/cpu/cpu4/cpufreq/scaling_max_freq 1664000
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/go_hispeed_load
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/go_hispeed_load 98
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/above_hispeed_delay
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/above_hispeed_delay "50000 728000:35000 1040000:30000 1144000:30000"
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/timer_rate
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/timer_rate 40000
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/hispeed_freq
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/hispeed_freq 624000
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/timer_slack
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/timer_slack 20000
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/target_loads
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/target_loads "75 832000:78 1040000:80 1352000:85"
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/min_sample_time
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/min_sample_time 40000
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/mode
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/mode 0
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/boost
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/boost 0
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/io_is_busy
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/io_is_busy 0
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/param_index
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/param_index 0
+   chmod 0664 /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/boostpulse_duration
+   write /sys/devices/system/cpu/cpu4/cpufreq/interactiveS9/boostpulse_duration 20000
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
@@ -83,24 +83,25 @@
 
    # HMP
    chmod 0664 /sys/kernel/hmp/up_threshold
-   write /sys/kernel/hmp/up_threshold 750
+   write /sys/kernel/hmp/up_threshold 825
    chmod 0664 /sys/kernel/hmp/down_threshold
-   write /sys/kernel/hmp/down_threshold 256
+   write /sys/kernel/hmp/down_threshold 380
+   chmod 0644 /sys/kernel/hmp/down_compensation_enabled 
+   write /sys/kernel/hmp/down_compensation_enabled 1
+   chmod 0644 /sys/kernel/hmp/down_compensation_threshold
+   write /sys/kernel/hmp/down_compensation_threshold 162
+   chmod 0644 /sys/kernel/hmp/down_compensation_timeout
+   write /sys/kernel/hmp/down_compensation_timeout 30
+   chmod 0644 /sys/kernel/hmp/sb_up_threshold
+   write /sys/kernel/hmp/sb_up_threshold 254
+   chmod 0644 /sys/kernel/hmp/sb_down_threshold
+   write /sys/kernel/hmp/sb_down_threshold 163
    chmod 0664 /sys/kernel/hmp/down_compensation_high_freq
-   write /sys/kernel/hmp/down_compensation_high_freq 962000
+   write /sys/kernel/hmp/down_compensation_high_freq 754000
    chmod 0664 /sys/kernel/hmp/down_compensation_mid_freq
-   write /sys/kernel/hmp/down_compensation_mid_freq 754000
+   write /sys/kernel/hmp/down_compensation_mid_freq 650000
    chmod 0664 /sys/kernel/hmp/down_compensation_low_freq
-   write /sys/kernel/hmp/down_compensation_low_freq 650000
-   write /sys/devices/14ac0000.mali/throttling1 546
-   write /sys/devices/14ac0000.mali/throttling2 419
-   write /sys/devices/14ac0000.mali/throttling3 338
-   write /sys/devices/14ac0000.mali/throttling4 260
-   write /sys/devices/14ac0000.mali/trippimg 112
-   write /proc/sys/kernel/random/write_wakeup_threshold 256
-   write /proc/sys/kernel/random/read_wakeup_threshold 64
-   write /proc/sys/vm/dirty_expire_centisecs 800
-   write /proc/sys/vm/dirty_writeback_centisecs 1600
+   write /sys/kernel/hmp/down_compensation_low_freq 546000
 
    # GPU
    chmod 0664 /sys/devices/14ac0000.mali/max_clock
@@ -146,7 +147,7 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   write /proc/sys/vm/swappiness 90
+   write /proc/sys/vm/swappiness 60
    write /proc/sys/vm/vfs_cache_pressure 45
 
    # LMK
