@@ -50,7 +50,7 @@ DEFCONFIG=ts-t-oneui-kernel_defconfig
 DEFCONFIG_S7EDGE=hero2lte_defconfig
 DEFCONFIG_S7FLAT=herolte_defconfig
 
-export K_VERSION="v1.0T"
+export K_VERSION="v1.1T"
 export K_BASE="U4CSK1"
 export K_NAME="ThundeRStormS-Kernel"
 export REVISION="RC"
@@ -261,7 +261,7 @@ echo "    CUSTOMIZABLE STOCK SAMSUNG KERNEL"
 echo ""
 echo "           Build Kernel for:"
 echo ""
-echo "S7 Treble OneUI-Q"
+echo "S7 Treble OneUI"
 echo "(1) S7 Flat SM-G930F/FD"
 echo "(2) S7 Edge SM-G935F/FD"
 echo "(3) S7 Edge + Flat F/FD"
@@ -276,9 +276,9 @@ if [ $prompt == "1" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TrebleUI-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TrebleOneUI-$K_VERSION"
     echo "S7 Flat G930F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-TrebleUI-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-TrebleOneUI-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt == "2" ]; then
     MODEL=G935
@@ -286,9 +286,9 @@ elif [ $prompt == "2" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TrebleeUI-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TrebleOneUI-$K_VERSION"
     echo "S7 Edge G935F Selected"
-    ZIP_NAME=$K_NAME-$MODEL-TrebleUI-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-$MODEL-TrebleOneUI-$K_VERSION-$ZIP_DATE.zip
     MAIN
 elif [ $prompt == "3" ]; then
     MODEL=G935
@@ -296,16 +296,16 @@ elif [ $prompt == "3" ]; then
     KERNEL_DEFCONFIG=$DEFCONFIG_S7EDGE
     LOG=$EDGE_LOG
     ZIP_DATE=`date +%Y%m%d`
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TrebleUI-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TrebleOneUI-$K_VERSION"
     echo "S7 EDGE + FLAT Selected"
     echo "Compiling EDGE ..."
     MAIN2
     MODEL=G930
     KERNEL_DEFCONFIG=$DEFCONFIG_S7FLAT
     LOG=$FLAT_LOG
-    export KERNEL_VERSION="$K_NAME-$K_BASE-TrebleUI-Q-$K_VERSION"
+    export KERNEL_VERSION="$K_NAME-$K_BASE-TrebleOneUI-$K_VERSION"
     echo "Compiling FLAT ..."
-    ZIP_NAME=$K_NAME-G93X-TrebleUI-Q-$K_VERSION-$ZIP_DATE.zip
+    ZIP_NAME=$K_NAME-G93X-TrebleOneUI-$K_VERSION-$ZIP_DATE.zip
     MAIN
 fi
 
