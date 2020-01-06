@@ -92,6 +92,9 @@ static unsigned int default_target_loads[] = {DEFAULT_TARGET_LOAD};
 static unsigned int default_above_hispeed_delay[] = {
 	DEFAULT_ABOVE_HISPEED_DELAY };
 
+#define DEFAULT_SCREEN_OFF_MAX 1000000
+static unsigned long screen_off_max = DEFAULT_SCREEN_OFF_MAX;
+
 #ifdef CONFIG_DYNAMIC_MODE_SUPPORT
 #define PERF_MODE 2
 #define SLOW_MODE 1
@@ -741,6 +744,7 @@ static int cpufreq_thunderstorm2_speedchange_task3(void *data)
 	unsigned int cpu;
 	cpumask_t tmp_mask;
 	unsigned long flags;
+	unsigned int max_freq = 0;
 	struct cpufreq_thunderstorm2_cpuinfo *pcpu;
 
 	while (1) {
@@ -775,6 +779,9 @@ static int cpufreq_thunderstorm2_speedchange_task3(void *data)
 							pcpu->policy);
 				up_read(&pcpu->enable_sem);
 			}
+
+			if (unlikely(!screen_on))
+					if (max_freq > screen_off_max) max_freq = screen_off_max;
 
 			up_write(&pcpu->policy->rwsem);
 		}
