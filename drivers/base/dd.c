@@ -171,6 +171,37 @@ static void driver_deferred_probe_trigger(void)
 	queue_work(deferred_wq, &deferred_probe_work);
 }
 
+/*
+ * In some cases, like suspend to RAM or hibernation, It might be reasonable
+ * to prohibit probing of devices as it could be unsafe.
+ * Once defer_all_probes is true all drivers probes will be forcibly deferred.
+ */
+static bool defer_all_probes;
+
+/**
+ * device_block_probing() - Block/defere device's probes
+ *
+ *	It will disable probing of devices and defer their probes instead.
+ */
+void device_block_probing(void)
+{
+	defer_all_probes = true;
+	/* sync with probes to avoid races. */
+	wait_for_device_probe();
+}
+
+/**
+ * device_unblock_probing() - Unblock/enable device's probes
+ *
+ *	It will restore normal behavior and trigger re-probing of deferred
+ * devices.
+ */
+void device_unblock_probing(void)
+{
+	defer_all_probes = false;
+	driver_deferred_probe_trigger();
+}
+
 /**
  * deferred_probe_initcall() - Enable probing of deferred devices
  *
