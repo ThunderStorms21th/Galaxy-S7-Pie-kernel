@@ -25,11 +25,44 @@ static struct work_struct cooldown_boost_work;
 static struct delayed_work input_boost_rem;
 static struct delayed_work cooldown_boost_rem;
 
-static __read_mostly unsigned short input_boost_duration = CONFIG_INPUT_BOOST_DURATION;
-static __read_mostly unsigned short cooldown_boost_duration = CONFIG_COOLDOWN_BOOST_DURATION;
-static __read_mostly unsigned short input_stune_boost = CONFIG_INPUT_STUNE_BOOST;
-static __read_mostly unsigned short cooldown_stune_boost = CONFIG_COOLDOWN_STUNE_BOOST;
-static __read_mostly unsigned short sched_stune_boost = CONFIG_SCHED_STUNE_BOOST;
+/* Initialize settings for Dynamic SchedTune Boosting (DS Boost) on events */
+
+/*	"Input boost duration"
+	default "64"
+	Default duration to boost on input.			 */
+#define INPUT_BOOST_DURATION (64)
+
+/*	"Cooldown boost duration"
+	default "3000"
+	Default duration to boost after input boost finishes.	 */
+#define COOLDOWN_BOOST_DURATION (3000)
+
+/*	"Input SchedTune boost level"
+	default "15"
+	Default SchedTune boost level for the top-app cgroup.
+	A value of 0 disables SchedTune boosting for this level. */
+#define INPUT_STUNE_BOOST (15)
+
+/*	"Cooldown SchedTune boost level"
+	default "12"
+	Default SchedTune boost level for the top-app cgroup after
+	input boosting finishes.
+	A value of 0 disables SchedTune boosting for this level. */
+#define COOLDOWN_STUNE_BOOST (12)
+
+/* 	"Sched SchedTune boost level"
+	default "12"
+	Default SchedTune boost level for the top-app cgroup for
+	sched_boost calls.
+	A value of 0 disables SchedTune boosting for this level. */
+#define SCHED_STUNE_BOOST (12)
+/* END of initialize settings */
+
+static __read_mostly unsigned short input_boost_duration = INPUT_BOOST_DURATION;
+static __read_mostly unsigned short cooldown_boost_duration = COOLDOWN_BOOST_DURATION;
+static __read_mostly unsigned short input_stune_boost = INPUT_STUNE_BOOST;
+static __read_mostly unsigned short cooldown_stune_boost = COOLDOWN_STUNE_BOOST;
+static __read_mostly unsigned short sched_stune_boost = SCHED_STUNE_BOOST;
 
 module_param(input_boost_duration, ushort, 0644);
 module_param(cooldown_boost_duration, ushort, 0644);
