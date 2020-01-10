@@ -81,11 +81,11 @@ fi
 		chmod 777 /system/etc/init.d/*;
 
 		for FILE in /system/etc/init.d/*; do
-			echo "## Executing init.d script: $FILE" >> $LOG;
+			echo "## -- Executing init.d script: $FILE" >> $LOG;
 			sh $FILE >/dev/null;
 	    	done;
 	else
-		echo "## No files found" >> $LOG;
+		echo "## -- No files found" >> $LOG;
 	fi
 	echo "## -- End Init.d support" >> $LOG;
 	echo " " >> $LOG;
@@ -112,7 +112,7 @@ fi
 			rm $apk;
 		done;
 	else
-		echo "## No files found" >> $LOG;
+		echo "## -- No files found" >> $LOG;
 	fi
 	echo "## -- End Install APK" >> $LOG;
 

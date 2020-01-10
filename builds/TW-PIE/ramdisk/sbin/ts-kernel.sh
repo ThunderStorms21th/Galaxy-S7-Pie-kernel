@@ -164,11 +164,11 @@ chown -R root.root /system/etc/init.d
 chmod -R 755 /system/etc/init.d
 for FILE in /system/etc/init.d/*; do
 	sh $FILE >/dev/null
-	echo "## Executing init.d script: $FILE" >> $LOG;
+	echo "## -- Executing init.d script: $FILE" >> $LOG;
 done;
 for FILE2 in /system/etc/init.d/*.sh; do
 	sh $FILE2 >/dev/null
-	echo "## Executing init.d script: $FILE" >> $LOG;
+	echo "## -- Executing init.d script: $FILE" >> $LOG;
 done
 echo "## -- End Init.d support" >> $LOG;
 echo " " >> $LOG;
@@ -183,11 +183,11 @@ mount -o remount,rw /data
 mount -o remount,rw /cache
 
 ## ThunderStormS kill Google and Media servers script
-sleep 5
+sleep 2
 # START LOOP 7200sec = 2h
-RUN_EVERY=7200
 (
 while : ; do
+RUN_EVERY=7200
 # Google play services wakelock fix
 echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
 # KILL MEDIA

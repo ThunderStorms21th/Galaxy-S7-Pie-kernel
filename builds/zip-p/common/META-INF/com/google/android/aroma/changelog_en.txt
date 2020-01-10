@@ -15,6 +15,7 @@
 <u><b><#selectbg_g>ThunderStorms-Kernel-P-v2.4 : 29.12.2019</#></b></u>
 <*>Samsung source : N935KKKU4CSK1 </*>
 <*>Linux source : 3.18.91 </*>
+<*>Ramdisk source: N935FXXU6CSK1 </*>
 <*>Spectrum Profiles Updated </*>
 <*>Optimizations in Linux source </*>
    -crypto, drivers, f2fs, arm64,lib and kernel
@@ -24,8 +25,8 @@
 <*>MMC, USB drivers updated to Linux 3.18.140 </*>
 <*>Backported Interactive governor from Galaxy S9 </*>
 <*>Added Thunderstorm governor based on new Interactive </*>
-<*>ThunderTweaks v1.0.4.0 </*>
-<*>Magisk 20.1 Offcial</*>
+<*>ThunderTweaks v1.0.4.1 </*>
+<*>Magisk 20.3 Offcial</*>
 --------------------------------------------------------------------------
 --------------------------------------------------------------------------
 <u><b><#selectbg_g>ThunderStorms-Kernel-P-v2.3 : 20.12.2019</#></b></u>
