@@ -17,8 +17,26 @@ enum {
 	MAX_BOOST
 };
 
-unsigned long devfreq_boost_freq = CONFIG_DEVFREQ_EXYNOS_MIF_BOOST_FREQ;
-unsigned short devfreq_boost_dur = CONFIG_DEVFREQ_INPUT_BOOST_DURATION_MS;
+/* Initialize settings for DevFreq Boost */
+
+/*	Input boost duration"
+	default "100"
+	Input boost duration in milliseconds for all boostable devices.	*/
+#define DEVFREQ_INPUT_BOOST_DURATION_MS (50)
+
+/*	"Wake boost duration"
+	default "1000"
+	Wake boost duration in milliseconds for all boostable devices.	*/
+#define DEVFREQ_WAKE_BOOST_DURATION_MS (500)
+
+/*	"Boost freq for Exynos MIF device"
+	default "0"
+	Boost frequency for the Exynos MIF (DDR) bus. */
+#define DEVFREQ_EXYNOS_MIF_BOOST_FREQ (845000)
+
+
+unsigned long devfreq_boost_freq = DEVFREQ_EXYNOS_MIF_BOOST_FREQ;
+unsigned short devfreq_boost_dur = DEVFREQ_INPUT_BOOST_DURATION_MS;
 
 module_param(devfreq_boost_freq, long, 0644);
 module_param(devfreq_boost_dur, short, 0644);
@@ -199,7 +217,7 @@ static int fb_notifier_cb(struct notifier_block *nb, unsigned long action,
 		if (*blank == FB_BLANK_UNBLANK) {
 			clear_bit(SCREEN_OFF, &b->state);
 			__devfreq_boost_kick_max(b,
-				CONFIG_DEVFREQ_WAKE_BOOST_DURATION_MS);
+				DEVFREQ_WAKE_BOOST_DURATION_MS);
 		} else {
 			set_bit(SCREEN_OFF, &b->state);
 			wake_up(&b->boost_waitq);
