@@ -539,7 +539,7 @@ struct devfreq *devfreq_add_device(struct device *dev,
 		put_device(&devfreq->dev);
 		mutex_unlock(&devfreq->lock);
 		put_device(&devfreq->dev);
-		goto err_out;
+		goto err_dev;
 	}
 
 	mutex_unlock(&devfreq->lock);
@@ -567,7 +567,8 @@ err_init:
 	device_unregister(&devfreq->dev);
 	devfreq = NULL;
 err_dev:
-	kfree(devfreq);
+	if (devfreq)
+		kfree(devfreq);
 err_out:
 	return ERR_PTR(err);
 }
