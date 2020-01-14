@@ -87,6 +87,7 @@ static struct mutex gov_lock;
 static unsigned int default_target_loads[] = {DEFAULT_TARGET_LOAD};
 
 #define DEFAULT_TIMER_RATE (20 * USEC_PER_MSEC)
+#define PREV_TIMER_RATE (20 * USEC_PER_MSEC)
 #define SCREEN_OFF_TIMER_RATE ((unsigned long)(60 * USEC_PER_MSEC))
 #define DEFAULT_ABOVE_HISPEED_DELAY DEFAULT_TIMER_RATE
 static unsigned int default_above_hispeed_delay[] = {
@@ -1214,6 +1215,31 @@ static ssize_t store_timer_rate(struct cpufreq_thunderstorm2_tunables *tunables,
 	return count;
 }
 
+static ssize_t show_prev_timer_rate(struct cpufreq_thunderstorm2_tunables *tunables,
+		char *buf)
+{
+	return sprintf(buf, "%lu\n", tunables->prev_timer_rate);
+}
+
+static ssize_t store_prev_timer_rate(struct cpufreq_thunderstorm2_tunables *tunables,
+		const char *buf, size_t count)
+{
+	int ret;
+	unsigned long val, val_round;
+
+	ret = kstrtoul(buf, 0, &val);
+	if (ret < 0)
+		return ret;
+
+	val_round = jiffies_to_usecs(usecs_to_jiffies(val));
+	if (val != val_round)
+		pr_warn("prev_timer_rate not aligned to jiffy. Rounded up to %lu\n",
+			val_round);
+
+	tunables->prev_timer_rate = val_round;
+	return count;
+}
+
 // --------------------------------------------
 static ssize_t show_down_low_load_threshold(struct cpufreq_thunderstorm2_tunables *tunables,
 		char *buf)
@@ -1438,6 +1464,7 @@ show_store_gov_pol_sys(hispeed_freq);
 show_store_gov_pol_sys(go_hispeed_load);
 show_store_gov_pol_sys(min_sample_time);
 show_store_gov_pol_sys(timer_rate);
+show_store_gov_pol_sys(prev_timer_rate);
 show_store_gov_pol_sys(timer_slack);
 show_store_gov_pol_sys(down_low_load_threshold);
 show_store_gov_pol_sys(boost);
@@ -1470,6 +1497,7 @@ gov_sys_pol_attr_rw(hispeed_freq);
 gov_sys_pol_attr_rw(go_hispeed_load);
 gov_sys_pol_attr_rw(min_sample_time);
 gov_sys_pol_attr_rw(timer_rate);
+gov_sys_pol_attr_rw(prev_timer_rate);
 gov_sys_pol_attr_rw(timer_slack);
 gov_sys_pol_attr_rw(down_low_load_threshold);
 gov_sys_pol_attr_rw(boost);
@@ -1497,6 +1525,7 @@ static struct attribute *thunderstorm2_attributes_gov_sys[] = {
 	&go_hispeed_load_gov_sys.attr,
 	&min_sample_time_gov_sys.attr,
 	&timer_rate_gov_sys.attr,
+	&prev_timer_rate_gov_sys.attr,
 	&timer_slack_gov_sys.attr,
 	&down_low_load_threshold_gov_sys.attr,
 	&boost_gov_sys.attr,
@@ -1526,6 +1555,7 @@ static struct attribute *thunderstorm2_attributes_gov_pol[] = {
 	&go_hispeed_load_gov_pol.attr,
 	&min_sample_time_gov_pol.attr,
 	&timer_rate_gov_pol.attr,
+	&prev_timer_rate_gov_pol.attr,
 	&timer_slack_gov_pol.attr,
 	&down_low_load_threshold_gov_pol.attr,
 	&boost_gov_pol.attr,
@@ -1660,7 +1690,7 @@ static int cpufreq_governor_thunderstorm2(struct cpufreq_policy *policy,
 			tunables->ntarget_loads = ARRAY_SIZE(default_target_loads);
 			tunables->min_sample_time = DEFAULT_MIN_SAMPLE_TIME;
 			tunables->timer_rate = DEFAULT_TIMER_RATE;
-			tunables->prev_timer_rate = DEFAULT_TIMER_RATE;
+			tunables->prev_timer_rate = PREV_TIMER_RATE;
 			tunables->down_low_load_threshold = DEFAULT_DOWN_LOW_LOAD_THRESHOLD;
 			tunables->boostpulse_duration_val = DEFAULT_MIN_SAMPLE_TIME;
 			tunables->timer_slack_val = DEFAULT_TIMER_SLACK;
