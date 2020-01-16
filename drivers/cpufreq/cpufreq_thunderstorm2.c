@@ -16,6 +16,9 @@
  *
  * This is CPU governor based on interactive backported by me from Samsung
  * Galaxy S9 with some changes and addodns edited by @nalas XDA.
+ * added :
+ * - DOWN_LOW_LOAD_THRESHOLD, editbale by user
+ * - Screen off settings : screen_off_max, screen_off_timer_rate and prev_timer_rate, editable by user
  *
  */
 

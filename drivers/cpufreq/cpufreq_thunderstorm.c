@@ -15,6 +15,8 @@
  * Author: Mike Chan (mike@android.com)
  *
  * This is CPU governor based on interactive with some changes and addodns edited by @nalas XDA
+ * added :
+ * - DOWN_LOW_LOAD_THRESHOLD, editbale by user
  */
 
 #include <linux/cpu.h>
