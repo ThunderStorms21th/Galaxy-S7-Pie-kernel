@@ -90,7 +90,7 @@ static struct mutex gov_lock;
 static unsigned int default_target_loads[] = {DEFAULT_TARGET_LOAD};
 
 #define DEFAULT_TIMER_RATE (20 * USEC_PER_MSEC)
-#define PREV_TIMER_RATE (20 * USEC_PER_MSEC)
+#define PREV_TIMER_RATE (30 * USEC_PER_MSEC)
 #define DEFAULT_ABOVE_HISPEED_DELAY DEFAULT_TIMER_RATE
 #define DEFAULT_SCREEN_OFF_MAX 1000000
 #define SCREEN_OFF_TIMER_RATE ((unsigned long)(60 * USEC_PER_MSEC))
@@ -119,7 +119,7 @@ struct cpufreq_thunderstorm2_tunables {
 	 * The minimum amount of time to spend at a frequency before we can ramp
 	 * down.
 	 */
-#define DEFAULT_MIN_SAMPLE_TIME (80 * USEC_PER_MSEC)
+#define DEFAULT_MIN_SAMPLE_TIME (60 * USEC_PER_MSEC)
 	unsigned long min_sample_time;
 	/*
 	 * The sample rate of the timer used to increase frequency
