@@ -142,6 +142,7 @@
 			reg = <0x0 0x100>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
+			efficiency = <1024>;
 		};
 		cpu@101 {
 			device_type = "cpu";
@@ -150,6 +151,7 @@
 			reg = <0x0 0x101>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
+			efficiency = <1024>;
 		};
 		cpu@102 {
 			device_type = "cpu";
@@ -158,6 +160,7 @@
 			reg = <0x0 0x102>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
+			efficiency = <1024>;
 		};
 		cpu@103 {
 			device_type = "cpu";
@@ -166,6 +169,7 @@
 			reg = <0x0 0x103>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_BOOT>;
+			efficiency = <1024>;
 		};
 		cpu@0 {
 			device_type = "cpu";
@@ -174,6 +178,7 @@
 			reg = <0x0 0x0>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
+			efficiency = <1536>;
 		};
 		cpu@1 {
 			device_type = "cpu";
@@ -182,6 +187,7 @@
 			reg = <0x0 0x1>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
+			efficiency = <1536>;
 		};
 		cpu@2 {
 			device_type = "cpu";
@@ -190,6 +196,7 @@
 			reg = <0x0 0x2>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
+			efficiency = <1536>;
 		};
 		cpu@3 {
 			device_type = "cpu";
@@ -198,6 +205,7 @@
 			reg = <0x0 0x3>;
 			enable-method = "psci";
 			cpu-idle-states = <&CPU_SLEEP_NONBOOT>;
+			efficiency = <1536>;
 		};
 
 		idle-states {
