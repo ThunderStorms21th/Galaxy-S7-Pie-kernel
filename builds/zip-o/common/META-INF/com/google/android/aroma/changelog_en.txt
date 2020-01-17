@@ -22,6 +22,7 @@
    -ramdisk: initial settings, abd, mtp
    -mm, fs, linux, i/o
 <*>MMC, USB drivers updated to Linux 3.18.140 </*>
+<*>Thermal/IPA drivers updated </*>
 <*>Backported Interactive governor from Galaxy S9 </*>
 <*>Added Thunderstorm governor based on new Interactive </*>
 <*>ThunderTweaks v1.0.4.1 </*>
