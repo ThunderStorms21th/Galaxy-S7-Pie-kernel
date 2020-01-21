@@ -25,6 +25,8 @@
 <*>MMC, USB drivers updated to Linux 3.18.140 </*>
 <*>Thermal/IPA drivers updated </*>
 <*>Backported Interactive governor from Galaxy S9 </*>
+<*>Added and updated Cultivation & Bluactive governors </*>
+<*>Updated FingerPrint Boost </*>
 <*>Added Thunderstorm governor based on new Interactive </*>
 <*>ThunderTweaks v1.0.4.1 </*>
 <*>Magisk 20.3 Offcial</*>
