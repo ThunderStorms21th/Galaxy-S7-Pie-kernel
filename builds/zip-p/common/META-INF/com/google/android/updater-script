@@ -28,7 +28,7 @@ run_program("/tmp/ts/install_script.sh");
 ui_print(" ");
 ui_print("@ThundeRStormS - System Patching...");
 package_extract_dir("ts/system", "/system");
-run_program("/tmp/ts/tskernel.sh");
+# run_program("/tmp/ts/tskernel.sh");
 
 # TS swap off
 if file_getprop("/tmp/aroma/menu.prop", "chk4") == "1" then
@@ -65,19 +65,21 @@ ui_print(" ");
 ui_print("@Setting Permissions...");
 set_metadata("/system/vendor/lib/libsecure_storage.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 set_metadata("/system/vendor/lib64/libsecure_storage.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
+set_metadata("/system/vendor/lib/libsecure_storage_jni.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
+set_metadata("/system/vendor/lib64/libsecure_storage_jni.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 # set_metadata_recursive("/system/priv-app/PersonalPageService", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 # set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabilities", 0x440000040, "selabel", "u:object_r:logd_exec:s0");
 
 # PERMISSION
-ui_print("-- Fixing permission...");
-package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
-set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
-run_program("/tmp/ts/fix_permissions.sh");
+# ui_print("-- Fixing permission...");
+# package_extract_file("ts/fix_permissions.sh", "/tmp/ts/fix_permissions.sh");
+# set_perm(0, 0, 0777, "/tmp/ts/fix_permissions.sh");
+# run_program("/tmp/ts/fix_permissions.sh");
 
 #################################################
 # ROOT
 ####################################################
-set_progress(0.55);
+set_progress(0.60);
 
 ui_print(" ");
 ui_print("@Root");
@@ -98,7 +100,7 @@ endif;
 
 # Magisk Root
 if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt2" then
-show_progress(0.60, "-30000");
+show_progress(0.60, "-40000");
 	
 	# Clean opposite kernel
 	run_program("/tmp/ts/clean_supersu.sh");

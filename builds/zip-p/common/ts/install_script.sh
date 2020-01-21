@@ -115,6 +115,6 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk6)" == 1 ]; then
 	cp -rf /tmp/ts/profiles/. /sdcard/Spectrum/profiles/
 fi
 
-set_progress 0.50
+set_progress 0.58
 
 
