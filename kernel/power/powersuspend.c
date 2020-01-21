@@ -39,7 +39,7 @@
  *           the two work structs.  Also actually INITialized the work on init, and
  *           flushed it on exit.
  *
- *  v1.9.2 - Included State Notifier hooks to run explicitly once power state changes
+ *  v2.0.0 - Included State Notifier hooks to run explicitly once power state changes
  *	     are completed to prevent blocking issues.
  *
  * This software is licensed under the terms of the GNU General Public
@@ -61,9 +61,8 @@
 #include <linux/state_notifier.h>
 #endif
 
-#define MAJOR_VERSION	1
-#define MINOR_VERSION	9
-#define SUB_MINOR_VERSION 2
+#define MAJOR_VERSION	2
+#define MINOR_VERSION	0
 
 /*
  * debug = 1 will print all
