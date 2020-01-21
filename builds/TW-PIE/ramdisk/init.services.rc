@@ -4,13 +4,13 @@
 # This is a common source of Android security bugs.
 #
 
-on property:sys.boot_completed=1
-	start kernelinit
-	stop proca
-	stop secure_storage
-	stop irisd
 
-# setprop persist.sys.ui.hw true
+on property:sys.boot_completed=1
+    start kernelinit
+    # stop proca
+    stop secure_storage
+    stop irisd
+
 
 service kernelinit /sbin/ts-kernel.sh
     class late_start

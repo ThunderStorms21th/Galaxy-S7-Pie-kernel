@@ -10,9 +10,9 @@ ro.adb.secure=1
 ro.allow.mock.location=0
 ro.adb.debug_secure=0
 ro.debuggable=1
-# persist.sys.usb.config=mtp,adb
-persist.sys.usb.config=mtp,mass_storage,adb
-persist.service.mount.umsauto=1
+persist.sys.usb.config=mtp,adb
+# persist.sys.usb.config=mtp,mass_storage,adb
+# persist.service.mount.umsauto=1
 persist.service.adb.enable=1
 persist.service.debuggable=1
 # persist.adb.notify=0
@@ -92,10 +92,10 @@ persist.sys.ui.hw=true
 # persist.sys.usb.config=none
 
 # Early SF configuration
-debug.sf.early_phase_offset_ns=500000
-debug.sf.early_app_phase_offset_ns=500000
-debug.sf.early_gl_phase_offset_ns=3000000
-debug.sf.early_gl_app_phase_offset_ns=15000000
+# debug.sf.early_phase_offset_ns=500000
+# debug.sf.early_app_phase_offset_ns=500000
+# debug.sf.early_gl_phase_offset_ns=3000000
+# debug.sf.early_gl_app_phase_offset_ns=15000000
 
 #
 # BOOTIMAGE_BUILD_PROPERTIES
