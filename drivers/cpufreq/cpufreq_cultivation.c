@@ -30,7 +30,11 @@
 #include <linux/workqueue.h>
 #include <linux/kthread.h>
 #include <linux/slab.h>
-#include <linux/display_state.h>
+#include <linux/state_notifier.h>
+
+/* cultivation version */
+#define CULTIVATION_VERSION_MAJOR	(1)
+#define CULTIVATION_VERSION_MINOR	(5)
 
 struct cpufreq_cultivation_cpuinfo {
 	struct timer_list cpu_timer;
@@ -65,12 +69,12 @@ static spinlock_t speedchange_cpumask_lock;
 static struct mutex gov_lock;
 
 /* Target load.  Lower values result in higher CPU speeds. */
-#define DEFAULT_TARGET_LOAD 85
+#define DEFAULT_TARGET_LOAD 90
 static unsigned int default_target_loads[] = {DEFAULT_TARGET_LOAD};
 
-#define DEFAULT_TIMER_RATE (40 * USEC_PER_MSEC)
+#define DEFAULT_TIMER_RATE (20 * USEC_PER_MSEC)
 #define SCREEN_OFF_TIMER_RATE (50 * USEC_PER_MSEC)
-#define DEFAULT_ABOVE_HISPEED_DELAY (DEFAULT_TIMER_RATE + 10000)
+#define DEFAULT_ABOVE_HISPEED_DELAY DEFAULT_TIMER_RATE
 static unsigned int default_above_hispeed_delay[] = {
 	DEFAULT_ABOVE_HISPEED_DELAY };
 
@@ -78,23 +82,23 @@ struct cpufreq_cultivation_tunables {
 	int usage_count;
 	/* Hi speed to bump to from lo speed when load burst (default max) */
 	unsigned int hispeed_freq;
-
 	/* Go to hi speed when CPU load at or above this value. */
-#define DEFAULT_GO_HISPEED_LOAD 97
+#define DEFAULT_GO_HISPEED_LOAD 99
 	unsigned long go_hispeed_load;
+	/* Go to lowspeed when CPU load at or below this value. */
+#define DEFAULT_GO_LOWSPEED_LOAD 10
+	unsigned long go_lowspeed_load;
 
 	/* Target load. Lower values result in higher CPU speeds. */
 	spinlock_t target_loads_lock;
 	unsigned int *target_loads;
 	int ntarget_loads;
-
 	/*
 	 * The minimum amount of time to spend at a frequency before we can ramp
 	 * down.
 	 */
-#define DEFAULT_MIN_SAMPLE_TIME (40 * USEC_PER_MSEC)
+#define DEFAULT_MIN_SAMPLE_TIME (80 * USEC_PER_MSEC)
 	unsigned long min_sample_time;
-
 	/*
 	 * The sample rate of the timer used to increase frequency
 	 */
@@ -102,7 +106,6 @@ struct cpufreq_cultivation_tunables {
 	unsigned long prev_timer_rate;
 #define DEFAULT_TIMER_RATE_SCREENOFF (50 * USEC_PER_MSEC)
 	unsigned long timer_rate_screenoff;
-
 	/*
 	 * Wait this long before raising speed above hispeed, by default a
 	 * single timer interval.
@@ -110,12 +113,11 @@ struct cpufreq_cultivation_tunables {
 	spinlock_t above_hispeed_delay_lock;
 	unsigned int *above_hispeed_delay;
 	int nabove_hispeed_delay;
-
 	/*
 	 * Max additional time to wait in idle, beyond timer_rate, at speeds
-	 * above minimum before wakeup to reduce speed, or -1 if unnecessary. was 3
+	 * above minimum before wakeup to reduce speed, or -1 if unnecessary.
 	 */
-#define DEFAULT_TIMER_SLACK (1 * DEFAULT_TIMER_RATE)
+#define DEFAULT_TIMER_SLACK (4 * DEFAULT_TIMER_RATE)
 	int timer_slack_val;
 	bool io_is_busy;
 
@@ -128,12 +130,16 @@ struct cpufreq_cultivation_tunables {
 	/* Use agressive frequency step calculation, above a given load threshold */
 	bool fastlane;
 	unsigned int fastlane_threshold;
+
 	/*
 	 * Whether to align timer windows across all CPUs. When
 	 * use_sched_load is true, this flag is ignored and windows
 	 * will always be aligned.
 	 */
 	bool align_windows;
+
+	/* Improves frequency selection for more energy */
+	bool powersave_bias;
 };
 
 /* For cases where we have single governor instance for system */
@@ -394,7 +400,7 @@ static void cpufreq_cultivation_timer(unsigned long data)
 	unsigned long flags;
 	u64 max_fvtime;
 	struct cpufreq_govinfo int_info;
-	bool display_on = is_display_on();
+	unsigned int this_hispeed_freq;
 
 	if (!down_read_trylock(&pcpu->enable_sem))
 		return;
@@ -420,10 +426,10 @@ static void cpufreq_cultivation_timer(unsigned long data)
 	atomic_notifier_call_chain(&cpufreq_govinfo_notifier_list,
 					CPUFREQ_LOAD_CHANGE, &int_info);
 
-	if (display_on &&
+	if (!state_suspended &&
 		tunables->timer_rate != tunables->prev_timer_rate)
 		tunables->timer_rate = tunables->prev_timer_rate;
-	else if (!display_on &&
+	else if (state_suspended &&
 		tunables->timer_rate != tunables->timer_rate_screenoff) {
 		tunables->prev_timer_rate = tunables->timer_rate;
 		tunables->timer_rate
@@ -433,30 +439,37 @@ static void cpufreq_cultivation_timer(unsigned long data)
 
 	spin_lock_irqsave(&pcpu->target_freq_lock, flags);
 	cpu_load = loadadjfreq / pcpu->policy->cur;
-	if (cpu_load >= tunables->go_hispeed_load) {
-		if (pcpu->policy->cur < tunables->hispeed_freq) {
-			new_freq = tunables->hispeed_freq;
-		} else {
-			if (tunables->fastlane && cpu_load > tunables->fastlane_threshold)
+	this_hispeed_freq = max(tunables->hispeed_freq, pcpu->policy->min);
+	this_hispeed_freq = min(this_hispeed_freq, pcpu->policy->max);
+
+	if (cpu_load <= tunables->go_lowspeed_load) {
+		new_freq = pcpu->policy->cpuinfo.min_freq;
+	} else {
+	    if (cpu_load >= tunables->go_hispeed_load) {
+		    if (pcpu->policy->cur < this_hispeed_freq) {
+			    new_freq = this_hispeed_freq;
+		    } else {
+			    if (tunables->fastlane && cpu_load > tunables->fastlane_threshold)
 				new_freq = fastlane_freq(pcpu, cpu_load);
-			else
+			    else
 				new_freq = choose_freq(pcpu, loadadjfreq);
 
-			if (new_freq < tunables->hispeed_freq)
-				new_freq = tunables->hispeed_freq;
-		}
-	} else {
-		if (tunables->fastlane && cpu_load > tunables->fastlane_threshold)
+			    if (new_freq < this_hispeed_freq)
+				new_freq = this_hispeed_freq;
+		    }
+	    } else {
+		    if (tunables->fastlane && cpu_load > tunables->fastlane_threshold)
 			new_freq = fastlane_freq(pcpu, cpu_load);
-		else
+		    else
 			new_freq = choose_freq(pcpu, loadadjfreq);
 
-		if (new_freq > tunables->hispeed_freq &&
-				pcpu->policy->cur < tunables->hispeed_freq)
-			new_freq = tunables->hispeed_freq;
+		    if (new_freq > this_hispeed_freq &&
+				pcpu->policy->cur < this_hispeed_freq)
+			new_freq = this_hispeed_freq;
+	    }
 	}
 
-	if (pcpu->policy->cur >= tunables->hispeed_freq &&
+	if (pcpu->policy->cur >= this_hispeed_freq &&
 	    new_freq > pcpu->policy->cur &&
 	    now - pcpu->pol_hispeed_val_time <
 	    freq_to_above_hispeed_delay(tunables, pcpu->policy->cur)) {
@@ -500,7 +513,7 @@ static void cpufreq_cultivation_timer(unsigned long data)
 	 * Update the timestamp for checking whether speed has been held at
 	 * or above the selected frequency for a minimum of min_sample_time.
 	 */
-	if (new_freq > tunables->hispeed_freq) {
+	if (new_freq > this_hispeed_freq) {
 		pcpu->floor_freq = new_freq;
 		if (pcpu->target_freq >= pcpu->policy->cur ||
 		    new_freq >= pcpu->policy->cur)
@@ -555,62 +568,13 @@ static void cpufreq_cultivation_idle_end(void)
 	up_read(&pcpu->enable_sem);
 }
 
-static void cpufreq_cultivation_get_policy_info(struct cpufreq_policy *policy,
-						unsigned int *pmax_freq,
-						u64 *phvt, u64 *pfvt)
-{
-	struct cpufreq_cultivation_cpuinfo *pcpu;
-	unsigned int max_freq = 0;
-	u64 hvt = ~0ULL, fvt = 0;
-	unsigned int i;
-
-	for_each_cpu(i, policy->cpus) {
-		pcpu = &per_cpu(cpuinfo, i);
-
-		fvt = max(fvt, pcpu->loc_floor_val_time);
-		if (pcpu->target_freq > max_freq) {
-			max_freq = pcpu->target_freq;
-			hvt = pcpu->loc_hispeed_val_time;
-		} else if (pcpu->target_freq == max_freq) {
-			hvt = min(hvt, pcpu->loc_hispeed_val_time);
-		}
-	}
-
-	*pmax_freq = max_freq;
-	*phvt = hvt;
-	*pfvt = fvt;
-}
-
-static void cpufreq_cultivation_adjust_cpu(unsigned int cpu,
-					   struct cpufreq_policy *policy)
-{
-	struct cpufreq_cultivation_cpuinfo *pcpu;
-	u64 hvt, fvt;
-	unsigned int max_freq;
-	int i;
-
-	cpufreq_cultivation_get_policy_info(policy, &max_freq, &hvt, &fvt);
-
-	for_each_cpu(i, policy->cpus) {
-		pcpu = &per_cpu(cpuinfo, i);
-		pcpu->pol_floor_val_time = fvt;
-	}
-
-	if (max_freq != policy->cur) {
-		__cpufreq_driver_target(policy, max_freq, CPUFREQ_RELATION_H);
-		for_each_cpu(i, policy->cpus) {
-			pcpu = &per_cpu(cpuinfo, i);
-			pcpu->pol_hispeed_val_time = hvt;
-		}
-	}
-}
-
 static int cpufreq_cultivation_speedchange_task(void *data)
 {
 	unsigned int cpu;
 	cpumask_t tmp_mask;
 	unsigned long flags;
 	struct cpufreq_cultivation_cpuinfo *pcpu;
+	struct cpufreq_cultivation_tunables *tunables;
 
 	while (1) {
 		set_current_state(TASK_INTERRUPTIBLE);
@@ -633,23 +597,78 @@ static int cpufreq_cultivation_speedchange_task(void *data)
 		spin_unlock_irqrestore(&speedchange_cpumask_lock, flags);
 
 		for_each_cpu(cpu, &tmp_mask) {
+			unsigned int j;
+			unsigned int max_freq = 0;
+			struct cpufreq_cultivation_cpuinfo *pjcpu;
+			u64 hvt = ~0ULL;
+
 			pcpu = &per_cpu(cpuinfo, cpu);
-
-			down_write(&pcpu->policy->rwsem);
-
-			if (likely(down_read_trylock(&pcpu->enable_sem))) {
-				if (likely(pcpu->governor_enabled))
-					cpufreq_cultivation_adjust_cpu(cpu,
-							pcpu->policy);
+			if (!down_read_trylock(&pcpu->enable_sem))
+				continue;
+			if (!pcpu->governor_enabled) {
 				up_read(&pcpu->enable_sem);
+				continue;
 			}
 
-			up_write(&pcpu->policy->rwsem);
+			for_each_cpu(j, pcpu->policy->cpus) {
+				pjcpu = &per_cpu(cpuinfo, j);
+
+				if (pjcpu->target_freq > max_freq) {
+					max_freq = pjcpu->target_freq;
+					hvt = pjcpu->loc_hispeed_val_time;
+				} else if (pjcpu->target_freq == max_freq) {
+					hvt = min(hvt, pjcpu->loc_hispeed_val_time);
+				}
+			}
+
+			if (max_freq != pcpu->policy->cur) {
+				tunables = pcpu->policy->governor_data;
+				if (tunables->powersave_bias || state_suspended)
+					__cpufreq_driver_target(pcpu->policy,
+								max_freq,
+								CPUFREQ_RELATION_C);
+				else
+					__cpufreq_driver_target(pcpu->policy,
+								max_freq,
+								CPUFREQ_RELATION_H);
+				for_each_cpu(j, pcpu->policy->cpus) {
+					pjcpu = &per_cpu(cpuinfo, j);
+					pjcpu->pol_hispeed_val_time = hvt;
+				}
+			}
+
+			up_read(&pcpu->enable_sem);
 		}
 	}
 
 	return 0;
 }
+
+/* 
+static int load_change_callback(struct notifier_block *nb, unsigned long val,
+				void *data)
+{
+	unsigned long cpu = (unsigned long) data;
+	struct cpufreq_cultivation_cpuinfo *pcpu = &per_cpu(cpuinfo, cpu);
+	struct cpufreq_cultivation_tunables *tunables;
+	if (speedchange_task == current)
+		return 0;
+	if (!down_read_trylock(&pcpu->enable_sem))
+		return 0;
+	if (!pcpu->governor_enabled) {
+		up_read(&pcpu->enable_sem);
+		return 0;
+	}
+	tunables = pcpu->policy->governor_data;
+	del_timer(&pcpu->cpu_timer);
+	del_timer(&pcpu->cpu_slack_timer);
+	cpufreq_cultivation_timer(cpu);
+	up_read(&pcpu->enable_sem);
+	return 0;
+}
+static struct notifier_block load_notifier_block = {
+	.notifier_call = load_change_callback,
+}; */
 
 static int cpufreq_cultivation_notifier(
 	struct notifier_block *nb, unsigned long val, void *data)
@@ -803,13 +822,22 @@ static ssize_t store_above_hispeed_delay(
 	struct cpufreq_cultivation_tunables *tunables,
 	const char *buf, size_t count)
 {
-	int ntokens;
+	int ntokens, i;
 	unsigned int *new_above_hispeed_delay = NULL;
 	unsigned long flags;
 
 	new_above_hispeed_delay = get_tokenized_data(buf, &ntokens);
 	if (IS_ERR(new_above_hispeed_delay))
 		return PTR_RET(new_above_hispeed_delay);
+
+	/* Make sure frequencies are in ascending order. */
+	for (i = 3; i < ntokens; i += 2) {
+		if (new_above_hispeed_delay[i] <=
+			new_above_hispeed_delay[i - 2]) {
+			kfree(new_above_hispeed_delay);
+			return -EINVAL;
+		}
+	}
 
 	spin_lock_irqsave(&tunables->above_hispeed_delay_lock, flags);
 	if (tunables->above_hispeed_delay != default_above_hispeed_delay)
@@ -1049,6 +1077,44 @@ static ssize_t store_timer_rate_screenoff(struct cpufreq_cultivation_tunables
        return count;
 }
 
+static ssize_t show_powersave_bias(struct cpufreq_cultivation_tunables *tunables,
+		char *buf)
+{
+	return sprintf(buf, "%u\n", tunables->powersave_bias);
+}
+
+static ssize_t store_powersave_bias(struct cpufreq_cultivation_tunables *tunables,
+		const char *buf, size_t count)
+{
+	int ret;
+	unsigned long val;
+
+	ret = kstrtoul(buf, 0, &val);
+	if (ret < 0)
+		return ret;
+	tunables->powersave_bias = val;
+	return count;
+}
+
+static ssize_t show_go_lowspeed_load(struct cpufreq_cultivation_tunables
+		*tunables, char *buf)
+{
+	return sprintf(buf, "%lu\n", tunables->go_lowspeed_load);
+}
+
+static ssize_t store_go_lowspeed_load(struct cpufreq_cultivation_tunables
+		*tunables, const char *buf, size_t count)
+{
+	int ret;
+	unsigned long val;
+
+	ret = kstrtoul(buf, 0, &val);
+	if (ret < 0)
+		return ret;
+	tunables->go_lowspeed_load = val;
+	return count;
+}
+
 /*
  * Create show/store routines
  * - sys: One governor instance for complete SYSTEM
@@ -1089,6 +1155,7 @@ show_store_gov_pol_sys(target_loads);
 show_store_gov_pol_sys(above_hispeed_delay);
 show_store_gov_pol_sys(hispeed_freq);
 show_store_gov_pol_sys(go_hispeed_load);
+show_store_gov_pol_sys(go_lowspeed_load);
 show_store_gov_pol_sys(min_sample_time);
 show_store_gov_pol_sys(timer_rate);
 show_store_gov_pol_sys(timer_rate_screenoff);
@@ -1098,6 +1165,7 @@ show_store_gov_pol_sys(align_windows);
 show_store_gov_pol_sys(max_freq_hysteresis);
 show_store_gov_pol_sys(fastlane);
 show_store_gov_pol_sys(fastlane_threshold);
+show_store_gov_pol_sys(powersave_bias);
 
 #define gov_sys_attr_rw(_name)						\
 static struct global_attr _name##_gov_sys =				\
@@ -1115,6 +1183,7 @@ gov_sys_pol_attr_rw(target_loads);
 gov_sys_pol_attr_rw(above_hispeed_delay);
 gov_sys_pol_attr_rw(hispeed_freq);
 gov_sys_pol_attr_rw(go_hispeed_load);
+gov_sys_pol_attr_rw(go_lowspeed_load);
 gov_sys_pol_attr_rw(min_sample_time);
 gov_sys_pol_attr_rw(timer_rate);
 gov_sys_pol_attr_rw(timer_rate_screenoff);
@@ -1124,6 +1193,7 @@ gov_sys_pol_attr_rw(align_windows);
 gov_sys_pol_attr_rw(max_freq_hysteresis);
 gov_sys_pol_attr_rw(fastlane);
 gov_sys_pol_attr_rw(fastlane_threshold);
+gov_sys_pol_attr_rw(powersave_bias);
 
 /* One Governor instance for entire system */
 static struct attribute *cultivation_attributes_gov_sys[] = {
@@ -1131,6 +1201,7 @@ static struct attribute *cultivation_attributes_gov_sys[] = {
 	&above_hispeed_delay_gov_sys.attr,
 	&hispeed_freq_gov_sys.attr,
 	&go_hispeed_load_gov_sys.attr,
+	&go_lowspeed_load_gov_sys.attr,
 	&min_sample_time_gov_sys.attr,
 	&timer_rate_gov_sys.attr,
 	&timer_rate_screenoff_gov_sys.attr,
@@ -1140,6 +1211,7 @@ static struct attribute *cultivation_attributes_gov_sys[] = {
 	&max_freq_hysteresis_gov_sys.attr,
 	&fastlane_gov_sys.attr,
 	&fastlane_threshold_gov_sys.attr,
+	&powersave_bias_gov_sys.attr,
 	NULL,
 };
 
@@ -1154,6 +1226,7 @@ static struct attribute *cultivation_attributes_gov_pol[] = {
 	&above_hispeed_delay_gov_pol.attr,
 	&hispeed_freq_gov_pol.attr,
 	&go_hispeed_load_gov_pol.attr,
+	&go_lowspeed_load_gov_pol.attr,
 	&min_sample_time_gov_pol.attr,
 	&timer_rate_gov_pol.attr,
 	&timer_rate_screenoff_gov_pol.attr,
@@ -1163,6 +1236,7 @@ static struct attribute *cultivation_attributes_gov_pol[] = {
 	&max_freq_hysteresis_gov_pol.attr,
 	&fastlane_gov_pol.attr,
 	&fastlane_threshold_gov_pol.attr,
+	&powersave_bias_gov_pol.attr,
 	NULL,
 };
 
@@ -1224,6 +1298,7 @@ static struct cpufreq_cultivation_tunables *alloc_tunable(
 	tunables->nabove_hispeed_delay =
 		ARRAY_SIZE(default_above_hispeed_delay);
 	tunables->go_hispeed_load = DEFAULT_GO_HISPEED_LOAD;
+	tunables->go_lowspeed_load = DEFAULT_GO_LOWSPEED_LOAD;
 	tunables->target_loads = default_target_loads;
 	tunables->ntarget_loads = ARRAY_SIZE(default_target_loads);
 	tunables->min_sample_time = DEFAULT_MIN_SAMPLE_TIME;
