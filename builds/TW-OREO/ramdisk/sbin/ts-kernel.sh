@@ -9,6 +9,11 @@ RESETPROP="/sbin/resetprop -v -n"
 TS_DIR="/data/.tskernel"
 LOG="$TS_DIR/tskernel.log"
 
+# Create ThundeRSTormS kernel folder
+if [ ! -d $TS_DIR ]; then
+	mkdir -p $TS_DIR;
+fi
+
 rm -f $LOG
 
 echo $(date) "ThundeRSTormS-Kernel LOG" >> $LOG;
@@ -53,7 +58,7 @@ echo "## -- SafetyNet permissions" >> $LOG;
 chmod 440 /sys/fs/selinux/policy
 echo " " >> $LOG;
 
-# Deepsleep fix (@Chainfire)
+# Deepsleep fix - Tweaking logging, debugubg, tracing (@Chainfire)
 echo "## -- DeepSleep Fix" >> $LOG;
 
 dmesg -n 1 -C
@@ -80,6 +85,7 @@ if [ -d /system/app/SecurityLogAgent ]; then
 fi
 
 # Fix personalist.xml
+echo "## -- Fix Personal list" >> $LOG;
 if [ ! -f /data/system/users/0/personalist.xml ]; then
 	touch /data/system/users/0/personalist.xml
 	chmod 600 /data/system/users/0/personalist.xml
@@ -99,8 +105,10 @@ echo "0" > /sys/class/lcd/panel/smart_on
 echo "0" > /proc/sys/kernel/panic
 
 # ZRAM assigns size limit to virtual ram disk
-# echo 4096M > /sys/block/zram0/disksize
+# echo "4096M" > /sys/block/zram0/disksize
+# echo "1" > /sys/block/zram0/reset
 # echo "0" > /sys/block/zram0/reset
+
 # ON
 # swapon /dev/block/zram0 >/dev/null 2>&1
 # for ZRAM in /dev/block/zram*; do
@@ -108,10 +116,17 @@ echo "0" > /proc/sys/kernel/panic
 # done;
 
 # OFF
-#swapoff /dev/block/zram0 >/dev/null 2>&1
-#for ZRAM in /dev/block/zram*; do
+# swapoff /dev/block/zram0 >/dev/null 2>&1
+# for ZRAM in /dev/block/zram*; do
 #    swapoff $ZRAM
-#done;
+# done;
+
+# Setup swap here to avoid memory allocation errors
+# 256 MB
+# echo $((512 * 1048576)) > /sys/devices/virtual/block/vnswap0/disksize >/dev/null 2>&1
+# echo 160 > /proc/sys/vm/swappiness
+# mkswap /dev/block/vnswap0 >/dev/null 2>&1
+# swapon /dev/block/vnswap0 >/dev/null 2>&1
 
 # FINGERPRINT BOOST - OFF
 echo "0" > /sys/kernel/fp_boost/enabled

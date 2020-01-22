@@ -32,9 +32,9 @@ on property:persist.spectrum.profile=3
 on property:persist.spectrum.profile=4
    exec u:r:init:s0 root root -- /sbin/spa thunderstorms
 
-# GameOver
+# Kevin
 on property:persist.spectrum.profile=5
-   exec u:r:init:s0 root root -- /sbin/spa gameover
+   exec u:r:init:s0 root root -- /sbin/spa kevin
 
 # rtakak
 on property:persist.spectrum.profile=6
@@ -55,7 +55,4 @@ on property:persist.spectrum.profile=9
 # Ankit
 on property:persist.spectrum.profile=10
    exec u:r:init:s0 root root -- /sbin/spa ankit
-
-
-
 

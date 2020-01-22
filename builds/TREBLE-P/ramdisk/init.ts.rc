@@ -46,7 +46,7 @@ on boot
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/boostpulse_duration
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/down_low_load_threshold 10
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/down_low_load_threshold 5
 
    # Big CPU
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
@@ -82,7 +82,7 @@ on boot
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/down_low_load_threshold 15
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/down_low_load_threshold 5
 
    #HMP settings
    chmod 0664 /sys/kernel/hmp/up_threshold
@@ -95,7 +95,7 @@ on boot
    write /sys/kernel/hmp/down_compensation_mid_freq 962000
    chmod 0664 /sys/kernel/hmp/down_compensation_low_freq
    write /sys/kernel/hmp/down_compensation_low_freq 858000
-   write /proc/sys/kernel/random/write_wakeup_threshold 128
+   write /proc/sys/kernel/random/write_wakeup_threshold 64
    write /proc/sys/kernel/random/read_wakeup_threshold 64
    write /proc/sys/vm/dirty_expire_centisecs 1000
    write /proc/sys/vm/dirty_writeback_centisecs 2000
@@ -166,7 +166,7 @@ on boot
     write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
     write /sys/module/wakeup/parameters/enable_ssp_wl 0
     write /sys/module/wakeup/parameters/enable_bcmdhd4359_wl 0
-    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 1
+    write /sys/module/wakeup/parameters/enable_bluedroid_timer_wl 0
     write /sys/module/wakeup/parameters/enable_wlan_wake_wl 0
     write /sys/module/sec_battery/parameters/wl_polling 3
     write /sys/module/sec_nfc/parameters/wl_nfc 1
