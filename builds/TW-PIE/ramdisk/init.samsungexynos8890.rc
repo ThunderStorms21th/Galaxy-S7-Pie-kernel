@@ -208,6 +208,13 @@ on post-fs
 on post-fs-data
     mkdir /data/media 0770 media_rw media_rw
     setprop vold.post_fs_data_done 1
+    
+# Private Mode
+    mkdir /mnt/shell/privatemode 0700 system system
+    mkdir /storage/Private 0000 system system
+    mkdir /data/privatemode 0770 system system
+    chown system system /data/privatemode
+    restorecon /data/privatemode
 
 # for WIFI MAC address
     mkdir /efs/wifi 0775 wifi root
