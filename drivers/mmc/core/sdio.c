@@ -1070,7 +1070,9 @@ out:
 static int mmc_sdio_runtime_suspend(struct mmc_host *host)
 {
 	/* No references to the card, cut the power to it. */
+	if (!mmc_card_keep_power(host)) {
 	mmc_power_off(host);
+	}
 	return 0;
 }
 
