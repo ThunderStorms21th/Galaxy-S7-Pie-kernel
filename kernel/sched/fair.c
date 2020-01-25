@@ -10314,20 +10314,6 @@ void print_cfs_stats(struct seq_file *m, int cpu)
 	for_each_leaf_cfs_rq(cpu_rq(cpu), cfs_rq)
 		print_cfs_rq(m, cpu, cfs_rq);
 	rcu_read_unlock();
-	struct rq *this_rq = this_rq();
-	enum cpu_idle_type idle = this_rq->idle_balance ?
-						CPU_IDLE : CPU_NOT_IDLE;
-
-	/*
-	 * If this cpu has a pending nohz_balance_kick, then do the
-	 * balancing on behalf of the other idle cpus whose ticks are
-	 * stopped. Do nohz_idle_balance *before* rebalance_domains to
-	 * give the idle cpus a chance to load balance. Else we may
-	 * load balance only within the local sched_domain hierarchy
-	 * and abort nohz_idle_balance altogether if we pull some load.
-	 */
-	nohz_idle_balance(this_rq, idle);
-	rebalance_domains(this_rq, idle);
 }
 #endif
 
