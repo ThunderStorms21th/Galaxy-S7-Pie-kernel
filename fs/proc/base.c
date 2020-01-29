@@ -96,13 +96,19 @@
 
 // added proc: Don't let Google Camera and Settings run in the background
 static struct task_struct *task_to_kill;
+struct task_kill_info {
+	struct task_struct *task;
+	struct work_struct work;
+};
 
 static void proc_kill_task(struct work_struct *work)
 {
-	struct task_struct *task = task_to_kill;
+	struct task_kill_info *kinfo = container_of(work, typeof(*kinfo), work);
+	struct task_struct *task = kinfo->task;
 
 	send_sig(SIGKILL, task, 0);
 	put_task_struct(task);
+	kfree(kinfo);
 }
 
 static DECLARE_WORK(task_kill_work, proc_kill_task);
@@ -952,6 +958,7 @@ static ssize_t oom_score_adj_read(struct file *file, char __user *buf,
 static ssize_t oom_score_adj_write(struct file *file, const char __user *buf,
 					size_t count, loff_t *ppos)
 {
+	char task_comm[TASK_COMM_LEN];
 	struct task_struct *task;
 	char buffer[PROC_NUMBUF];
 	unsigned long flags;
@@ -997,25 +1004,13 @@ static ssize_t oom_score_adj_write(struct file *file, const char __user *buf,
 		err = -EACCES;
 		goto err_sighand;
 	}
-// added proc: Don't let Google Camera and Settings run in the background
-
-	/* These apps burn through CPU in the background. Don't let them. */
-	if (oom_score_adj >= 700) {
-		if (!strcmp(task->comm, "id.GoogleCamera") ||
-		    !strcmp(task->comm, "ndroid.settings")) {
-			if (task != task_to_kill)
-				flush_work(&task_kill_work);
-			task_to_kill = task;
-			get_task_struct(task);
-			schedule_work(&task_kill_work);
-		}
-	}
-// end
 
 	task->signal->oom_score_adj = (short)oom_score_adj;
 	if (has_capability_noaudit(current, CAP_SYS_RESOURCE))
 		task->signal->oom_score_adj_min = (short)oom_score_adj;
 	trace_oom_score_adj_update(task);
+	if (oom_score_adj >= 700)
+		strncpy(task_comm, task->comm, TASK_COMM_LEN);
 
 err_sighand:
 	unlock_task_sighand(task, &flags);
@@ -1023,6 +1018,21 @@ err_task_lock:
 	task_unlock(task);
 	put_task_struct(task);
 out:
+	/* These apps burn through CPU in the background. Don't let them. */
+	if (!err && oom_score_adj >= 700) {
+		if (!strcmp(task_comm, "id.GoogleCamera") ||
+		    !strcmp(task_comm, "ndroid.settings")) {
+			struct task_kill_info *kinfo;
+
+			kinfo = kmalloc(sizeof(*kinfo), GFP_KERNEL);
+			if (kinfo) {
+				get_task_struct(task);
+				kinfo->task = task;
+				INIT_WORK(&kinfo->work, proc_kill_task);
+				schedule_work(&kinfo->work);
+			}
+		}
+	}
 	return err < 0 ? err : count;
 }
 
