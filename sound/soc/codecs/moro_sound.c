@@ -558,7 +558,6 @@ static ssize_t headphone_limits_show(struct device *dev, struct device_attribute
 	return sprintf(buf, "Min:%u Max:%u Def:%u\n", HEADPHONE_MIN, HEADPHONE_MAX, HEADPHONE_DEFAULT);
 }
 
-
 // Earpiece Volume
 
 static ssize_t earpiece_gain_show(struct device *dev, struct device_attribute *attr, char *buf)
@@ -608,7 +607,6 @@ static ssize_t earpiece_limits_show(struct device *dev, struct device_attribute 
 	return sprintf(buf, "Min:%u Max:%u Def:%u\n", EARPIECE_MIN, EARPIECE_MAX, EARPIECE_DEFAULT);
 }
 
-
 // Speaker Volume
 
 static ssize_t speaker_gain_show(struct device *dev, struct device_attribute *attr, char *buf)
@@ -653,7 +651,6 @@ static ssize_t speaker_limits_show(struct device *dev, struct device_attribute *
 	// return version information
 	return sprintf(buf, "Min:%u Max:%u Def:%u\n", SPEAKER_MIN, SPEAKER_MAX, SPEAKER_DEFAULT);
 }
-
 
 // EQ
 
