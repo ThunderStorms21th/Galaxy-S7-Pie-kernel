@@ -2803,9 +2803,6 @@ int sec_debug_set_cpu_info(struct sec_debug_summary *summary_info, char *summary
 }
 #endif
 
-struct kobject *cpufreq_global_kobject;
-EXPORT_SYMBOL(cpufreq_global_kobject);
-
 static int __init cpufreq_core_init(void)
 {
 	if (cpufreq_disabled())
