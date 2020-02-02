@@ -1358,8 +1358,9 @@ static void vmstat_shepherd(struct work_struct *w)
 		if (need_update(cpu) &&
 			cpumask_test_and_clear_cpu(cpu, cpu_stat_off))
 
+	/* default stock 2, changed to 0 (too much drain on idle state), now to 3 delay the vmstat updatate */
 			schedule_delayed_work_on(cpu,
-				&per_cpu(vmstat_work, cpu), 0);
+				&per_cpu(vmstat_work, cpu), 3);
 
 	put_online_cpus();
 
