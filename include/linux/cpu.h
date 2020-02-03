@@ -269,25 +269,11 @@ static inline void cpu_hotplug_done(void) {}
 #endif		/* CONFIG_HOTPLUG_CPU */
 
 #ifdef CONFIG_PM_SLEEP_SMP
-extern int freeze_secondary_cpus(int primary);
 extern int disable_nonboot_cpus(void);
 extern void enable_nonboot_cpus(void);
-
-static inline int suspend_disable_secondary_cpus(void)
-{
-	return disable_nonboot_cpus();
-}
-
-static inline void suspend_enable_secondary_cpus(void)
-{
-	return enable_nonboot_cpus();
-}
-
 #else /* !CONFIG_PM_SLEEP_SMP */
 static inline int disable_nonboot_cpus(void) { return 0; }
 static inline void enable_nonboot_cpus(void) {}
-static inline int suspend_disable_secondary_cpus(void) { return 0; }
-static inline void suspend_enable_secondary_cpus(void) { }
 #endif /* !CONFIG_PM_SLEEP_SMP */
 
 enum cpuhp_state {
