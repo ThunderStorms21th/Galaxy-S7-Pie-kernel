@@ -710,7 +710,6 @@ static struct acpi_scan_handler lps0_handler = {
 	.attach = lps0_device_attach,
 };
 
->>>>>>> e870c6c87cf9... ACPI / PM: Prefer suspend-to-idle over S3 on some systems
 static int acpi_freeze_begin(void)
 {
 	acpi_scan_lock_acquire();
