@@ -73,10 +73,10 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/down_low_load_threshold 10
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/prev_timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/prev_timer_rate 40000   
-   chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_max
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_max 1040000
-   chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_timer_rate
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_timer_rate 70000
+   chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/screen_off_max
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/screen_off_max 1040000
+   chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/screen_off_timer_rate
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/screen_off_timer_rate 70000
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
