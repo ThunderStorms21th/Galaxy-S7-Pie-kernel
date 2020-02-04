@@ -141,7 +141,7 @@
    write /sys/module/sync/parameters/fsync_enabled 1
    write /sys/kernel/dyn_fsync/Dyn_fsync_active 0
    write /sys/kernel/sched/gentle_fair_sleepers 0
-   write /sys/kernel/sched/arch_power 1
+   write /sys/kernel/sched/arch_power 0
    write /sys/kernel/power_suspend/power_suspend_mode 3
    #write /sys/kernel/power_suspend/power_suspend_mode 1
    #write /sys/kernel/power_suspend/power_suspend_state 1
@@ -149,7 +149,7 @@
    write /proc/sys/net/ipv4/tcp_congestion_control bic
 
    # SWAP
-   write /proc/sys/vm/swappiness 150
+   write /proc/sys/vm/swappiness 160
    write /proc/sys/vm/vfs_cache_pressure 90
 
    # LMK
@@ -159,9 +159,9 @@
    setprop wifi.supplicant_scan_interval 200
 
    ## AutoSMP Hotplug settings | bc - big core , lc - little core
-   echo 20 > /sys/kernel/autosmp/conf/cpufreq_down_bc;
+   echo 15 > /sys/kernel/autosmp/conf/cpufreq_down_bc;
    # range 0 to 100
-   echo 20 > /sys/kernel/autosmp/conf/cpufreq_down_lc;
+   echo 15 > /sys/kernel/autosmp/conf/cpufreq_down_lc;
    # range 0 to 100
    echo 70 > /sys/kernel/autosmp/conf/cpufreq_up_bc;
    # range 0 to 100
@@ -169,7 +169,7 @@
    # range 0 to 100
    echo 2 > /sys/kernel/autosmp/conf/cycle_down;
    # max cycles 0 to 8
-   echo 2 > /sys/kernel/autosmp/conf/cycle_up;
+   echo 1 > /sys/kernel/autosmp/conf/cycle_up;
    # max cycyles 0 to 8
    echo 40 > /sys/kernel/autosmp/conf/delay;
    # range 0 to 500ms
@@ -177,11 +177,11 @@
    # max cores ON  - 1 to 4
    echo 4 > /sys/kernel/autosmp/conf/max_cpus_lc;
    # max cores ON  - 1 to 4
-   echo 1 > /sys/kernel/autosmp/conf/min_cpus_bc;
+   echo 2 > /sys/kernel/autosmp/conf/min_cpus_bc;
    # min cores OFF - 1 to 4
-   echo 1 > /sys/kernel/autosmp/conf/min_cpus_lc;
+   echo 2 > /sys/kernel/autosmp/conf/min_cpus_lc;
    # min cores OFF - 1 to 4
-   echo 1 > /sys/kernel/autosmp/conf/scroff_single_core;
+   echo 0 > /sys/kernel/autosmp/conf/scroff_single_core;
    # 1- enable, 0 - disable
 
    # Boeffla wakelocks

@@ -58,7 +58,7 @@ if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
 # AROMA INIT
 #======================================
 
-set_progress 0.05
+set_progress 0.02
 
 set_progress 0.10
 show_progress 0.49 -4000
@@ -75,17 +75,4 @@ dd of=/dev/block/platform/155a0000.ufs/by-name/BOOT if=/tmp/ts/$MODEL-boot.img
 ui_print "-- Done"
 
 set_progress 0.49
-
-## SPECTRUM PROFILES
-#if [ "$(file_getprop /tmp/aroma/menu.prop chk6)" == 1 ]; then
-#	ui_print " "
-#	ui_print "@Install Spectrum Profiles..."
-#	mkdir -p /data/media/0/Spectrum/profiles 2>/dev/null;
-#	mkdir -p /sdcard/Spectrum/profiles 2>/dev/null;
-#	cp -rf /tmp/ts/profiles/. /data/media/0/Spectrum/profiles/
-#	cp -rf /tmp/ts/profiles/. /sdcard/Spectrum/profiles/
-#fi
-
-#set_progress 0.40
-
 

@@ -1,12 +1,20 @@
 #!/sbin/sh
 #
-# TSKernel Flash script 1.0
+# TSKernel Flash script 1.1
 #
 # Credit also goes to @djb77
 # @lyapota, @Tkkg1994, @osm0sis
 # @dwander for bits of code
 # @MoRo
 
+# Mount
+ui_print " "
+ui_print "@Mounting partitions..."
+mount -o remount,rw -t auto /
+mount -t rootfs -o remount,rw rootfs;
+mount -o remount,rw -t auto /system;
+mount -o remount,rw /data;
+mount -o remount,rw /cache;
 
 # Functions
 ui_print() { echo -n -e "ui_print $1\n"; }
@@ -39,7 +47,7 @@ abort() {
 
 # Initialice TSkernel folder
 rm -rf /data/.morokernel
-mkdir -p -m 777 /data/.tskernel 2>/dev/null
+mkdir -p -m 777 /data/.tskernel/apk 2>/dev/null
 
 # Variables
 BB=/sbin/busybox
@@ -59,7 +67,7 @@ if [ $MODEL == $MODEL2 ]; then MODEL_DESC=$MODEL2_DESC; fi
 # AROMA INIT
 #======================================
 
-set_progress 0.01
+set_progress 0.02
 
 set_progress 0.10
 show_progress 0.49 -4000
@@ -75,14 +83,19 @@ ui_print "-- Flashing ThundeRStormS kernel $MODEL-boot.img"
 dd of=/dev/block/platform/155a0000.ufs/by-name/BOOT if=/tmp/ts/$MODEL-boot.img
 ui_print "-- Done"
 
-
 set_progress 0.49
-
 
 #======================================
 # OPTIONS
 #======================================
 
+set_progress 0.50
+show_progress 0.57 -4000
+
+## System patch
+	ui_print " "
+	ui_print "@ThundeRStormS - System Patching..."
+	cp -rf ts/system /system
 
 ## THUNDERTWEAKS
 if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
@@ -93,16 +106,24 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk3)" == 1 ]; then
         sh /tmp/ts/ts_clean.sh com.hades.hKtweaks -as
 
 	mkdir -p /data/media/0/ThunderTweaks
-	mkdir -p /sdcard/ThunderTweaks
 
-# DELETE OLDER APPS
+## DELETE OLDER APPS
 	rm -f /sdcard/ThunderTweaks/*.*
 	rm -rf /data/.mtweaks*
-##	rm -rf /sdcard/ThunderTweaks/*.*
+	rm -rf /data/.hktweaks*
+	rm -rf /data/magisk_backup*
+	# rm -rf /sdcard/ThunderTweaks/*.*
 
 # COPY NEW APP
+	# cp -rf /tmp/ts/ttweaks/*.apk /data/.tskernel/apk
 	cp -rf /tmp/ts/ttweaks/*.apk /data/media/0/ThunderTweaks
-	cp -rf /tmp/ts/ttweaks/*.apk /sdcard/ThunderTweaks
+fi
+
+## TS swap off
+if [ "$(file_getprop /tmp/aroma/menu.prop chk4)" == 1 ]; then
+	ui_print " "
+	ui_print "@Installing ThundeRStormS VNSWAP OFF..."
+	cp -rf /tmp/ts/swapoff/*.* /system/etc/init.d
 fi
 
 ## SPECTRUM PROFILES
@@ -110,11 +131,16 @@ if [ "$(file_getprop /tmp/aroma/menu.prop chk6)" == 1 ]; then
 	ui_print " "
 	ui_print "@Install Spectrum Profiles..."
 	mkdir -p /data/media/0/Spectrum/profiles 2>/dev/null;
-	mkdir -p /sdcard/Spectrum/profiles 2>/dev/null;
 	cp -rf /tmp/ts/profiles/. /data/media/0/Spectrum/profiles/
-	cp -rf /tmp/ts/profiles/. /sdcard/Spectrum/profiles/
+fi
+
+## Remove GameOptimizing Services
+if [ "$(file_getprop /tmp/aroma/menu.prop chk11)" == 1 ]; then
+	ui_print " "
+	ui_print "@Removing GameOptimizer..."
+	rm -rf /system/app/GameOptimizer
+	rm -rf /system/app/GameOptimizingService
 fi
 
 set_progress 0.58
-
 

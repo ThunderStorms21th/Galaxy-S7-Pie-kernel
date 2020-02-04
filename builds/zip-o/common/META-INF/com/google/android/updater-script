@@ -30,6 +30,8 @@ ui_print("@ThundeRStormS - System Patching...");
 package_extract_dir("ts/system", "/system");
 run_program("/tmp/ts/tskernel.sh");
 
+set_progress(0.50);
+
 ####################################################
 # OTHER OPTIONS
 ####################################################
@@ -100,20 +102,21 @@ set_metadata("/system/vendor/lib64/libsecure_storage.so", "uid", 0, "gid", 2000,
 set_metadata("/system/vendor/lib/egl/libGLES_mali.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 set_metadata("/system/vendor/lib64/egl/libGLES_mali.so", "uid", 0, "gid", 2000, "mode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
 set_metadata_recursive("/system/priv-app/PersonalPageService", "uid", 0, "gid", 0, "dmode", 0755, "fmode", 0644, "capabilities", 0x0, "selabel", "u:object_r:system_file:s0");
-
 set_metadata("/system/bin/logd", "uid", 1036, "gid", 1036, "mode", 0550, "capabilities", 0x440000040, "selabel", "u:object_r:logd_exec:s0");
+
+set_progress(0.58);
 
 ####################################################
 # ROOT
 ####################################################
 set_progress(0.60);
 
-
 ui_print(" ");
 ui_print("@Root");
 
 # Without Root
 if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt1" then
+show_progress(0.60, "-5000");
 
 	ui_print("-- Without Root");
 	if file_getprop("/tmp/aroma/menu.prop", "chk7") == "1" then
@@ -128,7 +131,7 @@ endif;
 
 # Magisk Root
 if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt2" then
-show_progress(0.85, "-19000");
+show_progress(0.60, "-40000");
 	
 	# Clean opposite kernel
 	run_program("/tmp/ts/clean_supersu.sh");
@@ -151,7 +154,7 @@ endif;
 
 # SuperSU Root
 if file_getprop("/tmp/aroma/menu.prop", "group1") == "opt3" then
-show_progress(0.85, "-34000");
+show_progress(0.60, "-30000");
 	
 	# Clean opposite kernel
 	run_program("/tmp/ts/clean_magisk.sh");
@@ -185,7 +188,7 @@ endif;
 # ui_print(" ");
 # ui_print("-- Unmounting Partition...");
 delete_recursive("/tmp");
-ifelse(is_mounted("/system"), unmount("/system"));
+# ifelse(is_mounted("/system"), unmount("/system"));
 
 set_progress(1.00);
 show_progress(1.00, "-1000");

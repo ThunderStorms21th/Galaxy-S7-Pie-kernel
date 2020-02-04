@@ -118,7 +118,7 @@
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_clock
    write /sys/devices/14ac0000.mali/highspeed_clock 338
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_load
-   write /sys/devices/14ac0000.mali/highspeed_load 98
+   write /sys/devices/14ac0000.mali/highspeed_load 95
    chmod 0664 /sys/devices/14ac0000.mali/highspeed_delay
    write /sys/devices/14ac0000.mali/highspeed_delay 1
 
@@ -147,7 +147,7 @@
    write /sys/module/sync/parameters/fsync_enabled 1
    write /sys/kernel/dyn_fsync/Dyn_fsync_active 0
    write /sys/kernel/sched/gentle_fair_sleepers 0
-   write /sys/kernel/sched/arch_power 1
+   write /sys/kernel/sched/arch_power 0
    write /sys/kernel/power_suspend/power_suspend_mode 3
    #write /sys/kernel/power_suspend/power_suspend_mode 1
    #write /sys/kernel/power_suspend/power_suspend_state 1
@@ -155,14 +155,14 @@
    write /proc/sys/net/ipv4/tcp_congestion_control bic
 
    # SWAP
-   write /proc/sys/vm/swappiness 80
-   write /proc/sys/vm/vfs_cache_pressure 50
+   write /proc/sys/vm/swappiness 100
+   write /proc/sys/vm/vfs_cache_pressure 80
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18920,23552,32256,42472,65536,82400"
 
    # WiFi
-   setprop wifi.supplicant_scan_interval 550
+   setprop wifi.supplicant_scan_interval 350
 
    # Boeffla wakelocks
    write /sys/devices/virtual/misc/boeffla_wakelock_blocker/wakelock_blocker 'wlan_rx_wake;wlan_wake;wlan_ctrl_wake;wlan_txfl_wake;BT_bt_wake;BT_host_wake;mmc0_detect;nfc_wake_lock;13960000.decon_f;rmnet0;GPSD;umts_ipc0;NETLINK'

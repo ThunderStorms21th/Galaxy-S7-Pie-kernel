@@ -64,6 +64,14 @@ ro.config.rkp=false
 ro.config.kap=false
 wlan.wfd.hdcp=disable
 
+# persist.sys.usb.config=none
+
+# Early SF configuration
+# debug.sf.early_phase_offset_ns=500000
+# debug.sf.early_app_phase_offset_ns=500000
+# debug.sf.early_gl_phase_offset_ns=3000000
+# debug.sf.early_gl_app_phase_offset_ns=15000000
+
 # MISC
 debug.enabler=false
 pm.sleep_mode=1
@@ -74,6 +82,7 @@ persist.cust.tel_eons=1
 ro.fast.dormancy=1
 ro.ril.fast_dormancy.rule=1
 ro.semc.enable.fast_dormancy=1
+ro.config.hw_power_saving=true
 dalvik.vm.checkjni=false
 ro.ril.sensor.sleep.control=1
 ro.config.hw_quickpoweron=true
@@ -88,14 +97,7 @@ ro.config.hw_power_saving=1
 ring.delay=0
 fingerprint.unlock=1
 persist.sys.purgeable_assets=1
-persist.sys.ui.hw=true
-# persist.sys.usb.config=none
-
-# Early SF configuration
-# debug.sf.early_phase_offset_ns=500000
-# debug.sf.early_app_phase_offset_ns=500000
-# debug.sf.early_gl_phase_offset_ns=3000000
-# debug.sf.early_gl_app_phase_offset_ns=15000000
+wifi.supplicant_scan_interval=300
 
 #
 # BOOTIMAGE_BUILD_PROPERTIES

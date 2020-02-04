@@ -20,7 +20,7 @@
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/target_loads
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/target_loads "65 1066000:70"
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/min_sample_time
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/min_sample_time 50000
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/min_sample_time 40000
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/mode
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/mode 0
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/boost
@@ -31,7 +31,13 @@
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/boostpulse_duration
    write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/down_low_load_threshold 5
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/down_low_load_threshold 10
+   chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/prev_timer_rate
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/prev_timer_rate 40000
+   chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_max
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_max 650000
+   chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_timer_rate
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_timer_rate 70000
 
    # Big CPU
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/scaling_governor
@@ -47,13 +53,13 @@
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_rate
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_rate 30000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/hispeed_freq
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/hispeed_freq 1352000
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/hispeed_freq 1144000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_slack
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/timer_slack 20000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/target_loads
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/target_loads "70 1040000:75 1352000:78 1664000:80"
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/min_sample_time
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/min_sample_time 50000
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/min_sample_time 40000
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/mode
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/mode 0
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/boost
@@ -64,7 +70,13 @@
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/param_index 0
    chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/boostpulse_duration
    write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/boostpulse_duration 30000
-   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/down_low_load_threshold 5
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/down_low_load_threshold 10
+   chmod 0644 /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/prev_timer_rate
+   write /sys/devices/system/cpu/cpu4/cpufreq/thunderstorm2/prev_timer_rate 40000   
+   chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_max
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_max 1040000
+   chmod 0644 /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_timer_rate
+   write /sys/devices/system/cpu/cpu0/cpufreq/thunderstorm2/screen_off_timer_rate 70000
 
    # CPU HOTPLUG
    write /sys/power/cpuhotplug/enabled 1
@@ -84,9 +96,9 @@
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
    write /sys/power/cpuhotplug/governor/lit_multi_ratio 100
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
-   write /sys/power/cpuhotplug/governor/to_dual_ratio 90
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 95
    chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
-   write /sys/power/cpuhotplug/governor/to_quad_ratio 98
+   write /sys/power/cpuhotplug/governor/to_quad_ratio 95
 
    # FINGERPRINT BOOST
    write /sys/kernel/fp_boost/enabled 0
@@ -96,9 +108,9 @@
 
    # HMP
    chmod 0644 /sys/kernel/hmp/up_threshold
-   write /sys/kernel/hmp/up_threshold 524
+   write /sys/kernel/hmp/up_threshold 600
    chmod 0644 /sys/kernel/hmp/down_threshold
-   write /sys/kernel/hmp/down_threshold 214
+   write /sys/kernel/hmp/down_threshold 200
 
    # GPU
    chmod 0644 /sys/devices/14ac0000.mali/max_clock
@@ -121,12 +133,12 @@
    write /sys/devices/14ac0000.mali/throttling4 338
    write /sys/devices/14ac0000.mali/trippimg 260
    chmod 0664 /sys/kernel/hmp/down_compensation_high_freq
-   write /sys/kernel/hmp/down_compensation_high_freq 1170000
+   write /sys/kernel/hmp/down_compensation_high_freq 1066000
    chmod 0664 /sys/kernel/hmp/down_compensation_mid_freq
    write /sys/kernel/hmp/down_compensation_mid_freq 962000
    chmod 0664 /sys/kernel/hmp/down_compensation_low_freq
    write /sys/kernel/hmp/down_compensation_low_freq 858000
-   write /proc/sys/kernel/random/write_wakeup_threshold 64
+   write /proc/sys/kernel/random/write_wakeup_threshold 320
    write /proc/sys/kernel/random/read_wakeup_threshold 64
 
    # IO Scheduler
@@ -134,6 +146,8 @@
    write /sys/block/sda/queue/read_ahead_kb 512
    write /sys/block/mmcblk0/queue/scheduler cfq
    write /sys/block/mmcblk0/queue/read_ahead_kb 768
+   write /sys/block/sda/queue/nr_requests 256
+   write /sys/block/mmcblk0/queue/nr_requests 256
 
    # Wakelocks
    write /sys/module/wakeup/parameters/enable_sensorhub_wl 0
@@ -150,7 +164,7 @@
    write /sys/kernel/sched/gentle_fair_sleepers 0
    write /sys/kernel/sched/arch_power 0
    write /sys/kernel/power_suspend/power_suspend_mode 3
-   write /proc/sys/net/ipv4/tcp_congestion_control westwood
+   write /proc/sys/net/ipv4/tcp_congestion_control cubic
 
    # LMK
    write /sys/module/lowmemorykiller/parameters/minfree "18432,23040,27648,32256,56064,76152"

@@ -11,6 +11,7 @@ rm -f $LOG
 # Mount
 mount -t rootfs -o remount,rw rootfs;
 mount -o remount,rw /system;
+mount -o remount,rw /vendor;
 mount -o remount,rw /data;
 mount -o remount,rw /;
 
@@ -24,6 +25,10 @@ fi
 	echo $(date) "TS-Kernel LOG" >> $LOG;
 	echo " " >> $LOG;
 
+	# Stop services
+	su -c "stop secure_storage"
+	su -c "stop irisd"
+	# su -c "stop proca"
 	
 	# SafetyNet
 	echo "## -- SafetyNet permissions" >> $LOG;
@@ -31,12 +36,13 @@ fi
 	chmod 440 /sys/fs/selinux/policy;
 	echo " " >> $LOG;
 
-
 	# deepsleep fix
 	echo "## -- DeepSleep Fix" >> $LOG;
-	if [ -f /data/adb/su/su.d/000000deepsleep ]; then
-		rm -f /data/adb/su/su.d/000000deepsleep;
-	fi
+
+	dmesg -n 1 -C
+	echo "N" > /sys/kernel/debug/debug_enabled
+	echo "N" > /sys/kernel/debug/seclog/seclog_debug
+	echo "0" > /sys/kernel/debug/tracing/tracing_on
 	
 	for i in `ls /sys/class/scsi_disk/`; do
 		cat /sys/class/scsi_disk/$i/write_protect 2>/dev/null | grep 1 >/dev/null;
@@ -54,7 +60,6 @@ fi
 	pm enable com.google.android.gms/.update.SystemUpdateService$Receiver;
 	pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver;
 	echo " " >> $LOG;
-
 	
 	# Fix personalist.xml
 	if [ ! -f /data/system/users/0/personalist.xml ]; then
@@ -63,6 +68,21 @@ fi
 		chown system:system /data/system/users/0/personalist.xml;
 	fi
 
+	## ThunderStormS kill Google and Media servers script
+	echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
+	sleep 1
+	# FIX GOOGLE PLAY SERVICE
+	su -c "pm enable com.google.android.gms/.update.SystemUpdateActivity"
+	su -c "pm enable com.google.android.gms/.update.SystemUpdateService"
+	su -c "pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver"
+	su -c "pm enable com.google.android.gms/.update.SystemUpdateService$Receiver"
+	su -c "pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver"
+	su -c "pm enable com.google.android.gsf/.update.SystemUpdateActivity"
+	su -c "pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity"
+	su -c "pm enable com.google.android.gsf/.update.SystemUpdateService"
+	su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver"
+	su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver"
+	echo " " >> $LOG;
 	
 	# Init.d support
 	echo "## -- Start Init.d support" >> $LOG;
@@ -74,8 +94,10 @@ fi
 	chmod 777 /system/etc/init.d;
 
 	# remove detach script
+	rm -f /system/etc/init.d/ts_swapoff.sh 2>/dev/null;
+	rm -f /system/etc/init.d/feravolt_gms.sh 2>/dev/null;
+	rm -f /system/etc/init.d/tskillgooogle.sh 2>/dev/null;
 	rm -f /system/etc/init.d/*detach* 2>/dev/null;
-	rm -f /system/su.d/*detach* 2>/dev/null;
 
 	if [ "$(ls -A /system/etc/init.d)" ]; then
 		chmod 777 /system/etc/init.d/*;
@@ -124,6 +146,7 @@ chmod 777 $LOG;
 # Unmount
 mount -t rootfs -o remount,ro rootfs;
 mount -o remount,ro /system;
+mount -o remount,rw /vendor;
 mount -o remount,rw /data;
 mount -o remount,ro /;
 

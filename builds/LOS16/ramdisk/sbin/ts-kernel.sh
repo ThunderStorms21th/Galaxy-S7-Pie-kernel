@@ -24,6 +24,10 @@ fi
 	echo $(date) "TS-Kernel LOG" >> $LOG;
 	echo " " >> $LOG;
 
+	# Stop services
+	su -c "stop secure_storage"
+	su -c "stop irisd"
+	# su -c "stop proca"
 	
 	# SafetyNet
 	echo "## -- SafetyNet permissions" >> $LOG;

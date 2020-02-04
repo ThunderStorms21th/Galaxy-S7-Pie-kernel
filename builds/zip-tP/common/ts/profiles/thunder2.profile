@@ -85,7 +85,7 @@
    chmod 0644 /sys/power/cpuhotplug/governor/lit_multi_ratio
    write /sys/power/cpuhotplug/governor/lit_multi_ratio 80
    chmod 0644 /sys/power/cpuhotplug/governor/to_dual_ratio
-   write /sys/power/cpuhotplug/governor/to_dual_ratio 80
+   write /sys/power/cpuhotplug/governor/to_dual_ratio 85
    chmod 0644 /sys/power/cpuhotplug/governor/to_quad_ratio
    write /sys/power/cpuhotplug/governor/to_quad_ratio 98
 
@@ -165,7 +165,7 @@
    write /proc/sys/net/ipv4/tcp_congestion_control westwood
 
    # SWAP
-   write /proc/sys/vm/swappiness 150
+   write /proc/sys/vm/swappiness 160
    write /proc/sys/vm/vfs_cache_pressure 80
 
    # LMK

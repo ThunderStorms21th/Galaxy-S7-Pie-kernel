@@ -6,6 +6,7 @@
 # import /system/etc/prop.default
 # import /system/etc/default.prop
 
+# TS
 ro.secure=0
 ro.adb.secure=1
 ro.allow.mock.location=0

@@ -45,6 +45,24 @@ ro.zygote=zygote64_32
 ro.logd.size.stats=64K
 log.tag.stats_log=I
 
+# persist.sys.usb.config=none
+
+# Early SF configuration
+debug.sf.early_phase_offset_ns=500000
+debug.sf.early_app_phase_offset_ns=500000
+debug.sf.early_gl_phase_offset_ns=3000000
+debug.sf.early_gl_app_phase_offset_ns=15000000
+
+# TS
+ro.secure=0
+ro.adb.secure=1
+ro.allow.mock.location=0
+ro.adb.debug_secure=0
+ro.debuggable=1
+persist.sys.usb.config=mtp,adb
+persist.service.adb.enable=1
+persist.service.debuggable=1
+
 # MISC
 debug.enabler=false
 pm.sleep_mode=1
@@ -70,14 +88,10 @@ ro.config.hw_power_saving=1
 ring.delay=0
 fingerprint.unlock=1
 persist.sys.purgeable_assets=1
-persist.sys.ui.hw=true
-# persist.sys.usb.config=none
+# persist.sys.ui.hw=true
 
-# Early SF configuration
-debug.sf.early_phase_offset_ns=500000
-debug.sf.early_app_phase_offset_ns=500000
-debug.sf.early_gl_phase_offset_ns=3000000
-debug.sf.early_gl_app_phase_offset_ns=15000000
+ro.securestorage.support=false
+ro.securestorage.knox=false
 
 #
 # BOOTIMAGE_BUILD_PROPERTIES

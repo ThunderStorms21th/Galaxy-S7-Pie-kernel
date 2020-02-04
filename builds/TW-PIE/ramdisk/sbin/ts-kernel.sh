@@ -43,9 +43,9 @@ $RESETPROP ro.boot.ddrinfo "00000001"
 $RESETPROP ro.build.selinux "1"
 
 # Stop services
-su -c "stop secure_storage"
-su -c "stop irisd"
-su -c "stop proca"
+# su -c "stop secure_storage"
+# su -c "stop irisd"
+# su -c "stop proca"
 
 # SELinux (0 / 640 = Permissive, 1 / 644 = Enforcing)
 echo "## -- Selinux permissive" >> $LOG;
@@ -98,35 +98,41 @@ if [ -d /system/priv-app/Rlc ]; then
 	rm -rf /system/priv-app/Rlc
 fi
 
+# ThunderStormS kill Google and Media servers script
+echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
+sleep 1
+# FIX GOOGLE PLAY SERVICE
+su -c "pm enable com.google.android.gms/.update.SystemUpdateActivity"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateService"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateService$Receiver"
+su -c "pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdateActivity"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdateService"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver"
+su -c "pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver"
+echo " " >> $LOG;
+
+sleep 1
+
+# KILL MEDIA
+if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
+busybox killall -9 android.process.media
+busybox killall -9 mediaserver
+busybox killall -9 com.google.android.gms
+busybox killall -9 com.google.android.gms.persistent
+busybox killall -9 com.google.process.gapps
+busybox killall -9 com.google.android.gsf
+busybox killall -9 com.google.android.gsf.persistent
+fi
+echo " " >> $LOG;
+
 # PWMFix (0 = Disabled, 1 = Enabled)
 echo "0" > /sys/class/lcd/panel/smart_on
 
 # Kernel Panic off
 echo "0" > /proc/sys/kernel/panic
-
-# ZRAM assigns size limit to virtual ram disk
-# echo "4096M" > /sys/block/zram0/disksize
-# echo "1" > /sys/block/zram0/reset
-# echo "0" > /sys/block/zram0/reset
-
-# ON
-# swapon /dev/block/zram0 >/dev/null 2>&1
-# for ZRAM in /dev/block/zram*; do
-#    swapon $ZRAM
-# done;
-
-# OFF
-# swapoff /dev/block/zram0 >/dev/null 2>&1
-# for ZRAM in /dev/block/zram*; do
-#    swapoff $ZRAM
-# done;
-
-# Setup swap here to avoid memory allocation errors
-# 256 MB
-# echo $((512 * 1048576)) > /sys/devices/virtual/block/vnswap0/disksize >/dev/null 2>&1
-# echo 160 > /proc/sys/vm/swappiness
-# mkswap /dev/block/vnswap0 >/dev/null 2>&1
-# swapon /dev/block/vnswap0 >/dev/null 2>&1
 
 # FINGERPRINT BOOST - OFF
 echo "0" > /sys/kernel/fp_boost/enabled
@@ -138,8 +144,8 @@ echo "1" > /proc/sys/net/ipv4/tcp_sack
 echo "1" > /proc/sys/net/ipv4/tcp_tw_recycle
 echo "1" > /proc/sys/net/ipv4/tcp_window_scaling
 echo "5" > /proc/sys/net/ipv4/tcp_keepalive_probes
-echo "20" > /proc/sys/net/ipv4/tcp_keepalive_intvl
-echo "20" > /proc/sys/net/ipv4/tcp_fin_timeout
+echo "30" > /proc/sys/net/ipv4/tcp_keepalive_intvl
+echo "30" > /proc/sys/net/ipv4/tcp_fin_timeout
 echo "404480" > /proc/sys/net/core/wmem_max
 echo "404480" > /proc/sys/net/core/rmem_max
 echo "256960" > /proc/sys/net/core/rmem_default
@@ -154,7 +160,7 @@ rm -f /system/etc/init.d/ts_swapoff.sh 2>/dev/null;
 rm -f /system/etc/init.d/feravolt_gms.sh 2>/dev/null;
 rm -f /system/etc/init.d/tskillgooogle.sh 2>/dev/null;
 rm -f /system/etc/init.d/*detach* 2>/dev/null;
-rm -f /system/su.d/*detach* 2>/dev/null;
+rm -rf /data/magisk_backup_* 2>/dev/null;
 
 echo "## -- Start Init.d support" >> $LOG
 if [ ! -d /system/etc/init.d ]; then
@@ -166,10 +172,6 @@ for FILE in /system/etc/init.d/*; do
 	sh $FILE >/dev/null
 	echo "## -- Executing init.d script: $FILE" >> $LOG;
 done;
-for FILE2 in /system/etc/init.d/*.sh; do
-	sh $FILE2 >/dev/null
-	echo "## -- Executing init.d script: $FILE" >> $LOG;
-done
 echo "## -- End Init.d support" >> $LOG;
 echo " " >> $LOG;
 
@@ -181,43 +183,4 @@ mount -t rootfs -o remount,ro rootfs
 mount -o remount,ro -t auto /system
 mount -o remount,rw /data
 mount -o remount,rw /cache
-
-## ThunderStormS kill Google and Media servers script
-sleep 2
-# START LOOP 7200sec = 2h
-(
-while : ; do
-RUN_EVERY=7200
-# Google play services wakelock fix
-echo "## -- GooglePlay wakelock fix $( date +"%d-%m-%Y %H:%M:%S" )" >> $LOG;
-# KILL MEDIA
-if [ "`pgrep media`" ] && [ "`pgrep mediaserver`" ]; then
-# busybox killall -9 android.process.media
-# busybox killall -9 mediaserver
-busybox killall -9 com.google.android.gms
-busybox killall -9 com.google.android.gms.persistent
-busybox killall -9 com.google.process.gapps
-busybox killall -9 com.google.android.gsf
-busybox killall -9 com.google.android.gsf.persistent
-fi
-
-sleep 2
-# FIX GOOGLE PLAY SERVICE
-pm enable com.google.android.gms/.update.SystemUpdateActivity
-pm enable com.google.android.gms/.update.SystemUpdateService
-pm enable com.google.android.gms/.update.SystemUpdateService$ActiveReceiver
-pm enable com.google.android.gms/.update.SystemUpdateService$Receiver
-pm enable com.google.android.gms/.update.SystemUpdateService$SecretCodeReceiver
-pm enable com.google.android.gsf/.update.SystemUpdateActivity
-pm enable com.google.android.gsf/.update.SystemUpdatePanoActivity
-pm enable com.google.android.gsf/.update.SystemUpdateService
-pm enable com.google.android.gsf/.update.SystemUpdateService$Receiver
-pm enable com.google.android.gsf/.update.SystemUpdateService$SecretCodeReceiver
-echo " " >> $LOG;
-
-sleep 7200
-
-done;
-)&
-# END OF LOOP
 
