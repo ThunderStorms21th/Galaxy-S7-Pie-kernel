@@ -219,28 +219,6 @@ int suspend_valid_only_mem(suspend_state_t state)
 }
 EXPORT_SYMBOL_GPL(suspend_valid_only_mem);
 
-static bool platform_suspend_again(void)
-{
-	int count;
-	bool suspend = suspend_ops->suspend_again ?
-		suspend_ops->suspend_again() : false;
-
-	if (suspend) {
-		/*
-		 * pm_get_wakeup_count() gets an updated count of wakeup events
-		 * that have occured and will return false (i.e. abort suspend)
-		 * if a wakeup event has been started during suspend_again() and
-		 * is still active. pm_save_wakeup_count() stores the count
-		 * and enables pm_wakeup_pending() to properly analyze wakeup
-		 * events before entering suspend in suspend_enter().
-		 */
-		suspend = pm_get_wakeup_count(&count, false) &&
-			  pm_save_wakeup_count(count);
-	}
-
-	return suspend;
-}
-
 static bool sleep_state_supported(suspend_state_t state)
 {
 	return state == PM_SUSPEND_FREEZE || (suspend_ops && suspend_ops->enter);
@@ -447,7 +425,7 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 		goto Platform_early_resume;
 	}
 
-	error = suspend_disable_secondary_cpus();
+	error = disable_nonboot_cpus();
 	if (error || suspend_test(TEST_CPUS)) {
 		log_suspend_abort_reason("Disabling non-boot cpus failed");
 		goto Enable_cpus;
@@ -476,7 +454,7 @@ static int suspend_enter(suspend_state_t state, bool *wakeup)
 	BUG_ON(irqs_disabled());
 
  Enable_cpus:
-	suspend_enable_secondary_cpus();
+	enable_nonboot_cpus();
 
  Platform_wake:
 	platform_resume_noirq(state);
@@ -525,7 +503,7 @@ int suspend_devices_and_enter(suspend_state_t state)
 
 	do {
 		error = suspend_enter(state, &wakeup);
-	} while (!error && !wakeup && platform_suspend_again(state) && platform_suspend_again());
+	} while (!error && !wakeup && platform_suspend_again(state));
 
  Resume_devices:
 	suspend_test_start();
