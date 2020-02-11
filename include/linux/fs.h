@@ -135,16 +135,14 @@ typedef void (dio_iodone_t)(struct kiocb *iocb, loff_t offset,
 /* Has write method(s) */
 #define FMODE_CAN_WRITE         ((__force fmode_t)0x40000)
 
-<<<<<<< HEAD
 /* File hasn't page cache and can't be mmaped, for stackable filesystem */
 #define FMODE_NONMAPPABLE        ((__force fmode_t)0x400000)
    
 /* File page don't need to be cached, for stackable filesystem's lower file */
 #define FMODE_NONCACHEABLE     ((__force fmode_t)0x800000)
-=======
+
 /* File is stream-like */
 #define FMODE_STREAM		((__force fmode_t)0x200000)
->>>>>>> 4fbbf75b5a34... fs: stream_open - opener for stream-like files so that read and write can run simultaneously without deadlock
 
 /* File was opened by fanotify and shouldn't generate fanotify events */
 #define FMODE_NONOTIFY		((__force fmode_t)0x1000000)
